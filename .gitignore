@@ -1,0 +1,18 @@
+# Dependency yang di-install npm — jangan pernah di-commit, ukurannya besar dan bisa di-install ulang
+node_modules/
+
+# File rahasia berisi API key asli — WAJIB diabaikan
+.env
+.env.local
+
+# Database JSON tempat data merchant, chat, transaksi tersimpan
+# (ini data production kamu, bukan source code — jangan ikut ke-commit)
+data/
+
+# Log
+*.log
+npm-debug.log*
+
+# File sistem operasi
+.DS_Store
+Thumbs.db
