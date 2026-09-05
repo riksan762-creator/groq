@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kilat — Chatbot AI Balas Cepat untuk Toko Online Kamu</title>
+<meta name="description" content="Kilat menjawab chat pelanggan tokomu dalam hitungan detik, 24 jam, tanpa admin lembur. Ditenagai Groq — AI tercepat yang ada sekarang.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F6F9;
+    --surface:#FFFFFF;
+    --ink:#14213D;
+    --ink-soft:#4A5372;
+    --muted:#8A93A8;
+    --line:#E4E8F0;
+    --yellow:#FFC933;
+    --coral:#FF5A36;
+    --green:#2FBF71;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif;}
+  a{color:inherit;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:50;background:rgba(244,246,249,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;height:72px;}
+  .logo{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;}
+  .logo .bolt{width:22px;height:22px;}
+  .navlinks{display:flex;gap:32px;font-size:14.5px;font-weight:500;color:var(--ink-soft);}
+  .navlinks a:hover{color:var(--ink);}
+  .navcta{display:flex;gap:10px;align-items:center;}
+  @media (max-width:760px){.navlinks{display:none;}}
+
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    padding:12px 22px;border-radius:11px;font-weight:600;font-size:14.5px;
+    text-decoration:none;cursor:pointer;border:none;font-family:'Inter',sans-serif;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--ink);color:#fff;}
+  .btn-primary:hover{box-shadow:0 8px 20px rgba(20,33,61,.25);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-yellow{background:var(--yellow);color:var(--ink);}
+  .btn-yellow:hover{box-shadow:0 8px 20px rgba(255,201,51,.45);}
+  .btn-sm{padding:8px 16px;font-size:13.5px;border-radius:9px;}
+
+  /* HERO */
+  .hero{padding:76px 0 60px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;}
+  @media (max-width:900px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);padding:6px 14px 6px 10px;border-radius:99px;font-size:13px;font-weight:600;color:var(--ink-soft);margin-bottom:22px;}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--green);}
+  h1.headline{font-size:46px;line-height:1.12;font-weight:700;margin:0 0 20px;letter-spacing:-0.01em;}
+  h1.headline .hl{position:relative;white-space:nowrap;}
+  h1.headline .hl svg{position:absolute;left:0;bottom:-6px;width:100%;height:14px;}
+  .sub{font-size:17.5px;line-height:1.6;color:var(--ink-soft);max-width:480px;margin-bottom:32px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:28px;}
+  .hero-note{font-size:13.5px;color:var(--muted);}
+
+  /* Hero demo: chat lambat vs kilat */
+  .demo{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 24px 60px -20px rgba(20,33,61,.25);}
+  .demo-row{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;margin-bottom:10px;font-size:13.5px;}
+  .demo-row.slow{background:#FFF1EE;color:#9A3D28;}
+  .demo-row.fast{background:#EAFBF2;color:#1B7A47;}
+  .demo-row .tag{font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:12px;padding:3px 8px;border-radius:6px;flex-shrink:0;}
+  .demo-row.slow .tag{background:#FFDDD3;}
+  .demo-row.fast .tag{background:#CFF3DF;}
+  .demo-chatcard{background:#F8F9FB;border-radius:14px;padding:16px;margin-top:16px;}
+  .demo-msg{display:flex;gap:9px;margin-bottom:12px;align-items:flex-start;}
+  .demo-msg .bubble{background:#fff;border-radius:11px;padding:9px 12px;font-size:13.5px;box-shadow:0 1px 2px rgba(0,0,0,.06);max-width:78%;}
+  .demo-msg.me{justify-content:flex-end;}
+  .demo-msg.me .bubble{background:var(--yellow);}
+  .demo-msg .avatar{width:26px;height:26px;border-radius:50%;background:var(--ink);flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+  .typing-dots{display:inline-flex;gap:3px;}
+  .typing-dots span{width:5px;height:5px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite ease-in-out;}
+  .typing-dots span:nth-child(2){animation-delay:.2s;}
+  .typing-dots span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.25;}40%{opacity:1;}}
+
+  /* LOGOS / trust */
+  .trust{padding:8px 0 50px;}
+  .trust p{text-align:center;font-size:13px;color:var(--muted);text-transform:none;margin-bottom:20px;}
+  .trust-row{display:flex;justify-content:center;gap:44px;flex-wrap:wrap;opacity:.7;font-weight:600;font-family:'Space Grotesk',sans-serif;color:var(--ink-soft);font-size:15px;}
+
+  /* FEATURES */
+  section{padding:70px 0;}
+  .section-head{max-width:560px;margin-bottom:44px;}
+  .section-head .kicker{font-size:13.5px;font-weight:700;color:var(--coral);margin-bottom:10px;}
+  .section-head h2{font-size:32px;line-height:1.25;margin:0 0 12px;}
+  .section-head p{color:var(--ink-soft);font-size:16px;line-height:1.6;margin:0;}
+
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  @media (max-width:860px){.feature-grid{grid-template-columns:1fr;}}
+  .feature{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;}
+  .feature .ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+  .feature h3{font-size:17px;margin:0 0 8px;}
+  .feature p{font-size:14.5px;color:var(--ink-soft);line-height:1.6;margin:0;}
+
+  /* HOW IT WORKS */
+  .steps{display:flex;flex-direction:column;border-left:2px solid var(--line);margin-left:14px;}
+  .step{position:relative;padding:0 0 40px 34px;}
+  .step:last-child{padding-bottom:0;}
+  .step::before{content:"";position:absolute;left:-7px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--ink);border:3px solid var(--bg);}
+  .step h3{font-size:17px;margin:0 0 6px;}
+  .step p{font-size:14.5px;color:var(--ink-soft);margin:0;max-width:520px;line-height:1.6;}
+
+  /* PRICING */
+  .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:stretch;}
+  @media (max-width:900px){.price-grid{grid-template-columns:1fr;}}
+  .price-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:28px;display:flex;flex-direction:column;}
+  .price-card.featured{border:2px solid var(--ink);position:relative;}
+  .price-badge{position:absolute;top:-13px;right:24px;background:var(--yellow);color:var(--ink);font-size:12px;font-weight:700;padding:4px 12px;border-radius:99px;}
+  .price-card h3{font-size:18px;margin:0 0 6px;}
+  .price-card .desc{font-size:13.5px;color:var(--muted);margin-bottom:18px;}
+  .price-card .amount{font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;margin-bottom:4px;}
+  .price-card .amount span{font-size:14px;font-weight:500;color:var(--muted);}
+  .price-card ul{list-style:none;padding:0;margin:20px 0 24px;flex:1;}
+  .price-card li{font-size:14px;color:var(--ink-soft);padding:8px 0;border-top:1px solid var(--line);display:flex;gap:9px;align-items:flex-start;}
+  .price-card li:first-child{border-top:none;}
+  .price-card li svg{flex-shrink:0;margin-top:2px;}
+
+  /* FAQ */
+  details{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:12px;}
+  summary{cursor:pointer;font-weight:600;font-size:15px;list-style:none;display:flex;justify-content:space-between;align-items:center;}
+  summary::-webkit-details-marker{display:none;}
+  summary::after{content:'+';font-size:20px;color:var(--muted);font-weight:400;}
+  details[open] summary::after{content:'−';}
+  details p{margin:12px 0 0;color:var(--ink-soft);font-size:14.5px;line-height:1.6;}
+
+  /* CTA band */
+  .cta-band{background:var(--ink);border-radius:24px;padding:56px 40px;text-align:center;margin:0 24px;}
+  .cta-band h2{color:#fff;font-size:30px;margin:0 0 12px;}
+  .cta-band p{color:#B9C0D4;font-size:15.5px;margin:0 0 28px;}
+
+  footer{padding:50px 0 30px;border-top:1px solid var(--line);margin-top:30px;}
+  .foot-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px;font-size:13.5px;color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">
+      <svg class="bolt" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#14213D"/></svg>
+      Kilat
+    </div>
+    <div class="navlinks">
+      <a href="#fitur">Fitur</a>
+      <a href="#cara-kerja">Cara kerja</a>
+      <a href="#harga">Harga</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="navcta">
+      <a href="admin.html" class="btn btn-ghost btn-sm">Masuk</a>
+      <a href="admin.html#daftar" class="btn btn-primary btn-sm">Coba Gratis</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow"><span class="dot"></span> Ditenagai Groq — inference tercepat saat ini</div>
+      <h1 class="headline">Pelanggan chat jam 11 malam? <span class="hl">Kilat</span> yang jawab.</h1>
+      <p class="sub">Kilat adalah chatbot AI yang hafal produk dan info tokomu, lalu balas pertanyaan pelanggan dalam hitungan detik — di WhatsApp katalog, website, atau di mana pun kamu tempel widget-nya. Tanpa admin lembur.</p>
+      <div class="hero-actions">
+        <a href="admin.html#daftar" class="btn btn-yellow">Mulai gratis, 50 chat/bulan</a>
+        <a href="#cara-kerja" class="btn btn-ghost">Lihat cara kerjanya</a>
+      </div>
+      <div class="hero-note">Tanpa kartu kredit. Aktif dalam 5 menit.</div>
+    </div>
+
+    <div class="demo">
+      <div class="demo-row slow"><span class="tag">TANPA KILAT</span> Pelanggan nunggu balasan 4 jam, keburu checkout di toko sebelah</div>
+      <div class="demo-row fast"><span class="tag">PAKAI KILAT</span> Balasan otomatis dalam &lt; 2 detik, kapan pun dia chat</div>
+      <div class="demo-chatcard">
+        <div class="demo-msg">
+          <div class="avatar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFC933" stroke-width="2.4"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <div class="bubble">Halo! Selamat datang di Toko Rasa Nusantara 👋 Ada yang bisa dibantu?</div>
+        </div>
+        <div class="demo-msg me">
+          <div class="bubble">Kak, keripik singkong pedasnya masih ada? Ongkir ke Bekasi berapa?</div>
+        </div>
+        <div class="demo-msg">
+          <div class="avatar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#FFC933" stroke-width="2.4"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+          <div class="bubble">Masih ada kak, stok 40 pack. Ongkir ke Bekasi mulai Rp9.000 (reguler). Mau saya bantu buatkan pesanannya?</div>
+        </div>
+        <div class="demo-msg">
+          <div class="avatar"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A93A8" stroke-width="2.4"><circle cx="12" cy="12" r="9"/></svg></div>
+          <div class="bubble"><span class="typing-dots"><span></span><span></span><span></span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust wrap">
+  <p>Cocok untuk seller di Shopee, Tokopedia, Instagram, dan website toko sendiri</p>
+</div>
+
+<section id="fitur">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">FITUR</div>
+      <h2>Semua yang UMKM butuh dari customer service, tanpa nambah orang</h2>
+      <p>Kilat bukan chatbot generik. Dia dilatih pakai info bisnismu sendiri, dan cuma jawab seputar tokomu.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="ic" style="background:#FFF4D6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+        <h3>Balas dalam hitungan detik</h3>
+        <p>Ditenagai Groq, salah satu mesin inference AI tercepat yang ada — pelanggan nggak sempat kabur ke toko lain.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:#E6F0FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2B5FBF" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/></svg></div>
+        <h3>Dilatih dari info tokomu</h3>
+        <p>Isi produk, harga, jam buka, kebijakan retur — Kilat jawab berdasarkan itu, bukan ngarang sendiri.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:#EAFBF2;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B7A47" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div>
+        <h3>Tempel di mana saja</h3>
+        <p>Satu baris kode, langsung aktif di website tokomu. Tidak perlu developer.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:#FFE9E3;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C24A2E" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Riwayat semua percakapan</h3>
+        <p>Lihat pertanyaan pelanggan dari dashboard, tahu apa yang paling sering ditanyakan.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:#F1E9FF;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6B3FB8" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <h3>Aktif 24 jam, tanpa lembur</h3>
+        <p>Chat masuk jam berapa pun tetap terjawab, admin tetap bisa istirahat.</p>
+      </div>
+      <div class="feature">
+        <div class="ic" style="background:#FFF4D6;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="2"><path d="M3 10h18M7 15h4M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg></div>
+        <h3>Bayar gampang, QRIS</h3>
+        <p>Upgrade paket cukup scan QRIS — GoPay, ShopeePay, atau bank apa saja.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="cara-kerja" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">CARA KERJA</div>
+      <h2>Aktif dalam tiga langkah</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Daftar & ceritakan tentang tokomu</h3>
+        <p>Isi nama bisnis, produk, harga, dan hal-hal yang biasa ditanyakan pelanggan. Cukup lewat form, tidak perlu coding.</p>
+      </div>
+      <div class="step">
+        <h3>Tempel satu baris kode ke website</h3>
+        <p>Kami kasih kode widget siap-pakai. Tempel sebelum tag <code>&lt;/body&gt;</code>, selesai.</p>
+      </div>
+      <div class="step">
+        <h3>Kilat mulai balas chat pelangganmu</h3>
+        <p>Pantau semua percakapan dari dashboard, upgrade paket kalau chat makin ramai.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="harga">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="kicker">HARGA</div>
+      <h2>Mulai gratis, upgrade kalau chat makin ramai</h2>
+      <p>Tidak ada kontrak. Bisa upgrade atau turun paket kapan saja lewat QRIS.</p>
+    </div>
+    <div class="price-grid">
+      <div class="price-card">
+        <h3>Trial</h3>
+        <div class="desc">Buat coba-coba dulu</div>
+        <div class="amount">Rp0</div>
+        <ul>
+          <li>✓ 50 chat/bulan</li>
+          <li>✓ 1 widget website</li>
+          <li>✓ Riwayat percakapan</li>
+        </ul>
+        <a href="admin.html#daftar" class="btn btn-ghost">Mulai gratis</a>
+      </div>
+      <div class="price-card featured">
+        <div class="price-badge">PALING LARIS</div>
+        <h3>Pro</h3>
+        <div class="desc">Untuk toko yang chat-nya makin ramai</div>
+        <div class="amount">Rp49rb<span>/bulan</span></div>
+        <ul>
+          <li>✓ 1.000 chat/bulan</li>
+          <li>✓ 1 widget website</li>
+          <li>✓ Riwayat percakapan lengkap</li>
+          <li>✓ Kustomisasi gaya bahasa bot</li>
+        </ul>
+        <a href="admin.html#daftar" class="btn btn-primary">Pilih Pro</a>
+      </div>
+      <div class="price-card">
+        <h3>Bisnis</h3>
+        <div class="desc">Untuk toko dengan traffic tinggi</div>
+        <div class="amount">Rp149rb<span>/bulan</span></div>
+        <ul>
+          <li>✓ 5.000 chat/bulan</li>
+          <li>✓ Prioritas kecepatan respons</li>
+          <li>✓ Riwayat & ekspor data</li>
+          <li>✓ Dukungan prioritas</li>
+        </ul>
+        <a href="admin.html#daftar" class="btn btn-ghost">Pilih Bisnis</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" style="background:#fff;border-top:1px solid var(--line);">
+  <div class="wrap" style="max-width:760px;">
+    <div class="section-head">
+      <div class="kicker">FAQ</div>
+      <h2>Pertanyaan yang sering ditanya</h2>
+    </div>
+    <details open>
+      <summary>Apakah Kilat bisa jawab sesuai info toko saya sendiri?</summary>
+      <p>Bisa. Saat daftar, kamu isi info produk, harga, dan kebijakan tokomu. Kilat menjawab berdasarkan itu, bukan mengarang sendiri.</p>
+    </details>
+    <details>
+      <summary>Perlu bisa coding untuk pasang widget-nya?</summary>
+      <p>Tidak. Kami kasih satu baris kode HTML yang tinggal ditempel ke website kamu, sama seperti pasang Facebook Pixel atau Google Analytics.</p>
+    </details>
+    <details>
+      <summary>Kalau kuota chat bulanan habis gimana?</summary>
+      <p>Widget tetap terpasang, tapi bot akan berhenti membalas sampai kamu upgrade paket atau kuota reset bulan berikutnya.</p>
+    </details>
+    <details>
+      <summary>Cara bayarnya gimana?</summary>
+      <p>Upgrade paket cukup scan QRIS langsung dari dashboard — bisa pakai GoPay, ShopeePay, atau m-banking apa saja yang support QRIS.</p>
+    </details>
+  </div>
+</section>
+
+<section>
+  <div class="cta-band">
+    <h2>Berhenti bikin pelanggan nunggu.</h2>
+    <p>Daftar sekarang, widget-nya siap ditempel dalam 5 menit.</p>
+    <a href="admin.html#daftar" class="btn btn-yellow">Coba Kilat gratis</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-grid">
+    <div class="logo" style="font-size:16px;">
+      <svg class="bolt" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#14213D"/></svg>
+      Kilat
+    </div>
+    <div>© 2026 Kilat. Dibuat untuk UMKM Indonesia.</div>
+  </div>
+</footer>
+
+</body>
+</html>
