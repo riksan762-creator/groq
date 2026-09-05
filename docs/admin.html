@@ -3,1358 +3,3409 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard — Kilat</title>
+<title>Admin Panel — Kilat</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --bg:#F4F6F9;--surface:#fff;--ink:#14213D;--ink-soft:#4A5372;
-  --muted:#8A93A8;--line:#E4E8F0;--yellow:#FFC933;
-  --coral:#FF5A36;--green:#2FBF71;
+  --bg:#f4f6f9;
+  --surface:#fff;
+  --ink:#14213d;
+  --ink-soft:#4a5372;
+  --muted:#8a93a8;
+  --line:#e4e8f0;
+  --yellow:#ffc933;
+  --green:#2fbf71;
+  --red:#ef5350;
+  --blue:#4d7cff;
+  --sidebar:#101a32;
 }
-*{box-sizing:border-box}
-body{
-  margin:0;background:var(--bg);color:var(--ink);
-  font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased
-}
-h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif}
-input,textarea,select,button{font-family:Inter,sans-serif}
-.hidden{display:none!important}
 
-#auth-screen{
-  min-height:100vh;display:flex;align-items:center;
-  justify-content:center;padding:20px
+*{
+  box-sizing:border-box;
 }
-.auth-card{
-  background:#fff;border:1px solid var(--line);border-radius:18px;
-  padding:36px;width:100%;max-width:400px;
-  box-shadow:0 24px 60px -24px rgba(20,33,61,.25)
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Inter,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-.auth-logo{
-  display:flex;align-items:center;gap:8px;font-weight:700;
-  font-size:19px;margin-bottom:24px
+
+button,
+input,
+select{
+  font-family:Inter,sans-serif;
 }
-.auth-card h2{font-size:22px;margin:0 0 6px}
-.auth-card .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
-.field{margin-bottom:14px}
+
+button{
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================
+   LOGIN
+========================= */
+
+#login-screen{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.login-card{
+  width:100%;
+  max-width:410px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px;
+  box-shadow:0 25px 70px rgba(20,33,61,.12);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:28px;
+}
+
+.logo-icon{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:var(--ink);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.login-card h1{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:25px;
+  margin:0 0 7px;
+}
+
+.login-sub{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:25px;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
 .field label{
-  display:block;font-size:13px;font-weight:600;
-  margin-bottom:6px;color:var(--ink-soft)
+  display:block;
+  font-size:13px;
+  font-weight:600;
+  margin-bottom:7px;
+  color:var(--ink-soft);
 }
-.field input,.field textarea,.field select{
-  width:100%;padding:11px 13px;border:1.5px solid var(--line);
-  border-radius:10px;font-size:14px;outline:none;
-  transition:border-color .12s
+
+.field input,
+.field select{
+  width:100%;
+  padding:12px 13px;
+  border:1.5px solid var(--line);
+  border-radius:11px;
+  outline:none;
+  font-size:14px;
 }
-.field input:focus,.field textarea:focus,.field select:focus{
-  border-color:var(--ink)
+
+.field input:focus,
+.field select:focus{
+  border-color:var(--ink);
 }
-.field textarea{resize:vertical;min-height:110px;line-height:1.5}
+
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  gap:8px;padding:11px 20px;border-radius:10px;
-  font-weight:600;font-size:14px;text-decoration:none;
-  cursor:pointer;border:none;width:100%
+  border:0;
+  border-radius:10px;
+  padding:11px 16px;
+  font-size:13px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
 }
-.btn-primary{background:var(--ink);color:#fff}
-.btn-primary:hover{opacity:.92}
-.btn-yellow{background:var(--yellow);color:var(--ink)}
-.btn-ghost{
-  background:#fff;color:var(--ink);border:1.5px solid var(--line);
-  width:auto;padding:9px 16px
+
+.btn-primary{
+  background:var(--ink);
+  color:#fff;
 }
-.btn:disabled{opacity:.6;cursor:not-allowed}
-.switcher{
-  text-align:center;font-size:13.5px;color:var(--muted);margin-top:16px
+
+.btn-yellow{
+  background:var(--yellow);
+  color:var(--ink);
 }
-.switcher a{
-  color:var(--ink);font-weight:600;cursor:pointer;text-decoration:underline
+
+.btn-danger{
+  background:#fff0ee;
+  color:#c63828;
 }
-.err{
-  background:#FFF1EE;color:#B23A22;font-size:13px;
-  padding:10px 12px;border-radius:9px;margin-bottom:14px
+
+.btn-outline{
+  background:#fff;
+  color:var(--ink);
+  border:1px solid var(--line);
 }
-.ok{
-  background:#EAFBF2;color:#1B7A47;font-size:13px;
-  padding:10px 12px;border-radius:9px;margin-bottom:14px
+
+.btn-full{
+  width:100%;
 }
+
+.message{
+  padding:11px 13px;
+  border-radius:10px;
+  font-size:13px;
+  margin-bottom:15px;
+}
+
+.message.error{
+  background:#fff0ee;
+  color:#b52e20;
+}
+
+.message.success{
+  background:#eafbf2;
+  color:#1c7747;
+}
+
+/* =========================
+   APP
+========================= */
 
 #app{
-  display:none;min-height:100vh;grid-template-columns:230px 1fr
-}
-#app.show{display:grid}
-aside{
-  background:var(--ink);color:#fff;padding:24px 16px;
-  display:flex;flex-direction:column
-}
-.side-logo{
-  display:flex;align-items:center;gap:8px;font-weight:700;
-  font-size:18px;padding:0 8px 26px
-}
-.side-biz{
-  font-size:12px;color:#9AA5C4;padding:0 8px 18px;
-  border-bottom:1px solid #26305A;margin-bottom:14px
-}
-.side-biz b{
-  color:#fff;display:block;font-size:13.5px;margin-bottom:2px
-}
-nav.sidenav{
-  display:flex;flex-direction:column;gap:2px;flex:1
-}
-nav.sidenav button{
-  background:none;border:none;color:#B9C0D4;text-align:left;
-  padding:11px 12px;border-radius:9px;font-size:14px;cursor:pointer;
-  font-weight:500;display:flex;align-items:center;gap:10px
-}
-nav.sidenav button:hover{background:#1D2748;color:#fff}
-nav.sidenav button.active{
-  background:var(--yellow);color:var(--ink);font-weight:700
-}
-.logout-btn{
-  background:none;border:1px solid #2C3760;color:#B9C0D4;
-  padding:10px;border-radius:9px;font-size:13px;cursor:pointer
+  display:none;
+  min-height:100vh;
 }
 
-main{padding:32px 40px;max-width:920px}
-main h1{font-size:24px;margin:0 0 4px}
-main .page-sub{color:var(--muted);font-size:14px;margin-bottom:28px}
-.card{
-  background:#fff;border:1px solid var(--line);border-radius:16px;
-  padding:24px;margin-bottom:20px
+#app.show{
+  display:flex;
 }
-.card h3{font-size:16px;margin:0 0 4px}
-.stat-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:16px;margin-bottom:24px
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.sidebar{
+  width:245px;
+  background:var(--sidebar);
+  color:#fff;
+  min-height:100vh;
+  padding:22px 15px;
+  position:fixed;
+  left:0;
+  top:0;
+  bottom:0;
+  z-index:50;
+  display:flex;
+  flex-direction:column;
 }
-.stat{
-  background:#fff;border:1px solid var(--line);
-  border-radius:14px;padding:18px
+
+.sidebar-logo{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-weight:700;
+  font-size:19px;
+  padding:3px 9px 26px;
 }
-.stat .num{
+
+.admin-badge{
+  font-size:10px;
+  background:var(--yellow);
+  color:var(--ink);
+  padding:4px 7px;
+  border-radius:6px;
+  margin-left:auto;
+  font-weight:800;
+}
+
+.admin-profile{
+  background:#182442;
+  border:1px solid #273252;
+  border-radius:13px;
+  padding:13px;
+  margin-bottom:18px;
+}
+
+.admin-profile small{
+  display:block;
+  color:#8995b2;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:4px;
+}
+
+.admin-profile b{
+  font-size:13px;
+  word-break:break-all;
+}
+
+.sidebar-nav{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  flex:1;
+}
+
+.sidebar-nav button{
+  width:100%;
+  border:0;
+  background:none;
+  color:#aeb8d0;
+  text-align:left;
+  padding:11px 12px;
+  border-radius:10px;
+  font-size:13.5px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.sidebar-nav button:hover{
+  background:#1b2747;
+  color:#fff;
+}
+
+.sidebar-nav button.active{
+  background:var(--yellow);
+  color:var(--ink);
+  font-weight:700;
+}
+
+.logout{
+  background:none;
+  border:1px solid #293654;
+  color:#aeb8d0;
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  font-size:13px;
+}
+
+/* =========================
+   MAIN
+========================= */
+
+.main{
+  margin-left:245px;
+  width:calc(100% - 245px);
+  padding:30px;
+  max-width:1400px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.topbar h1{
   font-family:'Space Grotesk',sans-serif;
-  font-size:26px;font-weight:700
+  margin:0 0 3px;
+  font-size:25px;
 }
-.stat .label{color:var(--muted);font-size:13px;margin-top:2px}
-.progress{
-  height:8px;border-radius:99px;background:#EEF1F6;
-  overflow:hidden;margin-top:8px
+
+.topbar p{
+  color:var(--muted);
+  font-size:13px;
+  margin:0;
 }
-.progress>div{height:100%;background:var(--yellow)}
-code.embed{
-  display:block;background:#0F1830;color:#DCE3F5;
-  padding:16px;border-radius:12px;font-size:12.5px;
-  line-height:1.6;white-space:pre-wrap;word-break:break-all;
-  font-family:SFMono-Regular,Consolas,monospace
+
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  color:#317c55;
+  background:#eafbf2;
+  padding:8px 11px;
+  border-radius:9px;
+  font-weight:600;
 }
-.copy-row{display:flex;justify-content:flex-end;margin-top:10px}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
+
+.status-dot{
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  background:var(--green);
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:21px;
+  margin-bottom:18px;
+}
+
+.card-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.card-title{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:16px;
+  font-weight:700;
+}
+
+.card-sub{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+/* =========================
+   STAT
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.stat-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:19px;
+}
+
+.stat-icon{
+  width:36px;
+  height:36px;
+  border-radius:10px;
+  background:#f1f3f7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:17px;
+  margin-bottom:13px;
+}
+
+.stat-number{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:27px;
+  font-weight:700;
+}
+
+.stat-label{
+  color:var(--muted);
+  font-size:12px;
+  margin-top:3px;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  min-width:700px;
+  font-size:13px;
+}
+
 th{
-  text-align:left;color:var(--muted);font-weight:600;font-size:12px;
-  text-transform:uppercase;letter-spacing:.03em;
-  padding:8px 10px;border-bottom:1px solid var(--line)
+  text-align:left;
+  padding:10px;
+  border-bottom:1px solid var(--line);
+  color:var(--muted);
+  font-size:10.5px;
+  text-transform:uppercase;
+  letter-spacing:.04em;
 }
-td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
-.role-badge{
-  font-size:11px;font-weight:700;padding:3px 8px;
-  border-radius:6px;display:inline-block
+
+td{
+  padding:12px 10px;
+  border-bottom:1px solid var(--line);
+  vertical-align:middle;
 }
-.role-badge.user{background:#FFF4D6;color:#8A6400}
-.role-badge.assistant{background:#EAFBF2;color:#1B7A47}
+
+td:last-child,
+th:last-child{
+  text-align:right;
+}
+
+.user-name{
+  font-weight:700;
+}
+
+.user-email{
+  color:var(--muted);
+  font-size:11px;
+  margin-top:3px;
+}
+
+.badge{
+  display:inline-flex;
+  padding:4px 8px;
+  border-radius:7px;
+  font-size:10.5px;
+  font-weight:700;
+}
+
+.badge-free{
+  background:#eef1f5;
+  color:#68738b;
+}
+
+.badge-pro{
+  background:#fff4d3;
+  color:#8a6400;
+}
+
+.badge-bisnis{
+  background:#eaf0ff;
+  color:#385bb3;
+}
+
+.badge-active{
+  background:#eafbf2;
+  color:#247849;
+}
+
+/* =========================
+   ELLIPSIS MENU
+========================= */
+
+.action{
+  position:relative;
+  display:inline-block;
+}
+
+.more-btn{
+  width:34px;
+  height:34px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:9px;
+  font-size:20px;
+  line-height:1;
+  color:var(--ink-soft);
+}
+
+.more-btn:hover{
+  background:#f4f6f9;
+}
+
+.menu{
+  position:absolute;
+  right:0;
+  top:40px;
+  width:175px;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:5px;
+  box-shadow:0 15px 35px rgba(20,33,61,.14);
+  z-index:100;
+  display:none;
+}
+
+.menu.show{
+  display:block;
+}
+
+.menu button{
+  width:100%;
+  border:0;
+  background:none;
+  text-align:left;
+  padding:9px 10px;
+  border-radius:7px;
+  font-size:12px;
+  color:var(--ink);
+}
+
+.menu button:hover{
+  background:#f3f5f8;
+}
+
+.menu button.danger{
+  color:#c63828;
+}
+
+/* =========================
+   PLANS
+========================= */
+
 .plan-grid{
-  display:grid;grid-template-columns:repeat(2,1fr);gap:16px
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:15px;
 }
-.plan-card{
-  border:1.5px solid var(--line);border-radius:14px;padding:20px
+
+.plan{
+  border:1.5px solid var(--line);
+  border-radius:15px;
+  padding:19px;
+  position:relative;
 }
-.plan-card h4{margin:0 0 4px;font-size:16px}
-.plan-card .p{
-  font-family:'Space Grotesk',sans-serif;font-size:22px;
-  font-weight:700;margin:6px 0 14px
+
+.plan.current{
+  border-color:var(--yellow);
 }
-.qr-box{
-  text-align:center;padding:20px;border:1.5px dashed var(--line);
-  border-radius:14px;margin-top:16px
+
+.plan-name{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;
+  font-weight:700;
 }
-.qr-box img{width:200px;height:200px;border-radius:10px}
-.muted{color:var(--muted);font-size:13px}
+
+.plan-price{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:26px;
+  font-weight:700;
+  margin:10px 0 2px;
+}
+
+.plan-price span{
+  font-family:Inter,sans-serif;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:500;
+}
+
+.plan-quota{
+  color:var(--muted);
+  font-size:12px;
+  margin-bottom:17px;
+}
+
+.plan-actions{
+  display:flex;
+  gap:7px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(10,18,35,.48);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:200;
+}
+
+.modal-overlay.show{
+  display:flex;
+}
+
+.modal{
+  width:100%;
+  max-width:470px;
+  background:#fff;
+  border-radius:17px;
+  padding:23px;
+  box-shadow:0 30px 80px rgba(0,0,0,.2);
+}
+
+.modal-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.modal-header h3{
+  margin:0;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;
+}
+
+.close-btn{
+  width:32px;
+  height:32px;
+  border:0;
+  background:#f1f3f7;
+  border-radius:8px;
+  font-size:17px;
+}
+
+.modal-footer{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:20px;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.mobile-top{
+  display:none;
+}
+
+@media(max-width:900px){
+
+  .sidebar{
+    width:205px;
+  }
+
+  .main{
+    margin-left:205px;
+    width:calc(100% - 205px);
+    padding:22px;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .plan-grid{
+    grid-template-columns:1fr;
+  }
+}
 
 @media(max-width:700px){
-  #app{grid-template-columns:1fr}
-  aside{
-    position:sticky;top:0;z-index:10;
-    padding:12px;display:block
+
+  #app.show{
+    display:block;
   }
-  .side-logo{padding:4px 8px 12px}
-  .side-biz{display:none}
-  nav.sidenav{
-    display:flex;flex-direction:row;overflow-x:auto;
-    gap:4px;margin-bottom:8px
+
+  .sidebar{
+    position:sticky;
+    top:0;
+    width:100%;
+    min-height:auto;
+    padding:10px;
   }
-  nav.sidenav button{
-    white-space:nowrap;padding:9px 10px;font-size:12px
+
+  .sidebar-logo{
+    padding:3px 6px 10px;
   }
-  .logout-btn{width:100%;padding:8px}
-  main{padding:20px 14px}
-  .stat-grid{grid-template-columns:1fr}
-  .plan-grid{grid-template-columns:1fr}
-  .card{padding:18px;overflow-x:auto}
-  table{min-width:600px}
+
+  .admin-profile{
+    display:none;
+  }
+
+  .sidebar-nav{
+    flex-direction:row;
+    overflow-x:auto;
+    gap:4px;
+    padding-bottom:5px;
+  }
+
+  .sidebar-nav button{
+    white-space:nowrap;
+    width:auto;
+    padding:8px 10px;
+    font-size:11px;
+  }
+
+  .logout{
+    margin-top:5px;
+    padding:8px;
+  }
+
+  .main{
+    margin-left:0;
+    width:100%;
+    padding:16px 12px 30px;
+  }
+
+  .topbar{
+    align-items:flex-start;
+  }
+
+  .topbar h1{
+    font-size:22px;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+
+  .stat-card{
+    padding:14px;
+  }
+
+  .stat-number{
+    font-size:22px;
+  }
+
+  .card{
+    padding:15px;
+    border-radius:13px;
+  }
+
+  .status{
+    display:none;
+  }
+
+  .plan-actions{
+    flex-wrap:wrap;
+  }
+}
+
+@media(max-width:430px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
 }
 </style>
 </head>
+
 <body>
 
-<div id="auth-screen">
-  <div class="auth-card">
-    <div class="auth-logo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#14213D"/>
-      </svg>
+<!-- =========================
+     LOGIN ADMIN
+========================= -->
+
+<div id="login-screen">
+
+  <div class="login-card">
+
+    <div class="logo">
+
+      <div class="logo-icon">
+        <svg width="19" height="19" viewBox="0 0 24 24">
+          <path
+            d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
+            fill="#FFC933"
+          />
+        </svg>
+      </div>
+
       Kilat
+
+      <span style="
+        font-size:10px;
+        background:#eef1f5;
+        padding:4px 7px;
+        border-radius:6px;
+      ">ADMIN</span>
+
     </div>
 
-    <div id="msg-box"></div>
+    <h1>Admin Panel</h1>
 
-    <div id="login-form">
-      <h2>Masuk ke dashboard</h2>
-      <div class="sub">Kelola chatbot toko kamu di sini.</div>
-
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="login-email" placeholder="kamu@tokokamu.com">
-      </div>
-
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="login-password" placeholder="••••••••">
-      </div>
-
-      <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Masuk</button>
-
-      <div class="switcher">
-        Belum punya akun?
-        <a onclick="showRegister()">Daftar gratis</a>
-      </div>
+    <div class="login-sub">
+      Masuk untuk mengelola platform Kilat.
     </div>
 
-    <div id="register-form" class="hidden">
-      <h2>Coba Kilat gratis</h2>
-      <div class="sub">50 chat/bulan gratis, tanpa kartu kredit.</div>
+    <div id="login-message"></div>
 
-      <div class="field">
-        <label>Nama Bisnis</label>
-        <input type="text" id="reg-business" placeholder="Toko Rasa Nusantara">
-      </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input type="email" id="reg-email" placeholder="kamu@tokokamu.com">
-      </div>
-
-      <div class="field">
-        <label>Password</label>
-        <input type="password" id="reg-password" placeholder="Minimal 6 karakter">
-      </div>
-
-      <button class="btn btn-yellow" id="register-btn" onclick="doRegister()">Buat akun</button>
-
-      <div class="switcher">
-        Sudah punya akun?
-        <a onclick="showLogin()">Masuk</a>
-      </div>
+    <div class="field">
+      <label>Email Admin</label>
+      <input
+        type="email"
+        id="admin-email"
+        placeholder="admin@kilat.com"
+        autocomplete="username"
+      >
     </div>
+
+    <div class="field">
+      <label>Password</label>
+      <input
+        type="password"
+        id="admin-password"
+        placeholder="••••••••"
+        autocomplete="current-password"
+      >
+    </div>
+
+    <button
+      class="btn btn-primary btn-full"
+      id="admin-login-btn"
+      onclick="adminLogin()"
+    >
+      Masuk ke Admin
+    </button>
+
   </div>
+
 </div>
 
+
+<!-- =========================
+     ADMIN APP
+========================= -->
+
 <div id="app">
-  <aside>
-    <div class="side-logo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#FFC933"/>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-logo">
+
+      <svg width="19" height="19" viewBox="0 0 24 24">
+        <path
+          d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
+          fill="#FFC933"
+        />
       </svg>
+
       Kilat
+
+      <span class="admin-badge">ADMIN</span>
+
     </div>
 
-    <div class="side-biz">
-      <b id="side-biz-name">-</b>
-      <span id="side-plan">-</span>
+    <div class="admin-profile">
+
+      <small>Administrator</small>
+
+      <b id="admin-email-display">-</b>
+
     </div>
 
-    <nav class="sidenav">
-      <button data-tab="ringkasan" class="active" onclick="switchTab('ringkasan')">📊 Ringkasan</button>
-      <button data-tab="chatbot" onclick="switchTab('chatbot')">🤖 Pengaturan Bot</button>
-      <button data-tab="widget" onclick="switchTab('widget')">🔗 Pasang Widget</button>
-      <button data-tab="percakapan" onclick="switchTab('percakapan')">💬 Percakapan</button>
-      <button data-tab="langganan" onclick="switchTab('langganan')">💳 Langganan</button>
+    <nav class="sidebar-nav">
+
+      <button
+        data-tab="dashboard"
+        class="active"
+        onclick="switchTab('dashboard')"
+      >
+        📊 Dashboard
+      </button>
+
+      <button
+        data-tab="users"
+        onclick="switchTab('users')"
+      >
+        👥 Pengguna
+      </button>
+
+      <button
+        data-tab="plans"
+        onclick="switchTab('plans')"
+      >
+        💳 Paket Langganan
+      </button>
+
+      <button
+        data-tab="transactions"
+        onclick="switchTab('transactions')"
+      >
+        💰 Transaksi
+      </button>
+
     </nav>
 
-    <button class="logout-btn" onclick="doLogout()">Keluar</button>
+    <button class="logout" onclick="adminLogout()">
+      Keluar
+    </button>
+
   </aside>
 
-  <main>
 
-    <section id="tab-ringkasan">
-      <h1>Ringkasan</h1>
-      <div class="page-sub">Sekilas kondisi chatbot toko kamu.</div>
+  <main class="main">
 
-      <div class="stat-grid">
-        <div class="stat">
-          <div class="num" id="stat-plan">-</div>
-          <div class="label">Paket aktif</div>
+    <!-- =====================
+         DASHBOARD
+    ====================== -->
+
+    <section id="tab-dashboard">
+
+      <div class="topbar">
+
+        <div>
+          <h1>Dashboard</h1>
+          <p>
+            Ringkasan aktivitas platform Kilat.
+          </p>
         </div>
 
-        <div class="stat">
-          <div class="num" id="stat-usage">-</div>
-          <div class="label">Chat terpakai bulan ini</div>
-          <div class="progress">
-            <div id="stat-usage-bar" style="width:0%"></div>
+        <div class="status">
+          <span class="status-dot"></span>
+          Backend Online
+        </div>
+
+      </div>
+
+
+      <div class="stats">
+
+        <div class="stat-card">
+
+          <div class="stat-icon">👥</div>
+
+          <div
+            class="stat-number"
+            id="stat-users"
+          >
+            -
           </div>
+
+          <div class="stat-label">
+            Total pengguna
+          </div>
+
         </div>
 
-        <div class="stat">
-          <div class="num" id="stat-convos">-</div>
-          <div class="label">Total percakapan</div>
+
+        <div class="stat-card">
+
+          <div class="stat-icon">💳</div>
+
+          <div
+            class="stat-number"
+            id="stat-active"
+          >
+            -
+          </div>
+
+          <div class="stat-label">
+            Langganan aktif
+          </div>
+
         </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">💰</div>
+
+          <div
+            class="stat-number"
+            id="stat-revenue"
+          >
+            Rp0
+          </div>
+
+          <div class="stat-label">
+            Pendapatan
+          </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+          <div class="stat-icon">💬</div>
+
+          <div
+            class="stat-number"
+            id="stat-chats"
+          >
+            -
+          </div>
+
+          <div class="stat-label">
+            Total chat
+          </div>
+
+        </div>
+
       </div>
+
 
       <div class="card">
-        <h3>Langkah cepat</h3>
-        <p class="muted">
-          Belum tempel widget? Buka tab <b>Pasang Widget</b> untuk salin
-          kodenya, lalu tempel ke website tokomu sebelum tag
-          <code>&lt;/body&gt;</code>.
-        </p>
-      </div>
-    </section>
 
-    <section id="tab-chatbot" class="hidden">
-      <h1>Pengaturan Bot</h1>
-      <div class="page-sub">
-        Ceritakan tentang bisnismu — Kilat menjawab pelanggan berdasarkan ini.
-      </div>
+        <div class="card-header">
 
-      <div class="card">
-        <div id="bot-msg"></div>
+          <div>
+            <div class="card-title">
+              Aktivitas terbaru
+            </div>
 
-        <div class="field">
-          <label>Pesan sapaan pertama</label>
-          <input type="text" id="cfg-greeting"
-                 placeholder="Halo! Selamat datang di toko kami...">
-        </div>
+            <div class="card-sub">
+              Pengguna dan transaksi terbaru.
+            </div>
+          </div>
 
-        <div class="field">
-          <label>Gaya bicara bot</label>
-          <select id="cfg-tone">
-            <option value="ramah, sopan, dan to the point">Ramah & to the point</option>
-            <option value="santai dan akrab, sesekali pakai emoji">Santai & akrab</option>
-            <option value="formal dan profesional">Formal & profesional</option>
-          </select>
-        </div>
-
-        <div class="field">
-          <label>
-            Info bisnis kamu (produk, harga, jam buka, kebijakan retur, dll)
-          </label>
-          <textarea id="cfg-prompt" placeholder="Contoh:
-- Kami jual keripik singkong pedas & original, harga Rp15.000/pack
-- Jam operasional 08.00-20.00 WIB setiap hari
-- Ongkir dihitung otomatis oleh kurir
-- Retur diterima maksimal 2 hari setelah barang diterima"></textarea>
-        </div>
-
-        <button class="btn btn-primary" style="width:auto"
-                onclick="saveBotConfig()">
-          Simpan pengaturan
-        </button>
-      </div>
-    </section>
-
-    <section id="tab-widget" class="hidden">
-      <h1>Pasang Widget</h1>
-      <div class="page-sub">
-        Tempel kode ini sebelum tag <code>&lt;/body&gt;</code>
-        di website tokomu.
-      </div>
-
-      <div class="card">
-        <h3>Kode widget kamu</h3>
-        <code class="embed" id="widget-embed-code">Memuat...</code>
-
-        <div class="copy-row">
-          <button class="btn-ghost btn" onclick="copyEmbed()">
-            Salin kode
+          <button
+            class="btn btn-outline"
+            onclick="loadAdminData()"
+          >
+            ↻ Refresh
           </button>
-        </div>
-      </div>
 
-      <div class="card">
-        <h3>Nggak punya website sendiri?</h3>
-        <p class="muted">
-          Kamu tetap bisa share link chat langsung ke pelanggan lewat
-          bio Instagram atau katalog WhatsApp.
-        </p>
-      </div>
-    </section>
-
-    <section id="tab-percakapan" class="hidden">
-      <h1>Percakapan</h1>
-      <div class="page-sub">200 pesan terakhir dari pelanggan kamu.</div>
-
-      <div class="card">
-        <table>
-          <thead>
-            <tr>
-              <th>Waktu</th>
-              <th>Peran</th>
-              <th>Pesan</th>
-            </tr>
-          </thead>
-          <tbody id="convo-table-body">
-            <tr>
-              <td colspan="3" class="muted">Memuat...</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <section id="tab-langganan" class="hidden">
-      <h1>Langganan</h1>
-      <div class="page-sub">
-        Upgrade paket biar chat nggak kepotong kuota.
-      </div>
-
-      <div class="card">
-        <h3>Status saat ini</h3>
-        <p id="sub-status" class="muted">Memuat...</p>
-      </div>
-
-      <div class="card">
-        <h3>Upgrade paket</h3>
-
-        <div class="plan-grid">
-          <div class="plan-card">
-            <h4>Pro</h4>
-            <div class="p">
-              Rp49.000
-              <span style="font-size:13px;font-weight:500;color:var(--muted)">
-                /bulan
-              </span>
-            </div>
-            <p class="muted">1.000 chat/bulan</p>
-            <button class="btn btn-primary" style="width:auto"
-                    onclick="checkout('pro')">
-              Upgrade ke Pro
-            </button>
-          </div>
-
-          <div class="plan-card">
-            <h4>Bisnis</h4>
-            <div class="p">
-              Rp149.000
-              <span style="font-size:13px;font-weight:500;color:var(--muted)">
-                /bulan
-              </span>
-            </div>
-            <p class="muted">5.000 chat/bulan + prioritas</p>
-            <button class="btn btn-primary" style="width:auto"
-                    onclick="checkout('bisnis')">
-              Upgrade ke Bisnis
-            </button>
-          </div>
         </div>
 
-        <div id="qr-area"></div>
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Pengguna</th>
+                <th>Paket</th>
+                <th>Status</th>
+                <th>Tanggal</th>
+              </tr>
+            </thead>
+
+            <tbody id="recent-table">
+
+              <tr>
+                <td colspan="4">
+                  <div class="empty">
+                    Memuat data...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
+
+    </section>
+
+
+    <!-- =====================
+         USERS
+    ====================== -->
+
+    <section id="tab-users" class="hidden">
+
+      <div class="topbar">
+
+        <div>
+          <h1>Pengguna</h1>
+          <p>
+            Kelola semua akun pengguna Kilat.
+          </p>
+        </div>
+
+        <button
+          class="btn btn-outline"
+          onclick="loadUsers()"
+        >
+          ↻ Refresh
+        </button>
+
+      </div>
+
 
       <div class="card">
-        <h3>Riwayat pembayaran</h3>
 
-        <table>
-          <thead>
-            <tr>
-              <th>Tanggal</th>
-              <th>Paket</th>
-              <th>Jumlah</th>
-              <th>Status</th>
-            </tr>
-          </thead>
+        <div class="card-header">
 
-          <tbody id="tx-table-body">
-            <tr>
-              <td colspan="4" class="muted">Memuat...</td>
-            </tr>
-          </tbody>
-        </table>
+          <div>
+            <div class="card-title">
+              Daftar pengguna
+            </div>
+
+            <div class="card-sub">
+              Gunakan menu ⋮ untuk tindakan akun.
+            </div>
+          </div>
+
+          <input
+            id="user-search"
+            placeholder="Cari pengguna..."
+            oninput="filterUsers()"
+            style="
+              max-width:220px;
+              padding:9px 11px;
+              border:1px solid var(--line);
+              border-radius:9px;
+              outline:none;
+              font-size:12px;
+            "
+          >
+
+        </div>
+
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Pengguna</th>
+                <th>Paket</th>
+                <th>Penggunaan</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="users-table">
+
+              <tr>
+                <td colspan="5">
+                  <div class="empty">
+                    Memuat pengguna...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
+
+    </section>
+
+
+    <!-- =====================
+         PLANS
+    ====================== -->
+
+    <section id="tab-plans" class="hidden">
+
+      <div class="topbar">
+
+        <div>
+          <h1>Paket Langganan</h1>
+          <p>
+            Atur harga dan kuota paket pengguna.
+          </p>
+        </div>
+
+        <button
+          class="btn btn-yellow"
+          onclick="openPlanModal()"
+        >
+          + Tambah Paket
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="card-header">
+
+          <div>
+            <div class="card-title">
+              Harga & paket
+            </div>
+
+            <div class="card-sub">
+              Perubahan harga akan digunakan oleh sistem checkout setelah backend admin diaktifkan.
+            </div>
+          </div>
+
+        </div>
+
+
+        <div
+          class="plan-grid"
+          id="plans-container"
+        >
+
+          <div class="empty">
+            Memuat paket...
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================
+         TRANSACTIONS
+    ====================== -->
+
+    <section id="tab-transactions" class="hidden">
+
+      <div class="topbar">
+
+        <div>
+          <h1>Transaksi</h1>
+          <p>
+            Riwayat pembayaran pelanggan.
+          </p>
+        </div>
+
+        <button
+          class="btn btn-outline"
+          onclick="loadTransactions()"
+        >
+          ↻ Refresh
+        </button>
+
+      </div>
+
+
+      <div class="card">
+
+        <div class="table-wrap">
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Tanggal</th>
+                <th>Pelanggan</th>
+                <th>Paket</th>
+                <th>Jumlah</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+
+            </thead>
+
+            <tbody id="transactions-table">
+
+              <tr>
+                <td colspan="6">
+                  <div class="empty">
+                    Memuat transaksi...
+                  </div>
+                </td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
     </section>
 
   </main>
+
 </div>
 
+
+<!-- =========================
+     USER MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="user-modal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3>Kelola Pengguna</h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('user-modal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div id="user-modal-content"></div>
+
+    <div class="modal-footer">
+
+      <button
+        class="btn btn-outline"
+        onclick="closeModal('user-modal')"
+      >
+        Tutup
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =========================
+     PLAN MODAL
+========================= -->
+
+<div
+  class="modal-overlay"
+  id="plan-modal"
+>
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <h3 id="plan-modal-title">
+        Edit Paket
+      </h3>
+
+      <button
+        class="close-btn"
+        onclick="closeModal('plan-modal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div id="plan-message"></div>
+
+
+    <input
+      type="hidden"
+      id="plan-original"
+    >
+
+
+    <div class="field">
+
+      <label>
+        Nama Paket
+      </label>
+
+      <input
+        id="plan-name"
+        placeholder="Pro"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Harga per bulan
+      </label>
+
+      <input
+        id="plan-price"
+        type="number"
+        min="0"
+        placeholder="49000"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Kuota chat per bulan
+      </label>
+
+      <input
+        id="plan-quota"
+        type="number"
+        min="0"
+        placeholder="1000"
+      >
+
+    </div>
+
+
+    <div class="field">
+
+      <label>
+        Deskripsi
+      </label>
+
+      <input
+        id="plan-description"
+        placeholder="1.000 chat/bulan"
+      >
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="btn btn-outline"
+        onclick="closeModal('plan-modal')"
+      >
+        Batal
+      </button>
+
+      <button
+        class="btn btn-primary"
+        onclick="savePlan()"
+      >
+        Simpan Paket
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-/* =========================================================
-   KONFIGURASI BACKEND
-   ========================================================= */
-
-const API_BASE = "https://evans-hardwood-tutorial-pentium.trycloudflare.com";
-
-let TOKEN = localStorage.getItem('kilat_token');
-let ME = null;
-let pollTimer = null;
 
 /* =========================================================
-   API HELPER
-   ========================================================= */
+   CONFIG
+========================================================= */
 
-async function api(path, opts = {}) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15000);
+const API_BASE =
+  "https://evans-hardwood-tutorial-pentium.trycloudflare.com";
 
-  try {
-    const options = {
-      ...opts,
-      signal: controller.signal,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(TOKEN ? {
-          Authorization: 'Bearer ' + TOKEN
-        } : {}),
-        ...(opts.headers || {})
+let TOKEN =
+  localStorage.getItem("kilat_admin_token");
+
+let ADMIN = null;
+
+let USERS = [];
+
+let PLANS = [];
+
+
+/* =========================================================
+   API
+========================================================= */
+
+async function api(path, options = {}){
+
+  const controller =
+    new AbortController();
+
+  const timeout =
+    setTimeout(
+      () => controller.abort(),
+      15000
+    );
+
+  try{
+
+    const opts = {
+      ...options,
+      signal:controller.signal,
+      headers:{
+        "Content-Type":"application/json",
+
+        ...(TOKEN
+          ? {
+              Authorization:
+                "Bearer " + TOKEN
+            }
+          : {}),
+
+        ...(options.headers || {})
       }
     };
 
-    if (opts.body && typeof opts.body !== 'string') {
-      options.body = JSON.stringify(opts.body);
+
+    if(
+      options.body &&
+      typeof options.body !== "string"
+    ){
+
+      opts.body =
+        JSON.stringify(options.body);
+
     }
 
-    const response = await fetch(API_BASE + path, options);
 
-    const text = await response.text();
+    const response =
+      await fetch(
+        API_BASE + path,
+        opts
+      );
+
+
+    const text =
+      await response.text();
+
 
     let data = {};
-    try {
-      data = text ? JSON.parse(text) : {};
-    } catch {
+
+    try{
+
+      data =
+        text
+          ? JSON.parse(text)
+          : {};
+
+    }catch{
+
       data = {};
+
     }
 
-    if (!response.ok) {
+
+    if(!response.ok){
+
       throw new Error(
         data.message ||
         `Server error (${response.status})`
       );
+
     }
+
 
     return data;
 
-  } catch (error) {
+  }catch(error){
 
-    if (error.name === 'AbortError') {
-      throw new Error('Server terlalu lama merespons.');
+    if(error.name === "AbortError"){
+
+      throw new Error(
+        "Server terlalu lama merespons."
+      );
+
     }
 
-    if (error instanceof TypeError) {
+    if(error instanceof TypeError){
+
       throw new Error(
-        'Tidak bisa terhubung ke server. Pastikan backend dan HTTPS aktif.'
+        "Tidak bisa terhubung ke backend."
       );
+
     }
 
     throw error;
 
-  } finally {
+  }finally{
+
     clearTimeout(timeout);
-  }
-}
-
-/* =========================================================
-   MESSAGE
-   ========================================================= */
-
-function showMsg(text, type = 'error') {
-  document.getElementById('msg-box').innerHTML =
-    `<div class="${type === 'error' ? 'err' : 'ok'}">${escapeHtml(text)}</div>`;
-}
-
-/* =========================================================
-   AUTH SCREEN
-   ========================================================= */
-
-function showLogin() {
-  document.getElementById('login-form').classList.remove('hidden');
-  document.getElementById('register-form').classList.add('hidden');
-  document.getElementById('msg-box').innerHTML = '';
-}
-
-function showRegister() {
-  document.getElementById('register-form').classList.remove('hidden');
-  document.getElementById('login-form').classList.add('hidden');
-  document.getElementById('msg-box').innerHTML = '';
-}
-
-/* =========================================================
-   REGISTER
-   ========================================================= */
-
-async function doRegister() {
-
-  const business_name =
-    document.getElementById('reg-business').value.trim();
-
-  const email =
-    document.getElementById('reg-email').value.trim();
-
-  const password =
-    document.getElementById('reg-password').value;
-
-  if (!business_name) {
-    showMsg('Nama bisnis wajib diisi.');
-    return;
-  }
-
-  if (!email) {
-    showMsg('Email wajib diisi.');
-    return;
-  }
-
-  if (password.length < 6) {
-    showMsg('Password minimal 6 karakter.');
-    return;
-  }
-
-  const button = document.getElementById('register-btn');
-
-  button.disabled = true;
-  button.textContent = 'Membuat akun...';
-
-  try {
-
-    const data = await api('/api/register', {
-      method: 'POST',
-      body: {
-        business_name,
-        email,
-        password
-      }
-    });
-
-    if (!data.token) {
-      throw new Error('Server tidak mengirim token login.');
-    }
-
-    TOKEN = data.token;
-
-    localStorage.setItem(
-      'kilat_token',
-      TOKEN
-    );
-
-    await enterApp();
-
-  } catch (e) {
-
-    showMsg(e.message);
-
-  } finally {
-
-    button.disabled = false;
-    button.textContent = 'Buat akun';
 
   }
+
 }
+
 
 /* =========================================================
    LOGIN
-   ========================================================= */
+========================================================= */
 
-async function doLogin() {
+async function adminLogin(){
 
   const email =
-    document.getElementById('login-email').value.trim();
+    document
+      .getElementById("admin-email")
+      .value
+      .trim();
 
   const password =
-    document.getElementById('login-password').value;
+    document
+      .getElementById("admin-password")
+      .value;
 
-  if (!email || !password) {
-    showMsg('Email dan password wajib diisi.');
+
+  if(!email || !password){
+
+    showLoginMessage(
+      "Email dan password wajib diisi.",
+      "error"
+    );
+
     return;
+
   }
 
-  const button = document.getElementById('login-btn');
+
+  const button =
+    document.getElementById(
+      "admin-login-btn"
+    );
 
   button.disabled = true;
-  button.textContent = 'Masuk...';
+  button.textContent = "Memeriksa...";
 
-  try {
 
-    const data = await api('/api/login', {
-      method: 'POST',
-      body: {
-        email,
-        password
-      }
-    });
+  try{
 
-    if (!data.token) {
-      throw new Error('Server tidak mengirim token login.');
+    const data =
+      await api(
+        "/api/login",
+        {
+          method:"POST",
+          body:{
+            email,
+            password
+          }
+        }
+      );
+
+
+    if(!data.token){
+
+      throw new Error(
+        "Token login tidak ditemukan."
+      );
+
     }
+
 
     TOKEN = data.token;
 
     localStorage.setItem(
-      'kilat_token',
+      "kilat_admin_token",
       TOKEN
     );
 
-    await enterApp();
 
-  } catch (e) {
+    await enterAdmin();
 
-    showMsg(e.message);
 
-  } finally {
+  }catch(error){
+
+    showLoginMessage(
+      error.message,
+      "error"
+    );
+
+  }finally{
 
     button.disabled = false;
-    button.textContent = 'Masuk';
+    button.textContent = "Masuk ke Admin";
 
   }
+
 }
 
-/* =========================================================
-   LOGOUT
-   ========================================================= */
-
-function doLogout() {
-
-  localStorage.removeItem('kilat_token');
-
-  TOKEN = null;
-  ME = null;
-
-  clearInterval(pollTimer);
-
-  document.getElementById('app')
-    .classList.remove('show');
-
-  document.getElementById('auth-screen')
-    .classList.remove('hidden');
-
-  showLogin();
-}
 
 /* =========================================================
-   TAB
-   ========================================================= */
+   ENTER ADMIN
+========================================================= */
 
-function switchTab(tab) {
+async function enterAdmin(){
 
-  document
-    .querySelectorAll('nav.sidenav button')
-    .forEach(button => {
-      button.classList.toggle(
-        'active',
-        button.dataset.tab === tab
-      );
-    });
+  try{
 
-  [
-    'ringkasan',
-    'chatbot',
-    'widget',
-    'percakapan',
-    'langganan'
-  ].forEach(t => {
+    const data =
+      await api("/api/me");
 
-    document
-      .getElementById('tab-' + t)
-      .classList.toggle(
-        'hidden',
-        t !== tab
+
+    if(!data.merchant){
+
+      throw new Error(
+        "Data admin tidak ditemukan."
       );
 
-  });
-
-  if (tab === 'percakapan') {
-    loadConversations();
-  }
-
-  if (tab === 'langganan') {
-    loadBilling();
-  }
-
-  if (tab === 'widget') {
-    loadWidget();
-  }
-}
-
-/* =========================================================
-   ENTER APP
-   ========================================================= */
-
-async function enterApp() {
-
-  try {
-
-    const data = await api('/api/me');
-
-    if (!data.merchant) {
-      throw new Error('Data akun tidak ditemukan.');
     }
 
-    ME = data.merchant;
 
-    document
-      .getElementById('auth-screen')
-      .classList.add('hidden');
+    ADMIN =
+      data.merchant;
 
-    document
-      .getElementById('app')
-      .classList.add('show');
 
-    document
-      .getElementById('side-biz-name')
-      .textContent =
-      ME.business_name || '-';
+    /*
+      Role check.
 
-    document
-      .getElementById('side-plan')
-      .textContent =
-      'Paket: ' +
-      capitalize(
-        ME.subscription?.plan || 'free'
+      Backend sebaiknya mengirim:
+      merchant.role = "admin"
+
+      Jika belum ada field role,
+      bagian ini sementara membiarkan
+      akun masuk agar frontend bisa dites.
+    */
+
+    if(
+      ADMIN.role &&
+      ADMIN.role !== "admin"
+    ){
+
+      throw new Error(
+        "Akun ini bukan administrator."
       );
 
-    await loadOverview();
-    await loadBotConfig();
+    }
 
-  } catch (e) {
 
-    console.error(e);
+    document
+      .getElementById("login-screen")
+      .style.display = "none";
 
-    localStorage.removeItem('kilat_token');
+
+    document
+      .getElementById("app")
+      .classList.add("show");
+
+
+    document
+      .getElementById(
+        "admin-email-display"
+      )
+      .textContent =
+      ADMIN.email || "-";
+
+
+    await loadAdminData();
+
+
+  }catch(error){
+
+    console.error(error);
+
+    localStorage.removeItem(
+      "kilat_admin_token"
+    );
+
     TOKEN = null;
 
     document
-      .getElementById('app')
-      .classList.remove('show');
+      .getElementById("login-screen")
+      .style.display = "flex";
 
-    document
-      .getElementById('auth-screen')
-      .classList.remove('hidden');
-
-    showLogin();
-
-    showMsg(
-      'Sesi tidak valid. Silakan login kembali.'
-    );
-  }
-}
-
-/* =========================================================
-   OVERVIEW
-   ========================================================= */
-
-async function loadOverview() {
-
-  try {
-
-    const data = await api('/api/me');
-
-    ME = data.merchant;
-
-    const plan =
-      ME.subscription?.plan || 'free';
-
-    const quota =
-      data.plans?.[plan]?.quota || 0;
-
-    const used =
-      Number(ME.usage?.messages_used || 0);
-
-    document
-      .getElementById('stat-plan')
-      .textContent =
-      capitalize(plan);
-
-    document
-      .getElementById('stat-usage')
-      .textContent =
-      `${used} / ${quota}`;
-
-    const percentage =
-      quota > 0
-        ? Math.min(100, (used / quota) * 100)
-        : 0;
-
-    document
-      .getElementById('stat-usage-bar')
-      .style.width =
-      percentage + '%';
-
-    const convos =
-      await api('/api/conversations');
-
-    document
-      .getElementById('stat-convos')
-      .textContent =
-      Array.isArray(convos.conversations)
-        ? convos.conversations.length
-        : 0;
-
-  } catch (e) {
-
-    console.error(
-      'loadOverview:',
-      e
+    showLoginMessage(
+      error.message ||
+      "Sesi admin tidak valid.",
+      "error"
     );
 
   }
+
 }
 
+
 /* =========================================================
-   BOT CONFIG
-   ========================================================= */
+   LOGOUT
+========================================================= */
 
-async function loadBotConfig() {
+function adminLogout(){
 
-  try {
+  localStorage.removeItem(
+    "kilat_admin_token"
+  );
 
-    const data =
-      await api('/api/bot-config');
+  TOKEN = null;
+  ADMIN = null;
 
-    const config =
-      data.bot_config || {};
+  document
+    .getElementById("app")
+    .classList.remove("show");
 
-    document
-      .getElementById('cfg-greeting')
-      .value =
-      config.greeting || '';
+  document
+    .getElementById("login-screen")
+    .style.display = "flex";
 
-    document
-      .getElementById('cfg-tone')
-      .value =
-      config.tone ||
-      'ramah, sopan, dan to the point';
-
-    document
-      .getElementById('cfg-prompt')
-      .value =
-      config.system_prompt || '';
-
-  } catch (e) {
-
-    console.error(
-      'loadBotConfig:',
-      e
-    );
-
-  }
 }
 
+
 /* =========================================================
-   SAVE BOT CONFIG
-   ========================================================= */
+   TABS
+========================================================= */
 
-async function saveBotConfig() {
+function switchTab(tab){
 
-  const message =
-    document.getElementById('bot-msg');
+  document
+    .querySelectorAll(
+      ".sidebar-nav button"
+    )
+    .forEach(button => {
 
-  try {
+      button.classList.toggle(
+        "active",
+        button.dataset.tab === tab
+      );
 
-    await api('/api/bot-config', {
-      method: 'PUT',
-      body: {
-        greeting:
-          document.getElementById('cfg-greeting').value,
-
-        tone:
-          document.getElementById('cfg-tone').value,
-
-        system_prompt:
-          document.getElementById('cfg-prompt').value
-      }
     });
 
-    message.innerHTML =
-      '<div class="ok">Pengaturan berhasil disimpan.</div>';
 
-    setTimeout(() => {
-      message.innerHTML = '';
-    }, 2500);
+  [
+    "dashboard",
+    "users",
+    "plans",
+    "transactions"
+  ].forEach(name => {
 
-  } catch (e) {
-
-    message.innerHTML =
-      `<div class="err">${escapeHtml(e.message)}</div>`;
-
-  }
-}
-
-/* =========================================================
-   WIDGET
-   ========================================================= */
-
-async function loadWidget() {
-
-  try {
-
-    const data =
-      await api('/api/bot-config');
-
-    if (!data.widget_key) {
-      throw new Error(
-        'Widget key belum tersedia.'
+    const section =
+      document.getElementById(
+        "tab-" + name
       );
+
+    if(section){
+
+      section.classList.toggle(
+        "hidden",
+        name !== tab
+      );
+
     }
 
-    const snippet =
-      `<script src="${API_BASE}/widget.js" data-key="${escapeHtml(data.widget_key)}"><\/script>`;
+  });
 
-    document
-      .getElementById('widget-embed-code')
-      .textContent =
-      snippet;
 
-  } catch (e) {
-
-    document
-      .getElementById('widget-embed-code')
-      .textContent =
-      'Gagal memuat kode widget: ' +
-      e.message;
-
+  if(tab === "dashboard"){
+    loadAdminData();
   }
+
+  if(tab === "users"){
+    loadUsers();
+  }
+
+  if(tab === "plans"){
+    loadPlans();
+  }
+
+  if(tab === "transactions"){
+    loadTransactions();
+  }
+
 }
 
+
 /* =========================================================
-   COPY WIDGET
-   ========================================================= */
+   ADMIN DATA
+========================================================= */
 
-async function copyEmbed() {
+async function loadAdminData(){
 
-  const text =
+  try{
+
+    /*
+      Endpoint admin yang akan kita sambungkan
+      ke backend pada tahap berikutnya.
+    */
+
+    const data =
+      await api(
+        "/api/admin/stats"
+      );
+
+
     document
-      .getElementById('widget-embed-code')
-      .textContent;
+      .getElementById("stat-users")
+      .textContent =
+      number(
+        data.total_users ||
+        data.users ||
+        0
+      );
 
-  try {
 
-    await navigator.clipboard.writeText(text);
+    document
+      .getElementById("stat-active")
+      .textContent =
+      number(
+        data.active_subscriptions ||
+        data.active ||
+        0
+      );
 
-    alert('Kode widget berhasil disalin!');
 
-  } catch {
+    document
+      .getElementById("stat-revenue")
+      .textContent =
+      rupiah(
+        data.revenue ||
+        0
+      );
 
-    alert(
-      'Gagal menyalin otomatis. Silakan salin kode secara manual.'
+
+    document
+      .getElementById("stat-chats")
+      .textContent =
+      number(
+        data.total_chats ||
+        data.chats ||
+        0
+      );
+
+
+    renderRecent(
+      data.recent ||
+      data.users ||
+      []
     );
 
+
+  }catch(error){
+
+    console.error(
+      "loadAdminData:",
+      error
+    );
+
+
+    document
+      .getElementById("recent-table")
+      .innerHTML = `
+        <tr>
+          <td colspan="4">
+            <div class="empty">
+              Data dashboard belum tersedia dari backend.
+            </div>
+          </td>
+        </tr>
+      `;
+
   }
+
 }
 
-/* =========================================================
-   CONVERSATIONS
-   ========================================================= */
 
-async function loadConversations() {
+/* =========================================================
+   USERS
+========================================================= */
+
+async function loadUsers(){
 
   const tbody =
     document.getElementById(
-      'convo-table-body'
+      "users-table"
     );
 
-  try {
+
+  try{
 
     const data =
-      await api('/api/conversations');
+      await api(
+        "/api/admin/users"
+      );
 
-    const conversations =
-      Array.isArray(data.conversations)
-        ? data.conversations
+
+    USERS =
+      Array.isArray(data.users)
+        ? data.users
         : [];
 
-    if (!conversations.length) {
 
-      tbody.innerHTML =
-        '<tr><td colspan="3" class="muted">Belum ada percakapan.</td></tr>';
+    renderUsers(USERS);
 
-      return;
-    }
 
-    tbody.innerHTML =
-      conversations.map(c => `
+  }catch(error){
+
+    console.error(error);
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          <div class="empty">
+            ${escapeHtml(error.message)}
+          </div>
+        </td>
+      </tr>
+    `;
+
+  }
+
+}
+
+
+function renderUsers(users){
+
+  const tbody =
+    document.getElementById(
+      "users-table"
+    );
+
+
+  if(!users.length){
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="5">
+          <div class="empty">
+            Belum ada pengguna.
+          </div>
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+    users.map((user,index) => {
+
+      const plan =
+        user.subscription?.plan ||
+        user.plan ||
+        "free";
+
+
+      const used =
+        Number(
+          user.usage?.messages_used ||
+          user.messages_used ||
+          0
+        );
+
+
+      const quota =
+        Number(
+          user.quota ||
+          0
+        );
+
+
+      return `
+
         <tr>
-          <td class="muted">
-            ${new Date(c.created_at).toLocaleString('id-ID')}
-          </td>
 
           <td>
-            <span class="role-badge ${escapeHtml(c.role)}">
-              ${c.role === 'user' ? 'Pelanggan' : 'Bot'}
+
+            <div class="user-name">
+              ${escapeHtml(
+                user.business_name ||
+                user.name ||
+                "Tanpa nama"
+              )}
+            </div>
+
+            <div class="user-email">
+              ${escapeHtml(
+                user.email || "-"
+              )}
+            </div>
+
+          </td>
+
+
+          <td>
+            <span class="badge ${planBadge(plan)}">
+              ${escapeHtml(
+                capitalize(plan)
+              )}
             </span>
           </td>
 
+
           <td>
-            ${escapeHtml(c.content)}
+            ${used}${quota ? " / " + quota : ""}
           </td>
+
+
+          <td>
+            <span class="badge badge-active">
+              ${escapeHtml(
+                user.status ||
+                "active"
+              )}
+            </span>
+          </td>
+
+
+          <td>
+
+            <div class="action">
+
+              <button
+                class="more-btn"
+                onclick="toggleMenu(event,'user-menu-${index}')"
+              >
+                ⋮
+              </button>
+
+
+              <div
+                class="menu"
+                id="user-menu-${index}"
+              >
+
+                <button
+                  onclick="viewUser('${escapeJs(user.id || user._id || index)}')"
+                >
+                  👤 Lihat detail
+                </button>
+
+                <button
+                  onclick="editUser('${escapeJs(user.id || user._id || index)}')"
+                >
+                  ✏️ Edit pengguna
+                </button>
+
+                <button
+                  onclick="changeUserPlan('${escapeJs(user.id || user._id || index)}')"
+                >
+                  💳 Ubah paket
+                </button>
+
+                <button
+                  class="danger"
+                  onclick="deleteUser('${escapeJs(user.id || user._id || index)}')"
+                >
+                  🗑️ Hapus pengguna
+                </button>
+
+              </div>
+
+            </div>
+
+          </td>
+
         </tr>
-      `).join('');
 
-  } catch (e) {
+      `;
 
-    tbody.innerHTML =
-      `<tr>
-        <td colspan="3">
-          <div class="err">${escapeHtml(e.message)}</div>
-        </td>
-      </tr>`;
+    }).join("");
 
-  }
 }
 
+
+function filterUsers(){
+
+  const query =
+    document
+      .getElementById("user-search")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  if(!query){
+
+    renderUsers(USERS);
+    return;
+
+  }
+
+
+  renderUsers(
+    USERS.filter(user => {
+
+      const text =
+        [
+          user.business_name,
+          user.name,
+          user.email,
+          user.subscription?.plan,
+          user.plan
+        ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+
+      return text.includes(query);
+
+    })
+  );
+
+}
+
+
 /* =========================================================
-   BILLING
-   ========================================================= */
+   USER ACTIONS
+========================================================= */
 
-async function loadBilling() {
+function findUser(id){
 
-  try {
+  return USERS.find(
+    user =>
+      String(
+        user.id ||
+        user._id
+      ) === String(id)
+  );
+
+}
+
+
+function viewUser(id){
+
+  const user =
+    findUser(id);
+
+
+  if(!user){
+
+    alert(
+      "Data pengguna tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  document
+    .getElementById(
+      "user-modal-content"
+    )
+    .innerHTML = `
+
+      <div class="field">
+        <label>Nama Bisnis</label>
+        <input
+          value="${escapeHtml(
+            user.business_name ||
+            user.name ||
+            ""
+          )}"
+          disabled
+        >
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input
+          value="${escapeHtml(
+            user.email || ""
+          )}"
+          disabled
+        >
+      </div>
+
+      <div class="field">
+        <label>Paket</label>
+        <input
+          value="${escapeHtml(
+            capitalize(
+              user.subscription?.plan ||
+              user.plan ||
+              "free"
+            )
+          )}"
+          disabled
+        >
+      </div>
+
+    `;
+
+
+  openModal("user-modal");
+
+}
+
+
+function editUser(id){
+
+  alert(
+    "Form edit pengguna akan kita sambungkan ke endpoint admin backend."
+  );
+
+}
+
+
+function changeUserPlan(id){
+
+  const user =
+    findUser(id);
+
+
+  if(!user){
+
+    alert(
+      "Pengguna tidak ditemukan."
+    );
+
+    return;
+
+  }
+
+
+  const current =
+    user.subscription?.plan ||
+    user.plan ||
+    "free";
+
+
+  const plan =
+    prompt(
+      "Masukkan paket baru: free / pro / bisnis",
+      current
+    );
+
+
+  if(!plan){
+    return;
+  }
+
+
+  api(
+    "/api/admin/users/" +
+    encodeURIComponent(id) +
+    "/plan",
+    {
+      method:"PUT",
+      body:{
+        plan:
+          plan.toLowerCase()
+      }
+    }
+  )
+  .then(() => {
+
+    alert(
+      "Paket pengguna berhasil diubah."
+    );
+
+    loadUsers();
+
+  })
+  .catch(error => {
+
+    alert(
+      error.message
+    );
+
+  });
+
+}
+
+
+async function deleteUser(id){
+
+  if(
+    !confirm(
+      "Yakin ingin menghapus pengguna ini?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    await api(
+      "/api/admin/users/" +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    alert(
+      "Pengguna berhasil dihapus."
+    );
+
+
+    loadUsers();
+
+
+  }catch(error){
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   PLANS
+========================================================= */
+
+async function loadPlans(){
+
+  const container =
+    document.getElementById(
+      "plans-container"
+    );
+
+
+  try{
 
     const data =
-      await api('/api/billing/status');
-
-    const sub =
-      data.subscription || {};
-
-    const usage =
-      data.usage || {};
-
-    const expText =
-      sub.expires_at
-        ? `berlaku sampai ${new Date(sub.expires_at).toLocaleDateString('id-ID')}`
-        : 'tidak ada tanggal kedaluwarsa';
-
-    document
-      .getElementById('sub-status')
-      .innerHTML =
-      `Paket <b>${escapeHtml(capitalize(sub.plan || 'free'))}</b>
-      — status <b>${escapeHtml(sub.status || '-')}</b>,
-      ${expText}.
-      Terpakai ${Number(usage.messages_used || 0)} chat bulan ini.`;
-
-    const tbody =
-      document.getElementById(
-        'tx-table-body'
+      await api(
+        "/api/admin/plans"
       );
 
+
+    PLANS =
+      Array.isArray(data.plans)
+        ? data.plans
+        : [];
+
+
+    /*
+      Fallback supaya UI tetap terlihat
+      jika endpoint belum dibuat.
+    */
+
+    if(!PLANS.length){
+
+      PLANS = [
+
+        {
+          id:"free",
+          name:"Free",
+          price:0,
+          quota:50,
+          description:"50 chat/bulan"
+        },
+
+        {
+          id:"pro",
+          name:"Pro",
+          price:49000,
+          quota:1000,
+          description:"1.000 chat/bulan"
+        },
+
+        {
+          id:"bisnis",
+          name:"Bisnis",
+          price:149000,
+          quota:5000,
+          description:"5.000 chat/bulan + prioritas"
+        }
+
+      ];
+
+    }
+
+
+    renderPlans();
+
+
+  }catch(error){
+
+    console.error(error);
+
+
+    /*
+      Fallback lokal untuk tampilan.
+    */
+
+    PLANS = [
+
+      {
+        id:"free",
+        name:"Free",
+        price:0,
+        quota:50,
+        description:"50 chat/bulan"
+      },
+
+      {
+        id:"pro",
+        name:"Pro",
+        price:49000,
+        quota:1000,
+        description:"1.000 chat/bulan"
+      },
+
+      {
+        id:"bisnis",
+        name:"Bisnis",
+        price:149000,
+        quota:5000,
+        description:"5.000 chat/bulan + prioritas"
+      }
+
+    ];
+
+
+    renderPlans();
+
+  }
+
+}
+
+
+function renderPlans(){
+
+  const container =
+    document.getElementById(
+      "plans-container"
+    );
+
+
+  container.innerHTML =
+    PLANS.map(plan => `
+
+      <div class="plan">
+
+        <div class="plan-name">
+          ${escapeHtml(
+            plan.name ||
+            capitalize(plan.id)
+          )}
+        </div>
+
+
+        <div class="plan-price">
+
+          ${rupiah(
+            plan.price || 0
+          )}
+
+          <span>
+            /bulan
+          </span>
+
+        </div>
+
+
+        <div class="plan-quota">
+
+          ${number(
+            plan.quota || 0
+          )}
+          chat/bulan
+
+          <br>
+
+          ${escapeHtml(
+            plan.description || ""
+          )}
+
+        </div>
+
+
+        <div class="plan-actions">
+
+          <button
+            class="btn btn-outline"
+            onclick="openPlanModal('${escapeJs(plan.id)}')"
+          >
+            ✏️ Edit
+          </button>
+
+
+          <div class="action">
+
+            <button
+              class="more-btn"
+              onclick="toggleMenu(event,'plan-menu-${escapeJs(plan.id)}')"
+            >
+              ⋮
+            </button>
+
+
+            <div
+              class="menu"
+              id="plan-menu-${escapeJs(plan.id)}"
+            >
+
+              <button
+                onclick="openPlanModal('${escapeJs(plan.id)}')"
+              >
+                ✏️ Edit paket
+              </button>
+
+              <button
+                class="danger"
+                onclick="deletePlan('${escapeJs(plan.id)}')"
+              >
+                🗑️ Hapus paket
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+function openPlanModal(id = ""){
+
+  document
+    .getElementById(
+      "plan-message"
+    )
+    .innerHTML = "";
+
+
+  const plan =
+    PLANS.find(
+      p =>
+        String(p.id) ===
+        String(id)
+    );
+
+
+  document
+    .getElementById(
+      "plan-original"
+    )
+    .value =
+    id || "";
+
+
+  document
+    .getElementById(
+      "plan-name"
+    )
+    .value =
+    plan?.name ||
+    "";
+
+
+  document
+    .getElementById(
+      "plan-price"
+    )
+    .value =
+    plan?.price ??
+    0;
+
+
+  document
+    .getElementById(
+      "plan-quota"
+    )
+    .value =
+    plan?.quota ??
+    0;
+
+
+  document
+    .getElementById(
+      "plan-description"
+    )
+    .value =
+    plan?.description ||
+    "";
+
+
+  document
+    .getElementById(
+      "plan-modal-title"
+    )
+    .textContent =
+    plan
+      ? "Edit Paket"
+      : "Tambah Paket";
+
+
+  openModal(
+    "plan-modal"
+  );
+
+}
+
+
+async function savePlan(){
+
+  const original =
+    document
+      .getElementById(
+        "plan-original"
+      )
+      .value
+      .trim();
+
+
+  const name =
+    document
+      .getElementById(
+        "plan-name"
+      )
+      .value
+      .trim();
+
+
+  const price =
+    Number(
+      document
+        .getElementById(
+          "plan-price"
+        )
+        .value
+    );
+
+
+  const quota =
+    Number(
+      document
+        .getElementById(
+          "plan-quota"
+        )
+        .value
+    );
+
+
+  const description =
+    document
+      .getElementById(
+        "plan-description"
+      )
+      .value
+      .trim();
+
+
+  if(!name){
+
+    showPlanMessage(
+      "Nama paket wajib diisi."
+    );
+
+    return;
+
+  }
+
+
+  if(price < 0){
+
+    showPlanMessage(
+      "Harga tidak valid."
+    );
+
+    return;
+
+  }
+
+
+  if(quota < 0){
+
+    showPlanMessage(
+      "Kuota tidak valid."
+    );
+
+    return;
+
+  }
+
+
+  const id =
+    original ||
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g,"-");
+
+
+  try{
+
+    await api(
+      "/api/admin/plans/" +
+      encodeURIComponent(id),
+      {
+        method:"PUT",
+        body:{
+          id,
+          name,
+          price,
+          quota,
+          description
+        }
+      }
+    );
+
+
+    closeModal(
+      "plan-modal"
+    );
+
+
+    await loadPlans();
+
+
+    alert(
+      "Paket berhasil disimpan."
+    );
+
+
+  }catch(error){
+
+    showPlanMessage(
+      error.message
+    );
+
+  }
+
+}
+
+
+async function deletePlan(id){
+
+  if(
+    id === "free"
+  ){
+
+    alert(
+      "Paket Free tidak boleh dihapus."
+    );
+
+    return;
+
+  }
+
+
+  if(
+    !confirm(
+      "Yakin ingin menghapus paket ini?"
+    )
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    await api(
+      "/api/admin/plans/" +
+      encodeURIComponent(id),
+      {
+        method:"DELETE"
+      }
+    );
+
+
+    await loadPlans();
+
+
+    alert(
+      "Paket berhasil dihapus."
+    );
+
+
+  }catch(error){
+
+    alert(
+      error.message
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   TRANSACTIONS
+========================================================= */
+
+async function loadTransactions(){
+
+  const tbody =
+    document.getElementById(
+      "transactions-table"
+    );
+
+
+  try{
+
+    const data =
+      await api(
+        "/api/admin/transactions"
+      );
+
+
     const transactions =
-      Array.isArray(data.transactions)
+      Array.isArray(
+        data.transactions
+      )
         ? data.transactions
         : [];
 
-    if (!transactions.length) {
 
-      tbody.innerHTML =
-        '<tr><td colspan="4" class="muted">Belum ada transaksi.</td></tr>';
+    if(!transactions.length){
 
-      return;
-    }
-
-    tbody.innerHTML =
-      transactions.map(t => `
+      tbody.innerHTML = `
         <tr>
-          <td class="muted">
-            ${new Date(t.created_at).toLocaleString('id-ID')}
-          </td>
-
-          <td>
-            ${escapeHtml(capitalize(t.plan || '-'))}
-          </td>
-
-          <td>
-            Rp${Number(t.amount || 0).toLocaleString('id-ID')}
-          </td>
-
-          <td>
-            ${t.status === 'paid'
-              ? '✅ Lunas'
-              : '⏳ Menunggu'}
+          <td colspan="6">
+            <div class="empty">
+              Belum ada transaksi.
+            </div>
           </td>
         </tr>
-      `).join('');
+      `;
 
-  } catch (e) {
+      return;
 
-    console.error(
-      'loadBilling:',
-      e
-    );
+    }
 
-    document
-      .getElementById('sub-status')
-      .textContent =
-      e.message;
+
+    tbody.innerHTML =
+      transactions.map(
+        (tx,index) => `
+
+        <tr>
+
+          <td>
+            ${tx.created_at
+              ? new Date(
+                  tx.created_at
+                ).toLocaleString(
+                  "id-ID"
+                )
+              : "-"
+            }
+          </td>
+
+
+          <td>
+
+            <div class="user-name">
+              ${escapeHtml(
+                tx.business_name ||
+                tx.email ||
+                "-"
+              )}
+            </div>
+
+            <div class="user-email">
+              ${escapeHtml(
+                tx.email || ""
+              )}
+            </div>
+
+          </td>
+
+
+          <td>
+            ${escapeHtml(
+              capitalize(
+                tx.plan || "-"
+              )
+            )}
+          </td>
+
+
+          <td>
+            ${rupiah(
+              tx.amount || 0
+            )}
+          </td>
+
+
+          <td>
+
+            <span class="badge ${
+              tx.status === "paid"
+                ? "badge-active"
+                : "badge-free"
+            }">
+
+              ${escapeHtml(
+                tx.status || "-"
+              )}
+
+            </span>
+
+          </td>
+
+
+          <td>
+
+            <div class="action">
+
+              <button
+                class="more-btn"
+                onclick="toggleMenu(event,'tx-menu-${index}')"
+              >
+                ⋮
+              </button>
+
+
+              <div
+                class="menu"
+                id="tx-menu-${index}"
+              >
+
+                <button
+                  onclick="viewTransaction('${escapeJs(tx.id || tx._id || index)}')"
+                >
+                  👁️ Lihat detail
+                </button>
+
+              </div>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `
+      ).join("");
+
+
+  }catch(error){
+
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty">
+            Data transaksi belum tersedia dari backend.
+          </div>
+        </td>
+      </tr>
+    `;
 
   }
+
 }
 
+
+function viewTransaction(id){
+
+  alert(
+    "Detail transaksi: " + id
+  );
+
+}
+
+
 /* =========================================================
-   CHECKOUT
-   ========================================================= */
+   RECENT
+========================================================= */
 
-async function checkout(plan) {
+function renderRecent(items){
 
-  const area =
-    document.getElementById('qr-area');
+  const tbody =
+    document.getElementById(
+      "recent-table"
+    );
 
-  area.innerHTML =
-    '<p class="muted">Membuat QRIS pembayaran...</p>';
 
-  try {
+  if(!Array.isArray(items) || !items.length){
 
-    const data =
-      await api('/api/billing/checkout', {
-        method: 'POST',
-        body: { plan }
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          <div class="empty">
+            Belum ada aktivitas.
+          </div>
+        </td>
+      </tr>
+    `;
+
+    return;
+
+  }
+
+
+  tbody.innerHTML =
+    items.slice(0,8)
+    .map(item => {
+
+      const plan =
+        item.subscription?.plan ||
+        item.plan ||
+        "free";
+
+
+      return `
+
+        <tr>
+
+          <td>
+
+            <div class="user-name">
+              ${escapeHtml(
+                item.business_name ||
+                item.name ||
+                "-"
+              )}
+            </div>
+
+            <div class="user-email">
+              ${escapeHtml(
+                item.email ||
+                ""
+              )}
+            </div>
+
+          </td>
+
+
+          <td>
+            <span class="badge ${planBadge(plan)}">
+              ${escapeHtml(
+                capitalize(plan)
+              )}
+            </span>
+          </td>
+
+
+          <td>
+            <span class="badge badge-active">
+              ${escapeHtml(
+                item.status ||
+                "active"
+              )}
+            </span>
+          </td>
+
+
+          <td>
+            ${item.created_at
+              ? new Date(
+                  item.created_at
+                ).toLocaleDateString(
+                  "id-ID"
+                )
+              : "-"
+            }
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   MENU
+========================================================= */
+
+function toggleMenu(event,id){
+
+  event.stopPropagation();
+
+
+  document
+    .querySelectorAll(".menu.show")
+    .forEach(menu => {
+
+      if(menu.id !== id){
+
+        menu.classList.remove(
+          "show"
+        );
+
+      }
+
+    });
+
+
+  const menu =
+    document.getElementById(id);
+
+
+  if(menu){
+
+    menu.classList.toggle(
+      "show"
+    );
+
+  }
+
+}
+
+
+document.addEventListener(
+  "click",
+  () => {
+
+    document
+      .querySelectorAll(
+        ".menu.show"
+      )
+      .forEach(menu => {
+
+        menu.classList.remove(
+          "show"
+        );
+
       });
 
-    area.innerHTML = `
-      <div class="qr-box">
+  }
+);
 
-        <img
-          src="${escapeHtml(data.qr_url)}"
-          alt="QRIS pembayaran"
-        >
 
-        <p style="margin-top:12px">
-          Scan QRIS ini menggunakan aplikasi
-          pembayaran yang mendukung QRIS.
-        </p>
+/* =========================================================
+   MODAL
+========================================================= */
 
-        <p class="muted">
-          Jumlah:
-          Rp${Number(data.amount || 0).toLocaleString('id-ID')}
-          · Berlaku sampai
-          ${data.expiry_time
-            ? new Date(data.expiry_time).toLocaleTimeString('id-ID')
-            : '-'}
-        </p>
+function openModal(id){
 
-        <a
-          class="btn btn-ghost"
-          style="margin-top:10px"
-          href="${escapeHtml(data.checkout_url || '#')}"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Buka halaman pembayaran
-        </a>
+  document
+    .getElementById(id)
+    .classList.add("show");
 
-        <p
-          class="muted"
-          id="poll-status"
-          style="margin-top:10px"
-        >
-          Menunggu pembayaran...
-        </p>
+}
 
+
+function closeModal(id){
+
+  document
+    .getElementById(id)
+    .classList.remove("show");
+
+}
+
+
+/* =========================================================
+   MESSAGE
+========================================================= */
+
+function showLoginMessage(
+  text,
+  type = "error"
+){
+
+  document
+    .getElementById(
+      "login-message"
+    )
+    .innerHTML = `
+      <div class="message ${type}">
+        ${escapeHtml(text)}
       </div>
     `;
 
-    clearInterval(pollTimer);
-
-    pollTimer =
-      setInterval(
-        async () => {
-
-          try {
-
-            const status =
-              await api(
-                '/api/billing/status'
-              );
-
-            if (
-              status.subscription?.plan === plan &&
-              status.subscription?.status === 'active'
-            ) {
-
-              const poll =
-                document.getElementById(
-                  'poll-status'
-                );
-
-              if (poll) {
-                poll.innerHTML =
-                  '✅ Pembayaran diterima, paket aktif!';
-              }
-
-              clearInterval(pollTimer);
-
-              await loadOverview();
-              await loadBilling();
-            }
-
-          } catch (e) {
-
-            console.error(
-              'billing poll:',
-              e
-            );
-
-          }
-
-        },
-        5000
-      );
-
-  } catch (e) {
-
-    area.innerHTML =
-      `<div class="err">${escapeHtml(e.message)}</div>`;
-
-  }
 }
+
+
+function showPlanMessage(
+  text
+){
+
+  document
+    .getElementById(
+      "plan-message"
+    )
+    .innerHTML = `
+      <div class="message error">
+        ${escapeHtml(text)}
+      </div>
+    `;
+
+}
+
 
 /* =========================================================
    UTILITIES
-   ========================================================= */
+========================================================= */
 
-function capitalize(s) {
+function rupiah(value){
 
-  return s
-    ? s.charAt(0).toUpperCase() + s.slice(1)
-    : '';
+  return "Rp" +
+    Number(value || 0)
+      .toLocaleString(
+        "id-ID"
+      );
+
+}
+
+
+function number(value){
+
+  return Number(
+    value || 0
+  ).toLocaleString(
+    "id-ID"
+  );
 
 }
 
-function escapeHtml(value) {
 
-  return String(value ?? '')
-    .replace(/[&<>"']/g, char => ({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[char]));
+function capitalize(value){
+
+  const str =
+    String(value || "");
+
+  return str
+    ? str.charAt(0).toUpperCase() +
+      str.slice(1)
+    : "";
 
 }
+
+
+function planBadge(plan){
+
+  plan =
+    String(plan)
+      .toLowerCase();
+
+
+  if(plan === "pro"){
+    return "badge-pro";
+  }
+
+  if(
+    plan === "bisnis" ||
+    plan === "business"
+  ){
+
+    return "badge-bisnis";
+
+  }
+
+  return "badge-free";
+
+}
+
+
+function escapeHtml(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /[&<>"']/g,
+    char => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#39;"
+    }[char])
+  );
+
+}
+
+
+function escapeJs(value){
+
+  return String(
+    value ?? ""
+  )
+  .replace(
+    /\\/g,
+    "\\\\"
+  )
+  .replace(
+    /'/g,
+    "\\'"
+  );
+
+}
+
 
 /* =========================================================
    INIT
-   ========================================================= */
+========================================================= */
 
-if (TOKEN) {
-  enterApp();
-} else {
-  showLogin();
-}
+if(TOKEN){
 
-if (location.hash === '#daftar') {
-  showRegister();
+  enterAdmin();
+
 }
 
 </script>
