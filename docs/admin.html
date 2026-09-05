@@ -7,125 +7,280 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#F4F6F9; --surface:#FFFFFF; --ink:#14213D; --ink-soft:#4A5372;
-    --muted:#8A93A8; --line:#E4E8F0; --yellow:#FFC933; --coral:#FF5A36; --green:#2FBF71;
+:root{
+  --bg:#F4F6F9;--surface:#fff;--ink:#14213D;--ink-soft:#4A5372;
+  --muted:#8A93A8;--line:#E4E8F0;--yellow:#FFC933;
+  --coral:#FF5A36;--green:#2FBF71;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:Inter,sans-serif;-webkit-font-smoothing:antialiased
+}
+h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif}
+input,textarea,select,button{font-family:Inter,sans-serif}
+.hidden{display:none!important}
+
+#auth-screen{
+  min-height:100vh;display:flex;align-items:center;
+  justify-content:center;padding:20px
+}
+.auth-card{
+  background:#fff;border:1px solid var(--line);border-radius:18px;
+  padding:36px;width:100%;max-width:400px;
+  box-shadow:0 24px 60px -24px rgba(20,33,61,.25)
+}
+.auth-logo{
+  display:flex;align-items:center;gap:8px;font-weight:700;
+  font-size:19px;margin-bottom:24px
+}
+.auth-card h2{font-size:22px;margin:0 0 6px}
+.auth-card .sub{color:var(--muted);font-size:14px;margin-bottom:22px}
+.field{margin-bottom:14px}
+.field label{
+  display:block;font-size:13px;font-weight:600;
+  margin-bottom:6px;color:var(--ink-soft)
+}
+.field input,.field textarea,.field select{
+  width:100%;padding:11px 13px;border:1.5px solid var(--line);
+  border-radius:10px;font-size:14px;outline:none;
+  transition:border-color .12s
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--ink)
+}
+.field textarea{resize:vertical;min-height:110px;line-height:1.5}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;padding:11px 20px;border-radius:10px;
+  font-weight:600;font-size:14px;text-decoration:none;
+  cursor:pointer;border:none;width:100%
+}
+.btn-primary{background:var(--ink);color:#fff}
+.btn-primary:hover{opacity:.92}
+.btn-yellow{background:var(--yellow);color:var(--ink)}
+.btn-ghost{
+  background:#fff;color:var(--ink);border:1.5px solid var(--line);
+  width:auto;padding:9px 16px
+}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.switcher{
+  text-align:center;font-size:13.5px;color:var(--muted);margin-top:16px
+}
+.switcher a{
+  color:var(--ink);font-weight:600;cursor:pointer;text-decoration:underline
+}
+.err{
+  background:#FFF1EE;color:#B23A22;font-size:13px;
+  padding:10px 12px;border-radius:9px;margin-bottom:14px
+}
+.ok{
+  background:#EAFBF2;color:#1B7A47;font-size:13px;
+  padding:10px 12px;border-radius:9px;margin-bottom:14px
+}
+
+#app{
+  display:none;min-height:100vh;grid-template-columns:230px 1fr
+}
+#app.show{display:grid}
+aside{
+  background:var(--ink);color:#fff;padding:24px 16px;
+  display:flex;flex-direction:column
+}
+.side-logo{
+  display:flex;align-items:center;gap:8px;font-weight:700;
+  font-size:18px;padding:0 8px 26px
+}
+.side-biz{
+  font-size:12px;color:#9AA5C4;padding:0 8px 18px;
+  border-bottom:1px solid #26305A;margin-bottom:14px
+}
+.side-biz b{
+  color:#fff;display:block;font-size:13.5px;margin-bottom:2px
+}
+nav.sidenav{
+  display:flex;flex-direction:column;gap:2px;flex:1
+}
+nav.sidenav button{
+  background:none;border:none;color:#B9C0D4;text-align:left;
+  padding:11px 12px;border-radius:9px;font-size:14px;cursor:pointer;
+  font-weight:500;display:flex;align-items:center;gap:10px
+}
+nav.sidenav button:hover{background:#1D2748;color:#fff}
+nav.sidenav button.active{
+  background:var(--yellow);color:var(--ink);font-weight:700
+}
+.logout-btn{
+  background:none;border:1px solid #2C3760;color:#B9C0D4;
+  padding:10px;border-radius:9px;font-size:13px;cursor:pointer
+}
+
+main{padding:32px 40px;max-width:920px}
+main h1{font-size:24px;margin:0 0 4px}
+main .page-sub{color:var(--muted);font-size:14px;margin-bottom:28px}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:16px;
+  padding:24px;margin-bottom:20px
+}
+.card h3{font-size:16px;margin:0 0 4px}
+.stat-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:16px;margin-bottom:24px
+}
+.stat{
+  background:#fff;border:1px solid var(--line);
+  border-radius:14px;padding:18px
+}
+.stat .num{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:26px;font-weight:700
+}
+.stat .label{color:var(--muted);font-size:13px;margin-top:2px}
+.progress{
+  height:8px;border-radius:99px;background:#EEF1F6;
+  overflow:hidden;margin-top:8px
+}
+.progress>div{height:100%;background:var(--yellow)}
+code.embed{
+  display:block;background:#0F1830;color:#DCE3F5;
+  padding:16px;border-radius:12px;font-size:12.5px;
+  line-height:1.6;white-space:pre-wrap;word-break:break-all;
+  font-family:SFMono-Regular,Consolas,monospace
+}
+.copy-row{display:flex;justify-content:flex-end;margin-top:10px}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{
+  text-align:left;color:var(--muted);font-weight:600;font-size:12px;
+  text-transform:uppercase;letter-spacing:.03em;
+  padding:8px 10px;border-bottom:1px solid var(--line)
+}
+td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top}
+.role-badge{
+  font-size:11px;font-weight:700;padding:3px 8px;
+  border-radius:6px;display:inline-block
+}
+.role-badge.user{background:#FFF4D6;color:#8A6400}
+.role-badge.assistant{background:#EAFBF2;color:#1B7A47}
+.plan-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:16px
+}
+.plan-card{
+  border:1.5px solid var(--line);border-radius:14px;padding:20px
+}
+.plan-card h4{margin:0 0 4px;font-size:16px}
+.plan-card .p{
+  font-family:'Space Grotesk',sans-serif;font-size:22px;
+  font-weight:700;margin:6px 0 14px
+}
+.qr-box{
+  text-align:center;padding:20px;border:1.5px dashed var(--line);
+  border-radius:14px;margin-top:16px
+}
+.qr-box img{width:200px;height:200px;border-radius:10px}
+.muted{color:var(--muted);font-size:13px}
+
+@media(max-width:700px){
+  #app{grid-template-columns:1fr}
+  aside{
+    position:sticky;top:0;z-index:10;
+    padding:12px;display:block
   }
-  *{box-sizing:border-box;}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;}
-  h1,h2,h3,.disp{font-family:'Space Grotesk',sans-serif;}
-  input,textarea,select,button{font-family:'Inter',sans-serif;}
-  .hidden{display:none !important;}
-
-  /* ---- Auth screen ---- */
-  #auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
-  .auth-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:36px;width:100%;max-width:400px;box-shadow:0 24px 60px -24px rgba(20,33,61,.25);}
-  .auth-logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:19px;margin-bottom:24px;}
-  .auth-card h2{font-size:22px;margin:0 0 6px;}
-  .auth-card .sub{color:var(--muted);font-size:14px;margin-bottom:22px;}
-  .field{margin-bottom:14px;}
-  .field label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--ink-soft);}
-  .field input,.field textarea,.field select{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:10px;font-size:14px;outline:none;transition:border-color .12s;}
-  .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--ink);}
-  .field textarea{resize:vertical;min-height:110px;line-height:1.5;}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:10px;font-weight:600;font-size:14px;text-decoration:none;cursor:pointer;border:none;width:100%;}
-  .btn-primary{background:var(--ink);color:#fff;}
-  .btn-primary:hover{opacity:.92;}
-  .btn-yellow{background:var(--yellow);color:var(--ink);}
-  .btn-ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line);width:auto;padding:9px 16px;}
-  .btn:disabled{opacity:.6;cursor:not-allowed;}
-  .switcher{text-align:center;font-size:13.5px;color:var(--muted);margin-top:16px;}
-  .switcher a{color:var(--ink);font-weight:600;cursor:pointer;text-decoration:underline;}
-  .err{background:#FFF1EE;color:#B23A22;font-size:13px;padding:10px 12px;border-radius:9px;margin-bottom:14px;}
-  .ok{background:#EAFBF2;color:#1B7A47;font-size:13px;padding:10px 12px;border-radius:9px;margin-bottom:14px;}
-
-  /* ---- Dashboard shell ---- */
-  #app{display:none;min-height:100vh;grid-template-columns:230px 1fr;}
-  #app.show{display:grid;}
-  aside{background:var(--ink);color:#fff;padding:24px 16px;display:flex;flex-direction:column;}
-  .side-logo{display:flex;align-items:center;gap:8px;font-weight:700;font-size:18px;padding:0 8px 26px;}
-  .side-biz{font-size:12px;color:#9AA5C4;padding:0 8px 18px;border-bottom:1px solid #26305A;margin-bottom:14px;}
-  .side-biz b{color:#fff;display:block;font-size:13.5px;margin-bottom:2px;}
-  nav.sidenav{display:flex;flex-direction:column;gap:2px;flex:1;}
-  nav.sidenav button{background:none;border:none;color:#B9C0D4;text-align:left;padding:11px 12px;border-radius:9px;font-size:14px;cursor:pointer;font-weight:500;display:flex;align-items:center;gap:10px;}
-  nav.sidenav button:hover{background:#1D2748;color:#fff;}
-  nav.sidenav button.active{background:var(--yellow);color:var(--ink);font-weight:700;}
-  .logout-btn{background:none;border:1px solid #2C3760;color:#B9C0D4;padding:10px;border-radius:9px;font-size:13px;cursor:pointer;}
-
-  main{padding:32px 40px;max-width:920px;}
-  main h1{font-size:24px;margin:0 0 4px;}
-  main .page-sub{color:var(--muted);font-size:14px;margin-bottom:28px;}
-  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;margin-bottom:20px;}
-  .card h3{font-size:16px;margin:0 0 4px;}
-  .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
-  .stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;}
-  .stat .num{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;}
-  .stat .label{color:var(--muted);font-size:13px;margin-top:2px;}
-  .progress{height:8px;border-radius:99px;background:#EEF1F6;overflow:hidden;margin-top:8px;}
-  .progress > div{height:100%;background:var(--yellow);}
-
-  code.embed{display:block;background:#0F1830;color:#DCE3F5;padding:16px;border-radius:12px;font-size:12.5px;line-height:1.6;white-space:pre-wrap;word-break:break-all;font-family:'SFMono-Regular',Consolas,monospace;}
-  .copy-row{display:flex;justify-content:flex-end;margin-top:10px;}
-
-  table{width:100%;border-collapse:collapse;font-size:13.5px;}
-  th{text-align:left;color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--line);}
-  td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
-  .role-badge{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;display:inline-block;}
-  .role-badge.user{background:#FFF4D6;color:#8A6400;}
-  .role-badge.assistant{background:#EAFBF2;color:#1B7A47;}
-
-  .plan-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
-  .plan-card{border:1.5px solid var(--line);border-radius:14px;padding:20px;}
-  .plan-card h4{margin:0 0 4px;font-size:16px;}
-  .plan-card .p{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;margin:6px 0 14px;}
-  .qr-box{text-align:center;padding:20px;border:1.5px dashed var(--line);border-radius:14px;margin-top:16px;}
-  .qr-box img{width:200px;height:200px;border-radius:10px;}
-  .muted{color:var(--muted);font-size:13px;}
+  .side-logo{padding:4px 8px 12px}
+  .side-biz{display:none}
+  nav.sidenav{
+    display:flex;flex-direction:row;overflow-x:auto;
+    gap:4px;margin-bottom:8px
+  }
+  nav.sidenav button{
+    white-space:nowrap;padding:9px 10px;font-size:12px
+  }
+  .logout-btn{width:100%;padding:8px}
+  main{padding:20px 14px}
+  .stat-grid{grid-template-columns:1fr}
+  .plan-grid{grid-template-columns:1fr}
+  .card{padding:18px;overflow-x:auto}
+  table{min-width:600px}
+}
 </style>
 </head>
 <body>
 
-<!-- ============ AUTH SCREEN ============ -->
 <div id="auth-screen">
   <div class="auth-card">
     <div class="auth-logo">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#14213D"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#14213D"/>
+      </svg>
       Kilat
     </div>
 
     <div id="msg-box"></div>
 
-    <!-- Login form -->
     <div id="login-form">
       <h2>Masuk ke dashboard</h2>
       <div class="sub">Kelola chatbot toko kamu di sini.</div>
-      <div class="field"><label>Email</label><input type="email" id="login-email" placeholder="kamu@tokokamu.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
-      <button class="btn btn-primary" onclick="doLogin()">Masuk</button>
-      <div class="switcher">Belum punya akun? <a onclick="showRegister()">Daftar gratis</a></div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="kamu@tokokamu.com">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••">
+      </div>
+
+      <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Masuk</button>
+
+      <div class="switcher">
+        Belum punya akun?
+        <a onclick="showRegister()">Daftar gratis</a>
+      </div>
     </div>
 
-    <!-- Register form -->
     <div id="register-form" class="hidden">
       <h2>Coba Kilat gratis</h2>
       <div class="sub">50 chat/bulan gratis, tanpa kartu kredit.</div>
-      <div class="field"><label>Nama Bisnis</label><input type="text" id="reg-business" placeholder="Toko Rasa Nusantara"></div>
-      <div class="field"><label>Email</label><input type="email" id="reg-email" placeholder="kamu@tokokamu.com"></div>
-      <div class="field"><label>Password</label><input type="password" id="reg-password" placeholder="Minimal 6 karakter"></div>
-      <button class="btn btn-yellow" onclick="doRegister()">Buat akun</button>
-      <div class="switcher">Sudah punya akun? <a onclick="showLogin()">Masuk</a></div>
+
+      <div class="field">
+        <label>Nama Bisnis</label>
+        <input type="text" id="reg-business" placeholder="Toko Rasa Nusantara">
+      </div>
+
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="reg-email" placeholder="kamu@tokokamu.com">
+      </div>
+
+      <div class="field">
+        <label>Password</label>
+        <input type="password" id="reg-password" placeholder="Minimal 6 karakter">
+      </div>
+
+      <button class="btn btn-yellow" id="register-btn" onclick="doRegister()">Buat akun</button>
+
+      <div class="switcher">
+        Sudah punya akun?
+        <a onclick="showLogin()">Masuk</a>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ============ DASHBOARD ============ -->
 <div id="app">
   <aside>
     <div class="side-logo">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#FFC933"/></svg>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+        <path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z" fill="#FFC933"/>
+      </svg>
       Kilat
     </div>
-    <div class="side-biz"><b id="side-biz-name">-</b><span id="side-plan">-</span></div>
+
+    <div class="side-biz">
+      <b id="side-biz-name">-</b>
+      <span id="side-plan">-</span>
+    </div>
+
     <nav class="sidenav">
       <button data-tab="ringkasan" class="active" onclick="switchTab('ringkasan')">📊 Ringkasan</button>
       <button data-tab="chatbot" onclick="switchTab('chatbot')">🤖 Pengaturan Bot</button>
@@ -133,37 +288,61 @@
       <button data-tab="percakapan" onclick="switchTab('percakapan')">💬 Percakapan</button>
       <button data-tab="langganan" onclick="switchTab('langganan')">💳 Langganan</button>
     </nav>
+
     <button class="logout-btn" onclick="doLogout()">Keluar</button>
   </aside>
 
   <main>
-    <!-- RINGKASAN -->
+
     <section id="tab-ringkasan">
       <h1>Ringkasan</h1>
       <div class="page-sub">Sekilas kondisi chatbot toko kamu.</div>
+
       <div class="stat-grid">
-        <div class="stat"><div class="num" id="stat-plan">-</div><div class="label">Paket aktif</div></div>
-        <div class="stat"><div class="num" id="stat-usage">-</div><div class="label">Chat terpakai bulan ini</div>
-          <div class="progress"><div id="stat-usage-bar" style="width:0%"></div></div>
+        <div class="stat">
+          <div class="num" id="stat-plan">-</div>
+          <div class="label">Paket aktif</div>
         </div>
-        <div class="stat"><div class="num" id="stat-convos">-</div><div class="label">Total percakapan</div></div>
+
+        <div class="stat">
+          <div class="num" id="stat-usage">-</div>
+          <div class="label">Chat terpakai bulan ini</div>
+          <div class="progress">
+            <div id="stat-usage-bar" style="width:0%"></div>
+          </div>
+        </div>
+
+        <div class="stat">
+          <div class="num" id="stat-convos">-</div>
+          <div class="label">Total percakapan</div>
+        </div>
       </div>
+
       <div class="card">
         <h3>Langkah cepat</h3>
-        <p class="muted">Belum tempel widget? Buka tab <b>Pasang Widget</b> untuk salin kodenya, lalu tempel ke website tokomu sebelum tag <code>&lt;/body&gt;</code>.</p>
+        <p class="muted">
+          Belum tempel widget? Buka tab <b>Pasang Widget</b> untuk salin
+          kodenya, lalu tempel ke website tokomu sebelum tag
+          <code>&lt;/body&gt;</code>.
+        </p>
       </div>
     </section>
 
-    <!-- CHATBOT SETTINGS -->
     <section id="tab-chatbot" class="hidden">
       <h1>Pengaturan Bot</h1>
-      <div class="page-sub">Ceritakan tentang bisnismu — Kilat menjawab pelanggan berdasarkan ini.</div>
+      <div class="page-sub">
+        Ceritakan tentang bisnismu — Kilat menjawab pelanggan berdasarkan ini.
+      </div>
+
       <div class="card">
         <div id="bot-msg"></div>
+
         <div class="field">
           <label>Pesan sapaan pertama</label>
-          <input type="text" id="cfg-greeting" placeholder="Halo! Selamat datang di toko kami...">
+          <input type="text" id="cfg-greeting"
+                 placeholder="Halo! Selamat datang di toko kami...">
         </div>
+
         <div class="field">
           <label>Gaya bicara bot</label>
           <select id="cfg-tone">
@@ -172,315 +351,1012 @@
             <option value="formal dan profesional">Formal & profesional</option>
           </select>
         </div>
+
         <div class="field">
-          <label>Info bisnis kamu (produk, harga, jam buka, kebijakan retur, dll)</label>
+          <label>
+            Info bisnis kamu (produk, harga, jam buka, kebijakan retur, dll)
+          </label>
           <textarea id="cfg-prompt" placeholder="Contoh:
 - Kami jual keripik singkong pedas & original, harga Rp15.000/pack
 - Jam operasional 08.00-20.00 WIB setiap hari
-- Ongkir dihitung otomatis oleh kurir, mulai Rp9.000
-- Retur diterima maksimal 2 hari setelah barang diterima jika ada cacat produksi"></textarea>
+- Ongkir dihitung otomatis oleh kurir
+- Retur diterima maksimal 2 hari setelah barang diterima"></textarea>
         </div>
-        <button class="btn btn-primary" style="width:auto;" onclick="saveBotConfig()">Simpan pengaturan</button>
+
+        <button class="btn btn-primary" style="width:auto"
+                onclick="saveBotConfig()">
+          Simpan pengaturan
+        </button>
       </div>
     </section>
 
-    <!-- WIDGET -->
     <section id="tab-widget" class="hidden">
       <h1>Pasang Widget</h1>
-      <div class="page-sub">Tempel kode ini sebelum tag <code>&lt;/body&gt;</code> di website tokomu.</div>
+      <div class="page-sub">
+        Tempel kode ini sebelum tag <code>&lt;/body&gt;</code>
+        di website tokomu.
+      </div>
+
       <div class="card">
         <h3>Kode widget kamu</h3>
         <code class="embed" id="widget-embed-code">Memuat...</code>
-        <div class="copy-row"><button class="btn-ghost btn" onclick="copyEmbed()">Salin kode</button></div>
+
+        <div class="copy-row">
+          <button class="btn-ghost btn" onclick="copyEmbed()">
+            Salin kode
+          </button>
+        </div>
       </div>
+
       <div class="card">
         <h3>Nggak punya website sendiri?</h3>
-        <p class="muted">Kamu tetap bisa share link chat langsung ke pelanggan lewat bio Instagram atau katalog WhatsApp. (Fitur link chat langsung menyusul.)</p>
+        <p class="muted">
+          Kamu tetap bisa share link chat langsung ke pelanggan lewat
+          bio Instagram atau katalog WhatsApp.
+        </p>
       </div>
     </section>
 
-    <!-- PERCAKAPAN -->
     <section id="tab-percakapan" class="hidden">
       <h1>Percakapan</h1>
       <div class="page-sub">200 pesan terakhir dari pelanggan kamu.</div>
+
       <div class="card">
         <table>
-          <thead><tr><th>Waktu</th><th>Peran</th><th>Pesan</th></tr></thead>
-          <tbody id="convo-table-body"><tr><td colspan="3" class="muted">Memuat...</td></tr></tbody>
+          <thead>
+            <tr>
+              <th>Waktu</th>
+              <th>Peran</th>
+              <th>Pesan</th>
+            </tr>
+          </thead>
+          <tbody id="convo-table-body">
+            <tr>
+              <td colspan="3" class="muted">Memuat...</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
 
-    <!-- LANGGANAN -->
     <section id="tab-langganan" class="hidden">
       <h1>Langganan</h1>
-      <div class="page-sub">Upgrade paket biar chat nggak kepotong kuota.</div>
+      <div class="page-sub">
+        Upgrade paket biar chat nggak kepotong kuota.
+      </div>
+
       <div class="card">
         <h3>Status saat ini</h3>
         <p id="sub-status" class="muted">Memuat...</p>
       </div>
+
       <div class="card">
         <h3>Upgrade paket</h3>
+
         <div class="plan-grid">
           <div class="plan-card">
             <h4>Pro</h4>
-            <div class="p">Rp49.000<span style="font-size:13px;font-weight:500;color:var(--muted);">/bulan</span></div>
+            <div class="p">
+              Rp49.000
+              <span style="font-size:13px;font-weight:500;color:var(--muted)">
+                /bulan
+              </span>
+            </div>
             <p class="muted">1.000 chat/bulan</p>
-            <button class="btn btn-primary" style="width:auto;" onclick="checkout('pro')">Upgrade ke Pro</button>
+            <button class="btn btn-primary" style="width:auto"
+                    onclick="checkout('pro')">
+              Upgrade ke Pro
+            </button>
           </div>
+
           <div class="plan-card">
             <h4>Bisnis</h4>
-            <div class="p">Rp149.000<span style="font-size:13px;font-weight:500;color:var(--muted);">/bulan</span></div>
+            <div class="p">
+              Rp149.000
+              <span style="font-size:13px;font-weight:500;color:var(--muted)">
+                /bulan
+              </span>
+            </div>
             <p class="muted">5.000 chat/bulan + prioritas</p>
-            <button class="btn btn-primary" style="width:auto;" onclick="checkout('bisnis')">Upgrade ke Bisnis</button>
+            <button class="btn btn-primary" style="width:auto"
+                    onclick="checkout('bisnis')">
+              Upgrade ke Bisnis
+            </button>
           </div>
         </div>
+
         <div id="qr-area"></div>
       </div>
+
       <div class="card">
         <h3>Riwayat pembayaran</h3>
+
         <table>
-          <thead><tr><th>Tanggal</th><th>Paket</th><th>Jumlah</th><th>Status</th></tr></thead>
-          <tbody id="tx-table-body"><tr><td colspan="4" class="muted">Memuat...</td></tr></tbody>
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Paket</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody id="tx-table-body">
+            <tr>
+              <td colspan="4" class="muted">Memuat...</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
+
   </main>
 </div>
 
 <script>
-  // ====== KONFIGURASI ======
-  // Ganti dengan URL backend kamu yang jalan di VPS, contoh: "https://api.tokokamu.com"
-  const API_BASE = "https://api.domainkamu.com";
+/* =========================================================
+   KONFIGURASI BACKEND
+   ========================================================= */
 
-  let TOKEN = localStorage.getItem('kilat_token');
-  let ME = null;
-  let pollTimer = null;
+const API_BASE = "https://evans-hardwood-tutorial-pentium.trycloudflare.com";
 
-  function api(path, opts = {}) {
-    return fetch(API_BASE + path, {
+let TOKEN = localStorage.getItem('kilat_token');
+let ME = null;
+let pollTimer = null;
+
+/* =========================================================
+   API HELPER
+   ========================================================= */
+
+async function api(path, opts = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try {
+    const options = {
       ...opts,
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
-        ...(TOKEN ? { Authorization: 'Bearer ' + TOKEN } : {}),
+        ...(TOKEN ? {
+          Authorization: 'Bearer ' + TOKEN
+        } : {}),
         ...(opts.headers || {})
-      },
-      body: opts.body ? JSON.stringify(opts.body) : undefined
-    }).then(async r => {
-      const data = await r.json().catch(() => ({}));
-      if (!r.ok) throw new Error(data.message || 'Terjadi kesalahan.');
-      return data;
+      }
+    };
+
+    if (opts.body && typeof opts.body !== 'string') {
+      options.body = JSON.stringify(opts.body);
+    }
+
+    const response = await fetch(API_BASE + path, options);
+
+    const text = await response.text();
+
+    let data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = {};
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        `Server error (${response.status})`
+      );
+    }
+
+    return data;
+
+  } catch (error) {
+
+    if (error.name === 'AbortError') {
+      throw new Error('Server terlalu lama merespons.');
+    }
+
+    if (error instanceof TypeError) {
+      throw new Error(
+        'Tidak bisa terhubung ke server. Pastikan backend dan HTTPS aktif.'
+      );
+    }
+
+    throw error;
+
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+function showMsg(text, type = 'error') {
+  document.getElementById('msg-box').innerHTML =
+    `<div class="${type === 'error' ? 'err' : 'ok'}">${escapeHtml(text)}</div>`;
+}
+
+/* =========================================================
+   AUTH SCREEN
+   ========================================================= */
+
+function showLogin() {
+  document.getElementById('login-form').classList.remove('hidden');
+  document.getElementById('register-form').classList.add('hidden');
+  document.getElementById('msg-box').innerHTML = '';
+}
+
+function showRegister() {
+  document.getElementById('register-form').classList.remove('hidden');
+  document.getElementById('login-form').classList.add('hidden');
+  document.getElementById('msg-box').innerHTML = '';
+}
+
+/* =========================================================
+   REGISTER
+   ========================================================= */
+
+async function doRegister() {
+
+  const business_name =
+    document.getElementById('reg-business').value.trim();
+
+  const email =
+    document.getElementById('reg-email').value.trim();
+
+  const password =
+    document.getElementById('reg-password').value;
+
+  if (!business_name) {
+    showMsg('Nama bisnis wajib diisi.');
+    return;
+  }
+
+  if (!email) {
+    showMsg('Email wajib diisi.');
+    return;
+  }
+
+  if (password.length < 6) {
+    showMsg('Password minimal 6 karakter.');
+    return;
+  }
+
+  const button = document.getElementById('register-btn');
+
+  button.disabled = true;
+  button.textContent = 'Membuat akun...';
+
+  try {
+
+    const data = await api('/api/register', {
+      method: 'POST',
+      body: {
+        business_name,
+        email,
+        password
+      }
     });
+
+    if (!data.token) {
+      throw new Error('Server tidak mengirim token login.');
+    }
+
+    TOKEN = data.token;
+
+    localStorage.setItem(
+      'kilat_token',
+      TOKEN
+    );
+
+    await enterApp();
+
+  } catch (e) {
+
+    showMsg(e.message);
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = 'Buat akun';
+
+  }
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+async function doLogin() {
+
+  const email =
+    document.getElementById('login-email').value.trim();
+
+  const password =
+    document.getElementById('login-password').value;
+
+  if (!email || !password) {
+    showMsg('Email dan password wajib diisi.');
+    return;
   }
 
-  function showMsg(text, type) {
-    document.getElementById('msg-box').innerHTML =
-      `<div class="${type === 'error' ? 'err' : 'ok'}">${text}</div>`;
+  const button = document.getElementById('login-btn');
+
+  button.disabled = true;
+  button.textContent = 'Masuk...';
+
+  try {
+
+    const data = await api('/api/login', {
+      method: 'POST',
+      body: {
+        email,
+        password
+      }
+    });
+
+    if (!data.token) {
+      throw new Error('Server tidak mengirim token login.');
+    }
+
+    TOKEN = data.token;
+
+    localStorage.setItem(
+      'kilat_token',
+      TOKEN
+    );
+
+    await enterApp();
+
+  } catch (e) {
+
+    showMsg(e.message);
+
+  } finally {
+
+    button.disabled = false;
+    button.textContent = 'Masuk';
+
+  }
+}
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+function doLogout() {
+
+  localStorage.removeItem('kilat_token');
+
+  TOKEN = null;
+  ME = null;
+
+  clearInterval(pollTimer);
+
+  document.getElementById('app')
+    .classList.remove('show');
+
+  document.getElementById('auth-screen')
+    .classList.remove('hidden');
+
+  showLogin();
+}
+
+/* =========================================================
+   TAB
+   ========================================================= */
+
+function switchTab(tab) {
+
+  document
+    .querySelectorAll('nav.sidenav button')
+    .forEach(button => {
+      button.classList.toggle(
+        'active',
+        button.dataset.tab === tab
+      );
+    });
+
+  [
+    'ringkasan',
+    'chatbot',
+    'widget',
+    'percakapan',
+    'langganan'
+  ].forEach(t => {
+
+    document
+      .getElementById('tab-' + t)
+      .classList.toggle(
+        'hidden',
+        t !== tab
+      );
+
+  });
+
+  if (tab === 'percakapan') {
+    loadConversations();
   }
 
-  function showLogin() {
-    document.getElementById('login-form').classList.remove('hidden');
-    document.getElementById('register-form').classList.add('hidden');
-    document.getElementById('msg-box').innerHTML = '';
-  }
-  function showRegister() {
-    document.getElementById('register-form').classList.remove('hidden');
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('msg-box').innerHTML = '';
+  if (tab === 'langganan') {
+    loadBilling();
   }
 
-  async function doRegister() {
-    const business_name = document.getElementById('reg-business').value.trim();
-    const email = document.getElementById('reg-email').value.trim();
-    const password = document.getElementById('reg-password').value;
-    try {
-      const data = await api('/api/register', { method: 'POST', body: { business_name, email, password } });
-      TOKEN = data.token;
-      localStorage.setItem('kilat_token', TOKEN);
-      enterApp();
-    } catch (e) { showMsg(e.message, 'error'); }
+  if (tab === 'widget') {
+    loadWidget();
   }
+}
 
-  async function doLogin() {
-    const email = document.getElementById('login-email').value.trim();
-    const password = document.getElementById('login-password').value;
-    try {
-      const data = await api('/api/login', { method: 'POST', body: { email, password } });
-      TOKEN = data.token;
-      localStorage.setItem('kilat_token', TOKEN);
-      enterApp();
-    } catch (e) { showMsg(e.message, 'error'); }
-  }
+/* =========================================================
+   ENTER APP
+   ========================================================= */
 
-  function doLogout() {
+async function enterApp() {
+
+  try {
+
+    const data = await api('/api/me');
+
+    if (!data.merchant) {
+      throw new Error('Data akun tidak ditemukan.');
+    }
+
+    ME = data.merchant;
+
+    document
+      .getElementById('auth-screen')
+      .classList.add('hidden');
+
+    document
+      .getElementById('app')
+      .classList.add('show');
+
+    document
+      .getElementById('side-biz-name')
+      .textContent =
+      ME.business_name || '-';
+
+    document
+      .getElementById('side-plan')
+      .textContent =
+      'Paket: ' +
+      capitalize(
+        ME.subscription?.plan || 'free'
+      );
+
+    await loadOverview();
+    await loadBotConfig();
+
+  } catch (e) {
+
+    console.error(e);
+
     localStorage.removeItem('kilat_token');
-    TOKEN = null; ME = null;
-    clearInterval(pollTimer);
-    document.getElementById('app').classList.remove('show');
-    document.getElementById('auth-screen').classList.remove('hidden');
+    TOKEN = null;
+
+    document
+      .getElementById('app')
+      .classList.remove('show');
+
+    document
+      .getElementById('auth-screen')
+      .classList.remove('hidden');
+
     showLogin();
-  }
 
-  function switchTab(tab) {
-    document.querySelectorAll('nav.sidenav button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
-    ['ringkasan', 'chatbot', 'widget', 'percakapan', 'langganan'].forEach(t => {
-      document.getElementById('tab-' + t).classList.toggle('hidden', t !== tab);
+    showMsg(
+      'Sesi tidak valid. Silakan login kembali.'
+    );
+  }
+}
+
+/* =========================================================
+   OVERVIEW
+   ========================================================= */
+
+async function loadOverview() {
+
+  try {
+
+    const data = await api('/api/me');
+
+    ME = data.merchant;
+
+    const plan =
+      ME.subscription?.plan || 'free';
+
+    const quota =
+      data.plans?.[plan]?.quota || 0;
+
+    const used =
+      Number(ME.usage?.messages_used || 0);
+
+    document
+      .getElementById('stat-plan')
+      .textContent =
+      capitalize(plan);
+
+    document
+      .getElementById('stat-usage')
+      .textContent =
+      `${used} / ${quota}`;
+
+    const percentage =
+      quota > 0
+        ? Math.min(100, (used / quota) * 100)
+        : 0;
+
+    document
+      .getElementById('stat-usage-bar')
+      .style.width =
+      percentage + '%';
+
+    const convos =
+      await api('/api/conversations');
+
+    document
+      .getElementById('stat-convos')
+      .textContent =
+      Array.isArray(convos.conversations)
+        ? convos.conversations.length
+        : 0;
+
+  } catch (e) {
+
+    console.error(
+      'loadOverview:',
+      e
+    );
+
+  }
+}
+
+/* =========================================================
+   BOT CONFIG
+   ========================================================= */
+
+async function loadBotConfig() {
+
+  try {
+
+    const data =
+      await api('/api/bot-config');
+
+    const config =
+      data.bot_config || {};
+
+    document
+      .getElementById('cfg-greeting')
+      .value =
+      config.greeting || '';
+
+    document
+      .getElementById('cfg-tone')
+      .value =
+      config.tone ||
+      'ramah, sopan, dan to the point';
+
+    document
+      .getElementById('cfg-prompt')
+      .value =
+      config.system_prompt || '';
+
+  } catch (e) {
+
+    console.error(
+      'loadBotConfig:',
+      e
+    );
+
+  }
+}
+
+/* =========================================================
+   SAVE BOT CONFIG
+   ========================================================= */
+
+async function saveBotConfig() {
+
+  const message =
+    document.getElementById('bot-msg');
+
+  try {
+
+    await api('/api/bot-config', {
+      method: 'PUT',
+      body: {
+        greeting:
+          document.getElementById('cfg-greeting').value,
+
+        tone:
+          document.getElementById('cfg-tone').value,
+
+        system_prompt:
+          document.getElementById('cfg-prompt').value
+      }
     });
-    if (tab === 'percakapan') loadConversations();
-    if (tab === 'langganan') loadBilling();
-    if (tab === 'widget') loadWidget();
-  }
 
-  async function enterApp() {
-    try {
-      const data = await api('/api/me');
-      ME = data.merchant;
-      document.getElementById('auth-screen').classList.add('hidden');
-      document.getElementById('app').classList.add('show');
-      document.getElementById('side-biz-name').textContent = ME.business_name;
-      document.getElementById('side-plan').textContent = 'Paket: ' + capitalize(ME.subscription.plan);
-      loadOverview();
-      loadBotConfig();
-    } catch (e) {
-      doLogout();
+    message.innerHTML =
+      '<div class="ok">Pengaturan berhasil disimpan.</div>';
+
+    setTimeout(() => {
+      message.innerHTML = '';
+    }, 2500);
+
+  } catch (e) {
+
+    message.innerHTML =
+      `<div class="err">${escapeHtml(e.message)}</div>`;
+
+  }
+}
+
+/* =========================================================
+   WIDGET
+   ========================================================= */
+
+async function loadWidget() {
+
+  try {
+
+    const data =
+      await api('/api/bot-config');
+
+    if (!data.widget_key) {
+      throw new Error(
+        'Widget key belum tersedia.'
+      );
     }
+
+    const snippet =
+      `<script src="${API_BASE}/widget.js" data-key="${escapeHtml(data.widget_key)}"><\/script>`;
+
+    document
+      .getElementById('widget-embed-code')
+      .textContent =
+      snippet;
+
+  } catch (e) {
+
+    document
+      .getElementById('widget-embed-code')
+      .textContent =
+      'Gagal memuat kode widget: ' +
+      e.message;
+
   }
+}
 
-  function capitalize(s) { return s ? s.charAt(0).toUpperCase() + s.slice(1) : s; }
+/* =========================================================
+   COPY WIDGET
+   ========================================================= */
 
-  async function loadOverview() {
-    try {
-      const data = await api('/api/me');
-      ME = data.merchant;
-      const quota = data.plans[ME.subscription.plan]?.quota || 0;
-      document.getElementById('stat-plan').textContent = capitalize(ME.subscription.plan);
-      document.getElementById('stat-usage').textContent = `${ME.usage.messages_used} / ${quota}`;
-      document.getElementById('stat-usage-bar').style.width = Math.min(100, (ME.usage.messages_used / quota) * 100) + '%';
+async function copyEmbed() {
 
-      const convos = await api('/api/conversations');
-      document.getElementById('stat-convos').textContent = convos.conversations.length;
-    } catch (e) { console.error(e); }
+  const text =
+    document
+      .getElementById('widget-embed-code')
+      .textContent;
+
+  try {
+
+    await navigator.clipboard.writeText(text);
+
+    alert('Kode widget berhasil disalin!');
+
+  } catch {
+
+    alert(
+      'Gagal menyalin otomatis. Silakan salin kode secara manual.'
+    );
+
   }
+}
 
-  async function loadBotConfig() {
-    try {
-      const data = await api('/api/bot-config');
-      document.getElementById('cfg-greeting').value = data.bot_config.greeting || '';
-      document.getElementById('cfg-tone').value = data.bot_config.tone || 'ramah, sopan, dan to the point';
-      document.getElementById('cfg-prompt').value = data.bot_config.system_prompt || '';
-    } catch (e) { console.error(e); }
-  }
+/* =========================================================
+   CONVERSATIONS
+   ========================================================= */
 
-  async function saveBotConfig() {
-    try {
-      await api('/api/bot-config', {
-        method: 'PUT',
-        body: {
-          greeting: document.getElementById('cfg-greeting').value,
-          tone: document.getElementById('cfg-tone').value,
-          system_prompt: document.getElementById('cfg-prompt').value
-        }
-      });
-      document.getElementById('bot-msg').innerHTML = '<div class="ok">Tersimpan.</div>';
-      setTimeout(() => document.getElementById('bot-msg').innerHTML = '', 2500);
-    } catch (e) {
-      document.getElementById('bot-msg').innerHTML = `<div class="err">${e.message}</div>`;
+async function loadConversations() {
+
+  const tbody =
+    document.getElementById(
+      'convo-table-body'
+    );
+
+  try {
+
+    const data =
+      await api('/api/conversations');
+
+    const conversations =
+      Array.isArray(data.conversations)
+        ? data.conversations
+        : [];
+
+    if (!conversations.length) {
+
+      tbody.innerHTML =
+        '<tr><td colspan="3" class="muted">Belum ada percakapan.</td></tr>';
+
+      return;
     }
-  }
 
-  async function loadWidget() {
-    try {
-      const data = await api('/api/bot-config');
-      const snippet = `<script src="${API_BASE}/widget.js" data-key="${data.widget_key}"><\/script>`;
-      document.getElementById('widget-embed-code').textContent = snippet;
-    } catch (e) { console.error(e); }
-  }
-
-  function copyEmbed() {
-    const text = document.getElementById('widget-embed-code').textContent;
-    navigator.clipboard.writeText(text).then(() => alert('Kode disalin!'));
-  }
-
-  async function loadConversations() {
-    const tbody = document.getElementById('convo-table-body');
-    try {
-      const data = await api('/api/conversations');
-      if (!data.conversations.length) {
-        tbody.innerHTML = '<tr><td colspan="3" class="muted">Belum ada percakapan.</td></tr>';
-        return;
-      }
-      tbody.innerHTML = data.conversations.map(c => `
+    tbody.innerHTML =
+      conversations.map(c => `
         <tr>
-          <td class="muted">${new Date(c.created_at).toLocaleString('id-ID')}</td>
-          <td><span class="role-badge ${c.role}">${c.role === 'user' ? 'Pelanggan' : 'Bot'}</span></td>
-          <td>${escapeHtml(c.content)}</td>
-        </tr>`).join('');
-    } catch (e) {
-      tbody.innerHTML = `<tr><td colspan="3" class="err">${e.message}</td></tr>`;
+          <td class="muted">
+            ${new Date(c.created_at).toLocaleString('id-ID')}
+          </td>
+
+          <td>
+            <span class="role-badge ${escapeHtml(c.role)}">
+              ${c.role === 'user' ? 'Pelanggan' : 'Bot'}
+            </span>
+          </td>
+
+          <td>
+            ${escapeHtml(c.content)}
+          </td>
+        </tr>
+      `).join('');
+
+  } catch (e) {
+
+    tbody.innerHTML =
+      `<tr>
+        <td colspan="3">
+          <div class="err">${escapeHtml(e.message)}</div>
+        </td>
+      </tr>`;
+
+  }
+}
+
+/* =========================================================
+   BILLING
+   ========================================================= */
+
+async function loadBilling() {
+
+  try {
+
+    const data =
+      await api('/api/billing/status');
+
+    const sub =
+      data.subscription || {};
+
+    const usage =
+      data.usage || {};
+
+    const expText =
+      sub.expires_at
+        ? `berlaku sampai ${new Date(sub.expires_at).toLocaleDateString('id-ID')}`
+        : 'tidak ada tanggal kedaluwarsa';
+
+    document
+      .getElementById('sub-status')
+      .innerHTML =
+      `Paket <b>${escapeHtml(capitalize(sub.plan || 'free'))}</b>
+      — status <b>${escapeHtml(sub.status || '-')}</b>,
+      ${expText}.
+      Terpakai ${Number(usage.messages_used || 0)} chat bulan ini.`;
+
+    const tbody =
+      document.getElementById(
+        'tx-table-body'
+      );
+
+    const transactions =
+      Array.isArray(data.transactions)
+        ? data.transactions
+        : [];
+
+    if (!transactions.length) {
+
+      tbody.innerHTML =
+        '<tr><td colspan="4" class="muted">Belum ada transaksi.</td></tr>';
+
+      return;
     }
+
+    tbody.innerHTML =
+      transactions.map(t => `
+        <tr>
+          <td class="muted">
+            ${new Date(t.created_at).toLocaleString('id-ID')}
+          </td>
+
+          <td>
+            ${escapeHtml(capitalize(t.plan || '-'))}
+          </td>
+
+          <td>
+            Rp${Number(t.amount || 0).toLocaleString('id-ID')}
+          </td>
+
+          <td>
+            ${t.status === 'paid'
+              ? '✅ Lunas'
+              : '⏳ Menunggu'}
+          </td>
+        </tr>
+      `).join('');
+
+  } catch (e) {
+
+    console.error(
+      'loadBilling:',
+      e
+    );
+
+    document
+      .getElementById('sub-status')
+      .textContent =
+      e.message;
+
   }
+}
 
-  function escapeHtml(s) {
-    return (s || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+/* =========================================================
+   CHECKOUT
+   ========================================================= */
+
+async function checkout(plan) {
+
+  const area =
+    document.getElementById('qr-area');
+
+  area.innerHTML =
+    '<p class="muted">Membuat QRIS pembayaran...</p>';
+
+  try {
+
+    const data =
+      await api('/api/billing/checkout', {
+        method: 'POST',
+        body: { plan }
+      });
+
+    area.innerHTML = `
+      <div class="qr-box">
+
+        <img
+          src="${escapeHtml(data.qr_url)}"
+          alt="QRIS pembayaran"
+        >
+
+        <p style="margin-top:12px">
+          Scan QRIS ini menggunakan aplikasi
+          pembayaran yang mendukung QRIS.
+        </p>
+
+        <p class="muted">
+          Jumlah:
+          Rp${Number(data.amount || 0).toLocaleString('id-ID')}
+          · Berlaku sampai
+          ${data.expiry_time
+            ? new Date(data.expiry_time).toLocaleTimeString('id-ID')
+            : '-'}
+        </p>
+
+        <a
+          class="btn btn-ghost"
+          style="margin-top:10px"
+          href="${escapeHtml(data.checkout_url || '#')}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Buka halaman pembayaran
+        </a>
+
+        <p
+          class="muted"
+          id="poll-status"
+          style="margin-top:10px"
+        >
+          Menunggu pembayaran...
+        </p>
+
+      </div>
+    `;
+
+    clearInterval(pollTimer);
+
+    pollTimer =
+      setInterval(
+        async () => {
+
+          try {
+
+            const status =
+              await api(
+                '/api/billing/status'
+              );
+
+            if (
+              status.subscription?.plan === plan &&
+              status.subscription?.status === 'active'
+            ) {
+
+              const poll =
+                document.getElementById(
+                  'poll-status'
+                );
+
+              if (poll) {
+                poll.innerHTML =
+                  '✅ Pembayaran diterima, paket aktif!';
+              }
+
+              clearInterval(pollTimer);
+
+              await loadOverview();
+              await loadBilling();
+            }
+
+          } catch (e) {
+
+            console.error(
+              'billing poll:',
+              e
+            );
+
+          }
+
+        },
+        5000
+      );
+
+  } catch (e) {
+
+    area.innerHTML =
+      `<div class="err">${escapeHtml(e.message)}</div>`;
+
   }
+}
 
-  async function loadBilling() {
-    try {
-      const data = await api('/api/billing/status');
-      const sub = data.subscription;
-      const expText = sub.expires_at ? `berlaku sampai ${new Date(sub.expires_at).toLocaleDateString('id-ID')}` : 'tidak ada tanggal kedaluwarsa';
-      document.getElementById('sub-status').innerHTML =
-        `Paket <b>${capitalize(sub.plan)}</b> — status <b>${sub.status}</b>, ${expText}. Terpakai ${data.usage.messages_used} chat bulan ini.`;
+/* =========================================================
+   UTILITIES
+   ========================================================= */
 
-      const tbody = document.getElementById('tx-table-body');
-      if (!data.transactions.length) {
-        tbody.innerHTML = '<tr><td colspan="4" class="muted">Belum ada transaksi.</td></tr>';
-      } else {
-        tbody.innerHTML = data.transactions.map(t => `
-          <tr>
-            <td class="muted">${new Date(t.created_at).toLocaleString('id-ID')}</td>
-            <td>${capitalize(t.plan)}</td>
-            <td>Rp${t.amount.toLocaleString('id-ID')}</td>
-            <td>${t.status === 'paid' ? '✅ Lunas' : '⏳ Menunggu'}</td>
-          </tr>`).join('');
-      }
-    } catch (e) { console.error(e); }
-  }
+function capitalize(s) {
 
-  async function checkout(plan) {
-    const area = document.getElementById('qr-area');
-    area.innerHTML = '<p class="muted">Membuat QRIS pembayaran...</p>';
-    try {
-      const data = await api('/api/billing/checkout', { method: 'POST', body: { plan } });
-      area.innerHTML = `
-        <div class="qr-box">
-          <img src="${data.qr_url}" alt="QRIS pembayaran" />
-          <p style="margin-top:12px;">Scan QRIS ini pakai GoPay / ShopeePay / m-banking apa pun yang support QRIS.</p>
-          <p class="muted">Jumlah: Rp${data.amount.toLocaleString('id-ID')} · Berlaku sampai ${new Date(data.expiry_time).toLocaleTimeString('id-ID')}</p>
-          <a class="btn btn-ghost" style="margin-top:10px;" href="${data.checkout_url}" target="_blank">Buka halaman pembayaran</a>
-          <p class="muted" id="poll-status" style="margin-top:10px;">Menunggu pembayaran...</p>
-        </div>`;
+  return s
+    ? s.charAt(0).toUpperCase() + s.slice(1)
+    : '';
 
-      clearInterval(pollTimer);
-      pollTimer = setInterval(async () => {
-        const status = await api('/api/billing/status');
-        if (status.subscription.plan === plan && status.subscription.status === 'active') {
-          document.getElementById('poll-status').innerHTML = '✅ Pembayaran diterima, paket aktif!';
-          clearInterval(pollTimer);
-          loadOverview();
-          loadBilling();
-        }
-      }, 5000);
-    } catch (e) {
-      area.innerHTML = `<div class="err">${e.message}</div>`;
-    }
-  }
+}
 
-  // ====== INIT ======
-  if (TOKEN) { enterApp(); } else { showLogin(); }
+function escapeHtml(value) {
 
-  // Kalau user datang dari link "#daftar" di landing page, langsung buka form daftar
-  if (location.hash === '#daftar') showRegister();
+  return String(value ?? '')
+    .replace(/[&<>"']/g, char => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[char]));
+
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+
+if (TOKEN) {
+  enterApp();
+} else {
+  showLogin();
+}
+
+if (location.hash === '#daftar') {
+  showRegister();
+}
+
 </script>
 
 </body>
