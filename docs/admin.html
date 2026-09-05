@@ -1,3413 +1,2084 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel — Kilat</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-:root{
-  --bg:#f4f6f9;
-  --surface:#fff;
-  --ink:#14213d;
-  --ink-soft:#4a5372;
-  --muted:#8a93a8;
-  --line:#e4e8f0;
-  --yellow:#ffc933;
-  --green:#2fbf71;
-  --red:#ef5350;
-  --blue:#4d7cff;
-  --sidebar:#101a32;
-}
-
-*{
-  box-sizing:border-box;
-}
-
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Inter,sans-serif;
-  -webkit-font-smoothing:antialiased;
-}
-
-button,
-input,
-select{
-  font-family:Inter,sans-serif;
-}
-
-button{
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   LOGIN
-========================= */
-
-#login-screen{
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-}
-
-.login-card{
-  width:100%;
-  max-width:410px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:20px;
-  padding:32px;
-  box-shadow:0 25px 70px rgba(20,33,61,.12);
-}
-
-.logo{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-size:20px;
-  font-weight:700;
-  margin-bottom:28px;
-}
-
-.logo-icon{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  background:var(--ink);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.login-card h1{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:25px;
-  margin:0 0 7px;
-}
-
-.login-sub{
-  color:var(--muted);
-  font-size:14px;
-  margin-bottom:25px;
-}
-
-.field{
-  margin-bottom:15px;
-}
-
-.field label{
-  display:block;
-  font-size:13px;
-  font-weight:600;
-  margin-bottom:7px;
-  color:var(--ink-soft);
-}
-
-.field input,
-.field select{
-  width:100%;
-  padding:12px 13px;
-  border:1.5px solid var(--line);
-  border-radius:11px;
-  outline:none;
-  font-size:14px;
-}
-
-.field input:focus,
-.field select:focus{
-  border-color:var(--ink);
-}
-
-.btn{
-  border:0;
-  border-radius:10px;
-  padding:11px 16px;
-  font-size:13px;
-  font-weight:700;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-}
-
-.btn-primary{
-  background:var(--ink);
-  color:#fff;
-}
-
-.btn-yellow{
-  background:var(--yellow);
-  color:var(--ink);
-}
-
-.btn-danger{
-  background:#fff0ee;
-  color:#c63828;
-}
-
-.btn-outline{
-  background:#fff;
-  color:var(--ink);
-  border:1px solid var(--line);
-}
-
-.btn-full{
-  width:100%;
-}
-
-.message{
-  padding:11px 13px;
-  border-radius:10px;
-  font-size:13px;
-  margin-bottom:15px;
-}
-
-.message.error{
-  background:#fff0ee;
-  color:#b52e20;
-}
-
-.message.success{
-  background:#eafbf2;
-  color:#1c7747;
-}
-
-/* =========================
-   APP
-========================= */
-
-#app{
-  display:none;
-  min-height:100vh;
-}
-
-#app.show{
-  display:flex;
-}
-
-/* =========================
-   SIDEBAR
-========================= */
-
-.sidebar{
-  width:245px;
-  background:var(--sidebar);
-  color:#fff;
-  min-height:100vh;
-  padding:22px 15px;
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  z-index:50;
-  display:flex;
-  flex-direction:column;
-}
-
-.sidebar-logo{
-  display:flex;
-  align-items:center;
-  gap:9px;
-  font-weight:700;
-  font-size:19px;
-  padding:3px 9px 26px;
-}
-
-.admin-badge{
-  font-size:10px;
-  background:var(--yellow);
-  color:var(--ink);
-  padding:4px 7px;
-  border-radius:6px;
-  margin-left:auto;
-  font-weight:800;
-}
-
-.admin-profile{
-  background:#182442;
-  border:1px solid #273252;
-  border-radius:13px;
-  padding:13px;
-  margin-bottom:18px;
-}
-
-.admin-profile small{
-  display:block;
-  color:#8995b2;
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  margin-bottom:4px;
-}
-
-.admin-profile b{
-  font-size:13px;
-  word-break:break-all;
-}
-
-.sidebar-nav{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-  flex:1;
-}
-
-.sidebar-nav button{
-  width:100%;
-  border:0;
-  background:none;
-  color:#aeb8d0;
-  text-align:left;
-  padding:11px 12px;
-  border-radius:10px;
-  font-size:13.5px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.sidebar-nav button:hover{
-  background:#1b2747;
-  color:#fff;
-}
-
-.sidebar-nav button.active{
-  background:var(--yellow);
-  color:var(--ink);
-  font-weight:700;
-}
-
-.logout{
-  background:none;
-  border:1px solid #293654;
-  color:#aeb8d0;
-  width:100%;
-  padding:10px;
-  border-radius:10px;
-  font-size:13px;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.main{
-  margin-left:245px;
-  width:calc(100% - 245px);
-  padding:30px;
-  max-width:1400px;
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.topbar h1{
-  font-family:'Space Grotesk',sans-serif;
-  margin:0 0 3px;
-  font-size:25px;
-}
-
-.topbar p{
-  color:var(--muted);
-  font-size:13px;
-  margin:0;
-}
-
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:12px;
-  color:#317c55;
-  background:#eafbf2;
-  padding:8px 11px;
-  border-radius:9px;
-  font-weight:600;
-}
-
-.status-dot{
-  width:7px;
-  height:7px;
-  border-radius:50%;
-  background:var(--green);
-}
-
-/* =========================
-   CARDS
-========================= */
-
-.card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:21px;
-  margin-bottom:18px;
-}
-
-.card-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:18px;
-}
-
-.card-title{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:16px;
-  font-weight:700;
-}
-
-.card-sub{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:3px;
-}
-
-/* =========================
-   STAT
-========================= */
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:15px;
-  margin-bottom:20px;
-}
-
-.stat-card{
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:15px;
-  padding:19px;
-}
-
-.stat-icon{
-  width:36px;
-  height:36px;
-  border-radius:10px;
-  background:#f1f3f7;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:17px;
-  margin-bottom:13px;
-}
-
-.stat-number{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:27px;
-  font-weight:700;
-}
-
-.stat-label{
-  color:var(--muted);
-  font-size:12px;
-  margin-top:3px;
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.table-wrap{
-  width:100%;
-  overflow-x:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:700px;
-  font-size:13px;
-}
-
-th{
-  text-align:left;
-  padding:10px;
-  border-bottom:1px solid var(--line);
-  color:var(--muted);
-  font-size:10.5px;
-  text-transform:uppercase;
-  letter-spacing:.04em;
-}
-
-td{
-  padding:12px 10px;
-  border-bottom:1px solid var(--line);
-  vertical-align:middle;
-}
-
-td:last-child,
-th:last-child{
-  text-align:right;
-}
-
-.user-name{
-  font-weight:700;
-}
-
-.user-email{
-  color:var(--muted);
-  font-size:11px;
-  margin-top:3px;
-}
-
-.badge{
-  display:inline-flex;
-  padding:4px 8px;
-  border-radius:7px;
-  font-size:10.5px;
-  font-weight:700;
-}
-
-.badge-free{
-  background:#eef1f5;
-  color:#68738b;
-}
-
-.badge-pro{
-  background:#fff4d3;
-  color:#8a6400;
-}
-
-.badge-bisnis{
-  background:#eaf0ff;
-  color:#385bb3;
-}
-
-.badge-active{
-  background:#eafbf2;
-  color:#247849;
-}
-
-/* =========================
-   ELLIPSIS MENU
-========================= */
-
-.action{
-  position:relative;
-  display:inline-block;
-}
-
-.more-btn{
-  width:34px;
-  height:34px;
-  border:1px solid var(--line);
-  background:#fff;
-  border-radius:9px;
-  font-size:20px;
-  line-height:1;
-  color:var(--ink-soft);
-}
-
-.more-btn:hover{
-  background:#f4f6f9;
-}
-
-.menu{
-  position:absolute;
-  right:0;
-  top:40px;
-  width:175px;
-  background:#fff;
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:5px;
-  box-shadow:0 15px 35px rgba(20,33,61,.14);
-  z-index:100;
-  display:none;
-}
-
-.menu.show{
-  display:block;
-}
-
-.menu button{
-  width:100%;
-  border:0;
-  background:none;
-  text-align:left;
-  padding:9px 10px;
-  border-radius:7px;
-  font-size:12px;
-  color:var(--ink);
-}
-
-.menu button:hover{
-  background:#f3f5f8;
-}
-
-.menu button.danger{
-  color:#c63828;
-}
-
-/* =========================
-   PLANS
-========================= */
-
-.plan-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
-
-.plan{
-  border:1.5px solid var(--line);
-  border-radius:15px;
-  padding:19px;
-  position:relative;
-}
-
-.plan.current{
-  border-color:var(--yellow);
-}
-
-.plan-name{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:17px;
-  font-weight:700;
-}
-
-.plan-price{
-  font-family:'Space Grotesk',sans-serif;
-  font-size:26px;
-  font-weight:700;
-  margin:10px 0 2px;
-}
-
-.plan-price span{
-  font-family:Inter,sans-serif;
-  color:var(--muted);
-  font-size:11px;
-  font-weight:500;
-}
-
-.plan-quota{
-  color:var(--muted);
-  font-size:12px;
-  margin-bottom:17px;
-}
-
-.plan-actions{
-  display:flex;
-  gap:7px;
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal-overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(10,18,35,.48);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  z-index:200;
-}
-
-.modal-overlay.show{
-  display:flex;
-}
-
-.modal{
-  width:100%;
-  max-width:470px;
-  background:#fff;
-  border-radius:17px;
-  padding:23px;
-  box-shadow:0 30px 80px rgba(0,0,0,.2);
-}
-
-.modal-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.modal-header h3{
-  margin:0;
-  font-family:'Space Grotesk',sans-serif;
-  font-size:18px;
-}
-
-.close-btn{
-  width:32px;
-  height:32px;
-  border:0;
-  background:#f1f3f7;
-  border-radius:8px;
-  font-size:17px;
-}
-
-.modal-footer{
-  display:flex;
-  justify-content:flex-end;
-  gap:8px;
-  margin-top:20px;
-}
-
-/* =========================
-   EMPTY
-========================= */
-
-.empty{
-  text-align:center;
-  padding:35px 15px;
-  color:var(--muted);
-  font-size:13px;
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-.mobile-top{
-  display:none;
-}
-
-@media(max-width:900px){
-
-  .sidebar{
-    width:205px;
-  }
-
-  .main{
-    margin-left:205px;
-    width:calc(100% - 205px);
-    padding:22px;
-  }
-
-  .stats{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .plan-grid{
-    grid-template-columns:1fr;
-  }
-}
-
-@media(max-width:700px){
-
-  #app.show{
-    display:block;
-  }
-
-  .sidebar{
-    position:sticky;
-    top:0;
-    width:100%;
-    min-height:auto;
-    padding:10px;
-  }
-
-  .sidebar-logo{
-    padding:3px 6px 10px;
-  }
-
-  .admin-profile{
-    display:none;
-  }
-
-  .sidebar-nav{
-    flex-direction:row;
-    overflow-x:auto;
-    gap:4px;
-    padding-bottom:5px;
-  }
-
-  .sidebar-nav button{
-    white-space:nowrap;
-    width:auto;
-    padding:8px 10px;
-    font-size:11px;
-  }
-
-  .logout{
-    margin-top:5px;
-    padding:8px;
-  }
-
-  .main{
-    margin-left:0;
-    width:100%;
-    padding:16px 12px 30px;
-  }
-
-  .topbar{
-    align-items:flex-start;
-  }
-
-  .topbar h1{
-    font-size:22px;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-  }
-
-  .stat-card{
-    padding:14px;
-  }
-
-  .stat-number{
-    font-size:22px;
-  }
-
-  .card{
-    padding:15px;
-    border-radius:13px;
-  }
-
-  .status{
-    display:none;
-  }
-
-  .plan-actions{
-    flex-wrap:wrap;
-  }
-}
-
-@media(max-width:430px){
-
-  .stats{
-    grid-template-columns:1fr;
-  }
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kilat — Admin Panel</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --danger: #ef4444;
+      --success: #16a34a;
+      --warning: #f59e0b;
+      --sidebar: #111827;
+    }
+
+    body {
+      font-family: Inter, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* LOGIN */
+
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,.18), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(99,102,241,.14), transparent 35%),
+        #f7f9fc;
+    }
+
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 25px 70px rgba(15,23,42,.10);
+    }
+
+    .logo {
+      width: 58px;
+      height: 58px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 27px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 25px rgba(37,99,235,.25);
+    }
+
+    .login-box h1 {
+      font-size: 27px;
+      margin-bottom: 7px;
+    }
+
+    .login-box p {
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 25px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 14px;
+      outline: none;
+      background: #fff;
+      transition: .2s;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,.10);
+    }
+
+    .login-btn {
+      width: 100%;
+      border: 0;
+      border-radius: 13px;
+      padding: 14px;
+      color: white;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), #4f46e5);
+      margin-top: 5px;
+    }
+
+    .demo-info {
+      margin-top: 18px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* APP */
+
+    .app {
+      display: none;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--sidebar);
+      color: white;
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 50;
+      padding: 22px 14px;
+      overflow-y: auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 5px 10px 25px;
+    }
+
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg,#2563eb,#4f46e5);
+      font-weight: 900;
+    }
+
+    .brand strong {
+      font-size: 19px;
+    }
+
+    .brand small {
+      display: block;
+      color: #9ca3af;
+      font-size: 10px;
+      margin-top: 2px;
+    }
+
+    .nav-title {
+      color: #6b7280;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 12px 12px 8px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .nav-btn {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #cbd5e1;
+      padding: 12px;
+      border-radius: 11px;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      text-align: left;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+
+    .nav-btn:hover,
+    .nav-btn.active {
+      background: rgba(255,255,255,.09);
+      color: #fff;
+    }
+
+    .sidebar-bottom {
+      position: absolute;
+      bottom: 18px;
+      left: 14px;
+      right: 14px;
+    }
+
+    .admin-profile {
+      padding: 13px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.06);
+      margin-bottom: 8px;
+    }
+
+    .admin-profile strong {
+      font-size: 13px;
+    }
+
+    .admin-profile small {
+      display: block;
+      color: #9ca3af;
+      margin-top: 3px;
+    }
+
+    .logout-btn {
+      width: 100%;
+      border: 0;
+      padding: 11px;
+      border-radius: 11px;
+      background: rgba(239,68,68,.10);
+      color: #fca5a5;
+      font-weight: 700;
+    }
+
+    .main {
+      margin-left: 250px;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 72px;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: #f3f4f6;
+      border-radius: 10px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .page {
+      padding: 28px;
+      max-width: 1500px;
+      margin: auto;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .page-head h2 {
+      font-size: 25px;
+    }
+
+    .page-head p {
+      color: var(--muted);
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .badge.green {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.blue {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge.orange {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* STATS */
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 20px;
+      box-shadow: 0 5px 20px rgba(15,23,42,.03);
+    }
+
+    .stat-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .stat h3 {
+      margin-top: 17px;
+      font-size: 27px;
+    }
+
+    .stat p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 3px;
+    }
+
+    /* CARDS */
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(15,23,42,.03);
+    }
+
+    .card-head {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-head h3 {
+      font-size: 16px;
+    }
+
+    .card-body {
+      padding: 20px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th {
+      color: #6b7280;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      text-align: left;
+      padding: 12px 15px;
+      background: #f9fafb;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 14px 15px;
+      border-bottom: 1px solid #f0f1f3;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 40px 15px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* BUTTONS */
+
+    .btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 13px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-light {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .btn-success {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .actions {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+
+    /* PLANS */
+
+    .plans {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .plan {
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      padding: 21px;
+      background: #fff;
+    }
+
+    .plan h3 {
+      font-size: 18px;
+    }
+
+    .price {
+      font-size: 27px;
+      font-weight: 900;
+      margin: 13px 0;
+    }
+
+    .price small {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .plan ul {
+      list-style: none;
+      margin: 18px 0;
+    }
+
+    .plan li {
+      padding: 7px 0;
+      font-size: 13px;
+      color: #4b5563;
+    }
+
+    /* FORM */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2,1fr);
+      gap: 15px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+    }
+
+    /* OVERLAY MOBILE */
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.45);
+      z-index: 40;
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 100;
+      background: #111827;
+      color: #fff;
+      padding: 13px 17px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,.2);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s;
+      font-size: 13px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* MOBILE */
+
+    @media(max-width: 1000px) {
+      .stats {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .plans {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 760px) {
+      .sidebar {
+        transform: translateX(-100%);
+        transition: .25s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .overlay.show {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 15px;
+      }
+
+      .page {
+        padding: 18px 14px 30px;
+      }
+
+      .page-head {
+        align-items: flex-start;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat {
+        padding: 15px;
+      }
+
+      .stat h3 {
+        font-size: 23px;
+      }
+
+      .stat-icon {
+        width: 37px;
+        height: 37px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media(max-width: 480px) {
+      .login-box {
+        padding: 25px 20px;
+        border-radius: 20px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stat p {
+        font-size: 11px;
+      }
+
+      .stat h3 {
+        font-size: 20px;
+      }
+
+      .page-head h2 {
+        font-size: 21px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- =========================
-     LOGIN ADMIN
-========================= -->
+  <!-- LOGIN -->
+  <section class="login-screen" id="loginScreen">
+    <div class="login-box">
+      <div class="logo">K</div>
 
-<div id="login-screen">
+      <h1>Admin Kilat</h1>
+      <p>
+        Masuk ke dashboard administrator untuk mengelola
+        pengguna, paket langganan, dan transaksi.
+      </p>
 
-  <div class="login-card">
-
-    <div class="logo">
-
-      <div class="logo-icon">
-        <svg width="19" height="19" viewBox="0 0 24 24">
-          <path
-            d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
-            fill="#FFC933"
-          />
-        </svg>
+      <div class="field">
+        <label>Username</label>
+        <input
+          id="admin-email"
+          type="text"
+          placeholder="Masukkan username"
+          autocomplete="username"
+        >
       </div>
 
-      Kilat
+      <div class="field">
+        <label>Password</label>
+        <input
+          id="admin-password"
+          type="password"
+          placeholder="Masukkan password"
+          autocomplete="current-password"
+        >
+      </div>
 
-      <span style="
-        font-size:10px;
-        background:#eef1f5;
-        padding:4px 7px;
-        border-radius:6px;
-      ">ADMIN</span>
-
-    </div>
-
-    <h1>Admin Panel</h1>
-
-    <div class="login-sub">
-      Masuk untuk mengelola platform Kilat.
-    </div>
-
-    <div id="login-message"></div>
-
-    <div class="field">
-      <label>Email Admin</label>
-      <input
-        type="email"
-        id="admin-email"
-        placeholder="admin@kilat.com"
-        autocomplete="username"
-      >
-    </div>
-
-    <div class="field">
-      <label>Password</label>
-      <input
-        type="password"
-        id="admin-password"
-        placeholder="••••••••"
-        autocomplete="current-password"
-      >
-    </div>
-
-    <button
-      class="btn btn-primary btn-full"
-      id="admin-login-btn"
-      onclick="adminLogin()"
-    >
-      Masuk ke Admin
-    </button>
-
-  </div>
-
-</div>
-
-
-<!-- =========================
-     ADMIN APP
-========================= -->
-
-<div id="app">
-
-  <aside class="sidebar">
-
-    <div class="sidebar-logo">
-
-      <svg width="19" height="19" viewBox="0 0 24 24">
-        <path
-          d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"
-          fill="#FFC933"
-        />
-      </svg>
-
-      Kilat
-
-      <span class="admin-badge">ADMIN</span>
-
-    </div>
-
-    <div class="admin-profile">
-
-      <small>Administrator</small>
-
-      <b id="admin-email-display">-</b>
-
-    </div>
-
-    <nav class="sidebar-nav">
-
-      <button
-        data-tab="dashboard"
-        class="active"
-        onclick="switchTab('dashboard')"
-      >
-        📊 Dashboard
+      <button class="login-btn" onclick="adminLogin()">
+        Masuk ke Admin Panel
       </button>
 
-      <button
-        data-tab="users"
-        onclick="switchTab('users')"
-      >
-        👥 Pengguna
-      </button>
-
-      <button
-        data-tab="plans"
-        onclick="switchTab('plans')"
-      >
-        💳 Paket Langganan
-      </button>
-
-      <button
-        data-tab="transactions"
-        onclick="switchTab('transactions')"
-      >
-        💰 Transaksi
-      </button>
-
-    </nav>
-
-    <button class="logout" onclick="adminLogout()">
-      Keluar
-    </button>
-
-  </aside>
+      <div class="demo-info">
+        <strong>Mode Testing</strong><br>
+        Username: <b>admin</b><br>
+        Password: <b>123</b>
+      </div>
+    </div>
+  </section>
 
 
-  <main class="main">
+  <!-- ADMIN APP -->
+  <div class="app" id="adminApp">
 
-    <!-- =====================
-         DASHBOARD
-    ====================== -->
+    <aside class="sidebar" id="sidebar">
 
-    <section id="tab-dashboard">
-
-      <div class="topbar">
-
+      <div class="brand">
+        <div class="brand-icon">K</div>
         <div>
-          <h1>Dashboard</h1>
-          <p>
-            Ringkasan aktivitas platform Kilat.
-          </p>
+          <strong>Kilat</strong>
+          <small>ADMIN PANEL</small>
         </div>
-
-        <div class="status">
-          <span class="status-dot"></span>
-          Backend Online
-        </div>
-
       </div>
 
+      <div class="nav-title">Menu utama</div>
 
-      <div class="stats">
+      <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard')">
+        📊 <span>Dashboard</span>
+      </button>
 
-        <div class="stat-card">
+      <button class="nav-btn" data-page="users" onclick="showPage('users')">
+        👥 <span>Pengguna</span>
+      </button>
 
-          <div class="stat-icon">👥</div>
+      <button class="nav-btn" data-page="plans" onclick="showPage('plans')">
+        💎 <span>Paket Langganan</span>
+      </button>
 
-          <div
-            class="stat-number"
-            id="stat-users"
-          >
-            -
-          </div>
+      <button class="nav-btn" data-page="transactions" onclick="showPage('transactions')">
+        💳 <span>Transaksi</span>
+      </button>
 
-          <div class="stat-label">
-            Total pengguna
-          </div>
+      <div class="nav-title">Sistem</div>
 
+      <button class="nav-btn" data-page="settings" onclick="showPage('settings')">
+        ⚙️ <span>Pengaturan</span>
+      </button>
+
+      <div class="sidebar-bottom">
+        <div class="admin-profile">
+          <strong>Administrator</strong>
+          <small id="adminUserLabel">admin</small>
         </div>
 
-
-        <div class="stat-card">
-
-          <div class="stat-icon">💳</div>
-
-          <div
-            class="stat-number"
-            id="stat-active"
-          >
-            -
-          </div>
-
-          <div class="stat-label">
-            Langganan aktif
-          </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-          <div class="stat-icon">💰</div>
-
-          <div
-            class="stat-number"
-            id="stat-revenue"
-          >
-            Rp0
-          </div>
-
-          <div class="stat-label">
-            Pendapatan
-          </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-          <div class="stat-icon">💬</div>
-
-          <div
-            class="stat-number"
-            id="stat-chats"
-          >
-            -
-          </div>
-
-          <div class="stat-label">
-            Total chat
-          </div>
-
-        </div>
-
+        <button class="logout-btn" onclick="logout()">
+          Keluar
+        </button>
       </div>
+    </aside>
+
+    <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+    <main class="main">
+
+      <header class="topbar">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+          <strong id="topTitle">Dashboard</strong>
+        </div>
+
+        <span class="badge green">
+          ● Sistem Aktif
+        </span>
+      </header>
 
 
-      <div class="card">
+      <!-- DASHBOARD -->
+      <section class="page" id="page-dashboard">
 
-        <div class="card-header">
-
+        <div class="page-head">
           <div>
-            <div class="card-title">
-              Aktivitas terbaru
-            </div>
-
-            <div class="card-sub">
-              Pengguna dan transaksi terbaru.
-            </div>
+            <h2>Dashboard</h2>
+            <p>Ringkasan aktivitas platform Kilat.</p>
           </div>
 
-          <button
-            class="btn btn-outline"
-            onclick="loadAdminData()"
-          >
+          <button class="btn btn-light" onclick="loadDashboard()">
             ↻ Refresh
           </button>
+        </div>
+
+        <div class="stats">
+
+          <div class="stat">
+            <div class="stat-top">
+              <p>Total Pengguna</p>
+              <div class="stat-icon">👥</div>
+            </div>
+            <h3 id="statUsers">0</h3>
+            <p>Merchant terdaftar</p>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <p>Pengguna Aktif</p>
+              <div class="stat-icon">⚡</div>
+            </div>
+            <h3 id="statActive">0</h3>
+            <p>Subscription aktif</p>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <p>Transaksi</p>
+              <div class="stat-icon">💳</div>
+            </div>
+            <h3 id="statTransactions">0</h3>
+            <p>Total transaksi</p>
+          </div>
+
+          <div class="stat">
+            <div class="stat-top">
+              <p>Pendapatan</p>
+              <div class="stat-icon">💰</div>
+            </div>
+            <h3 id="statRevenue">Rp 0</h3>
+            <p>Total pembayaran</p>
+          </div>
 
         </div>
 
-        <div class="table-wrap">
+        <div class="card">
+          <div class="card-head">
+            <h3>Aktivitas Terbaru</h3>
+            <button class="btn btn-light" onclick="showPage('users')">
+              Lihat Pengguna
+            </button>
+          </div>
 
-          <table>
-
-            <thead>
-              <tr>
-                <th>Pengguna</th>
-                <th>Paket</th>
-                <th>Status</th>
-                <th>Tanggal</th>
-              </tr>
-            </thead>
-
-            <tbody id="recent-table">
-
-              <tr>
-                <td colspan="4">
-                  <div class="empty">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bisnis</th>
+                  <th>Email</th>
+                  <th>Paket</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="recentUsers">
+                <tr>
+                  <td colspan="5" class="empty">
                     Memuat data...
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- =====================
-         USERS
-    ====================== -->
+      <!-- USERS -->
+      <section class="page" id="page-users" style="display:none;">
 
-    <section id="tab-users" class="hidden">
-
-      <div class="topbar">
-
-        <div>
-          <h1>Pengguna</h1>
-          <p>
-            Kelola semua akun pengguna Kilat.
-          </p>
-        </div>
-
-        <button
-          class="btn btn-outline"
-          onclick="loadUsers()"
-        >
-          ↻ Refresh
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="card-header">
-
+        <div class="page-head">
           <div>
-            <div class="card-title">
-              Daftar pengguna
-            </div>
-
-            <div class="card-sub">
-              Gunakan menu ⋮ untuk tindakan akun.
-            </div>
+            <h2>Pengguna</h2>
+            <p>Kelola semua merchant yang menggunakan Kilat.</p>
           </div>
 
-          <input
-            id="user-search"
-            placeholder="Cari pengguna..."
-            oninput="filterUsers()"
-            style="
-              max-width:220px;
-              padding:9px 11px;
-              border:1px solid var(--line);
-              border-radius:9px;
-              outline:none;
-              font-size:12px;
-            "
-          >
+          <button class="btn btn-light" onclick="loadUsers()">
+            ↻ Refresh
+          </button>
+        </div>
+
+        <div class="card">
+
+          <div class="card-head">
+            <h3>Daftar Merchant</h3>
+
+            <input
+              id="userSearch"
+              type="text"
+              placeholder="Cari pengguna..."
+              oninput="filterUsers()"
+              style="
+                max-width:220px;
+                width:100%;
+                padding:9px 12px;
+                border:1px solid #e5e7eb;
+                border-radius:10px;
+                outline:none;
+              "
+            >
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Bisnis</th>
+                  <th>Email</th>
+                  <th>Paket</th>
+                  <th>Status</th>
+                  <th>Dibuat</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+
+              <tbody id="usersTable">
+                <tr>
+                  <td colspan="6" class="empty">
+                    Memuat data...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
 
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-                <th>Pengguna</th>
-                <th>Paket</th>
-                <th>Penggunaan</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-
-            </thead>
-
-            <tbody id="users-table">
-
-              <tr>
-                <td colspan="5">
-                  <div class="empty">
-                    Memuat pengguna...
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
-    </section>
+      </section>
 
 
-    <!-- =====================
-         PLANS
-    ====================== -->
+      <!-- PLANS -->
+      <section class="page" id="page-plans" style="display:none;">
 
-    <section id="tab-plans" class="hidden">
-
-      <div class="topbar">
-
-        <div>
-          <h1>Paket Langganan</h1>
-          <p>
-            Atur harga dan kuota paket pengguna.
-          </p>
-        </div>
-
-        <button
-          class="btn btn-yellow"
-          onclick="openPlanModal()"
-        >
-          + Tambah Paket
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="card-header">
-
+        <div class="page-head">
           <div>
-            <div class="card-title">
-              Harga & paket
+            <h2>Paket Langganan</h2>
+            <p>Kelola paket yang tersedia untuk merchant.</p>
+          </div>
+        </div>
+
+        <div class="plans">
+
+          <div class="plan">
+            <span class="badge blue">TRIAL</span>
+            <h3 style="margin-top:12px;">Trial</h3>
+
+            <div class="price">
+              Gratis
             </div>
 
-            <div class="card-sub">
-              Perubahan harga akan digunakan oleh sistem checkout setelah backend admin diaktifkan.
+            <ul>
+              <li>✓ Bisa mencoba Kilat</li>
+              <li>✓ AI Customer Service</li>
+              <li>✓ Widget website</li>
+              <li>✓ Fitur dasar</li>
+            </ul>
+
+            <button class="btn btn-light" style="width:100%;">
+              Paket Aktif
+            </button>
+          </div>
+
+
+          <div class="plan">
+            <span class="badge green">POPULAR</span>
+            <h3 style="margin-top:12px;">Basic</h3>
+
+            <div class="price">
+              Rp 49.000
+              <small>/bulan</small>
             </div>
+
+            <ul>
+              <li>✓ AI Customer Service</li>
+              <li>✓ Widget website</li>
+              <li>✓ Knowledge bisnis</li>
+              <li>✓ Riwayat percakapan</li>
+            </ul>
+
+            <button class="btn btn-primary" style="width:100%;">
+              Kelola Paket
+            </button>
+          </div>
+
+
+          <div class="plan">
+            <span class="badge orange">PRO</span>
+            <h3 style="margin-top:12px;">Pro</h3>
+
+            <div class="price">
+              Rp 99.000
+              <small>/bulan</small>
+            </div>
+
+            <ul>
+              <li>✓ Semua fitur Basic</li>
+              <li>✓ Limit lebih besar</li>
+              <li>✓ Prioritas AI</li>
+              <li>✓ Fitur bisnis lanjutan</li>
+            </ul>
+
+            <button class="btn btn-primary" style="width:100%;">
+              Kelola Paket
+            </button>
           </div>
 
         </div>
 
+      </section>
 
-        <div
-          class="plan-grid"
-          id="plans-container"
-        >
 
-          <div class="empty">
-            Memuat paket...
+      <!-- TRANSACTIONS -->
+      <section class="page" id="page-transactions" style="display:none;">
+
+        <div class="page-head">
+          <div>
+            <h2>Transaksi</h2>
+            <p>Riwayat pembayaran langganan Kilat.</p>
           </div>
 
+          <button class="btn btn-light" onclick="loadTransactions()">
+            ↻ Refresh
+          </button>
         </div>
 
-      </div>
+        <div class="card">
 
-    </section>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pengguna</th>
+                  <th>Paket</th>
+                  <th>Nominal</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
 
-
-    <!-- =====================
-         TRANSACTIONS
-    ====================== -->
-
-    <section id="tab-transactions" class="hidden">
-
-      <div class="topbar">
-
-        <div>
-          <h1>Transaksi</h1>
-          <p>
-            Riwayat pembayaran pelanggan.
-          </p>
-        </div>
-
-        <button
-          class="btn btn-outline"
-          onclick="loadTransactions()"
-        >
-          ↻ Refresh
-        </button>
-
-      </div>
-
-
-      <div class="card">
-
-        <div class="table-wrap">
-
-          <table>
-
-            <thead>
-
-              <tr>
-                <th>Tanggal</th>
-                <th>Pelanggan</th>
-                <th>Paket</th>
-                <th>Jumlah</th>
-                <th>Status</th>
-                <th>Aksi</th>
-              </tr>
-
-            </thead>
-
-            <tbody id="transactions-table">
-
-              <tr>
-                <td colspan="6">
-                  <div class="empty">
+              <tbody id="transactionsTable">
+                <tr>
+                  <td colspan="6" class="empty">
                     Memuat transaksi...
-                  </div>
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
         </div>
 
-      </div>
-
-    </section>
-
-  </main>
-
-</div>
+      </section>
 
 
-<!-- =========================
-     USER MODAL
-========================= -->
+      <!-- SETTINGS -->
+      <section class="page" id="page-settings" style="display:none;">
 
-<div
-  class="modal-overlay"
-  id="user-modal"
->
+        <div class="page-head">
+          <div>
+            <h2>Pengaturan</h2>
+            <p>Informasi dan konfigurasi Admin Kilat.</p>
+          </div>
+        </div>
 
-  <div class="modal">
+        <div class="card">
 
-    <div class="modal-header">
+          <div class="card-head">
+            <h3>Informasi Admin</h3>
+          </div>
 
-      <h3>Kelola Pengguna</h3>
+          <div class="card-body">
 
-      <button
-        class="close-btn"
-        onclick="closeModal('user-modal')"
-      >
-        ×
-      </button>
+            <div class="form-grid">
 
-    </div>
+              <div class="field">
+                <label>Username Admin</label>
+                <input id="settingUsername" value="admin" readonly>
+              </div>
 
-    <div id="user-modal-content"></div>
+              <div class="field">
+                <label>Status</label>
+                <input value="Administrator aktif" readonly>
+              </div>
 
-    <div class="modal-footer">
+            </div>
 
-      <button
-        class="btn btn-outline"
-        onclick="closeModal('user-modal')"
-      >
-        Tutup
-      </button>
+            <div class="demo-info">
+              <strong>Mode Demo / Testing</strong><br>
+              Login admin saat ini menggunakan login frontend sementara.
+              Username <b>admin</b> dan password <b>123</b>.
+              Sistem ini sebaiknya diganti dengan autentikasi backend
+              sebelum digunakan untuk production.
+            </div>
 
-    </div>
+          </div>
 
+        </div>
+
+      </section>
+
+    </main>
   </div>
 
-</div>
 
-
-<!-- =========================
-     PLAN MODAL
-========================= -->
-
-<div
-  class="modal-overlay"
-  id="plan-modal"
->
-
-  <div class="modal">
-
-    <div class="modal-header">
-
-      <h3 id="plan-modal-title">
-        Edit Paket
-      </h3>
-
-      <button
-        class="close-btn"
-        onclick="closeModal('plan-modal')"
-      >
-        ×
-      </button>
-
-    </div>
-
-
-    <div id="plan-message"></div>
-
-
-    <input
-      type="hidden"
-      id="plan-original"
-    >
-
-
-    <div class="field">
-
-      <label>
-        Nama Paket
-      </label>
-
-      <input
-        id="plan-name"
-        placeholder="Pro"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Harga per bulan
-      </label>
-
-      <input
-        id="plan-price"
-        type="number"
-        min="0"
-        placeholder="49000"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Kuota chat per bulan
-      </label>
-
-      <input
-        id="plan-quota"
-        type="number"
-        min="0"
-        placeholder="1000"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Deskripsi
-      </label>
-
-      <input
-        id="plan-description"
-        placeholder="1.000 chat/bulan"
-      >
-
-    </div>
-
-
-    <div class="modal-footer">
-
-      <button
-        class="btn btn-outline"
-        onclick="closeModal('plan-modal')"
-      >
-        Batal
-      </button>
-
-      <button
-        class="btn btn-primary"
-        onclick="savePlan()"
-      >
-        Simpan Paket
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
+  <div class="toast" id="toast"></div>
 
 
 <script>
+  /*
+   * ==========================================================
+   * KILAT ADMIN PANEL
+   * LOGIN SEMENTARA:
+   *
+   * USERNAME : admin
+   * PASSWORD : 123
+   *
+   * ==========================================================
+   */
 
-/* =========================================================
-   CONFIG
-========================================================= */
+  const API_BASE =
+    'https://evans-hardwood-tutorial-pentium.trycloudflare.com';
 
-const API_BASE =
-  "https://evans-hardwood-tutorial-pentium.trycloudflare.com";
+  let ADMIN = null;
+  let USERS = [];
+  let TRANSACTIONS = [];
 
-let TOKEN =
-  localStorage.getItem("kilat_admin_token");
-
-let ADMIN = null;
-
-let USERS = [];
-
-let PLANS = [];
-
-
-/* =========================================================
-   API
-========================================================= */
-
-async function api(path, options = {}){
-
-  const controller =
-    new AbortController();
-
-  const timeout =
-    setTimeout(
-      () => controller.abort(),
-      15000
-    );
-
-  try{
-
-    const opts = {
-      ...options,
-      signal:controller.signal,
-      headers:{
-        "Content-Type":"application/json",
-
-        ...(TOKEN
-          ? {
-              Authorization:
-                "Bearer " + TOKEN
-            }
-          : {}),
-
-        ...(options.headers || {})
-      }
-    };
-
-
-    if(
-      options.body &&
-      typeof options.body !== "string"
-    ){
-
-      opts.body =
-        JSON.stringify(options.body);
-
-    }
-
-
-    const response =
-      await fetch(
-        API_BASE + path,
-        opts
-      );
-
-
-    const text =
-      await response.text();
-
-
-    let data = {};
-
-    try{
-
-      data =
-        text
-          ? JSON.parse(text)
-          : {};
-
-    }catch{
-
-      data = {};
-
-    }
-
-
-    if(!response.ok){
-
-      throw new Error(
-        data.message ||
-        `Server error (${response.status})`
-      );
-
-    }
-
-
-    return data;
-
-  }catch(error){
-
-    if(error.name === "AbortError"){
-
-      throw new Error(
-        "Server terlalu lama merespons."
-      );
-
-    }
-
-    if(error instanceof TypeError){
-
-      throw new Error(
-        "Tidak bisa terhubung ke backend."
-      );
-
-    }
-
-    throw error;
-
-  }finally{
-
-    clearTimeout(timeout);
-
-  }
-
-}
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-async function adminLogin(){
-
-  const email =
-    document
-      .getElementById("admin-email")
-      .value
-      .trim();
-
-  const password =
-    document
-      .getElementById("admin-password")
-      .value;
-
-
-  if(!email || !password){
-
-    showLoginMessage(
-      "Email dan password wajib diisi.",
-      "error"
-    );
-
-    return;
-
+  function $(id) {
+    return document.getElementById(id);
   }
 
 
-  const button =
-    document.getElementById(
-      "admin-login-btn"
-    );
+  /* ==========================================================
+     LOGIN ADMIN
+     ========================================================== */
 
-  button.disabled = true;
-  button.textContent = "Memeriksa...";
+  function adminLogin() {
 
+    const username = $('admin-email').value.trim();
+    const password = $('admin-password').value;
 
-  try{
-
-    const data =
-      await api(
-        "/api/login",
-        {
-          method:"POST",
-          body:{
-            email,
-            password
-          }
-        }
-      );
-
-
-    if(!data.token){
-
-      throw new Error(
-        "Token login tidak ditemukan."
-      );
-
+    if (!username || !password) {
+      showToast('Username dan password wajib diisi.');
+      return;
     }
-
-
-    TOKEN = data.token;
-
-    localStorage.setItem(
-      "kilat_admin_token",
-      TOKEN
-    );
-
-
-    await enterAdmin();
-
-
-  }catch(error){
-
-    showLoginMessage(
-      error.message,
-      "error"
-    );
-
-  }finally{
-
-    button.disabled = false;
-    button.textContent = "Masuk ke Admin";
-
-  }
-
-}
-
-
-/* =========================================================
-   ENTER ADMIN
-========================================================= */
-
-async function enterAdmin(){
-
-  try{
-
-    const data =
-      await api("/api/me");
-
-
-    if(!data.merchant){
-
-      throw new Error(
-        "Data admin tidak ditemukan."
-      );
-
-    }
-
-
-    ADMIN =
-      data.merchant;
-
 
     /*
-      Role check.
+     * LOGIN TESTING
+     *
+     * Tidak menggunakan /api/login.
+     * Tidak bergantung pada database merchant.
+     */
 
-      Backend sebaiknya mengirim:
-      merchant.role = "admin"
-
-      Jika belum ada field role,
-      bagian ini sementara membiarkan
-      akun masuk agar frontend bisa dites.
-    */
-
-    if(
-      ADMIN.role &&
-      ADMIN.role !== "admin"
-    ){
-
-      throw new Error(
-        "Akun ini bukan administrator."
-      );
-
+    if (username !== 'admin' || password !== '123') {
+      showToast('Username atau password admin salah.');
+      return;
     }
 
+    ADMIN = {
+      username: 'admin',
+      role: 'admin',
+      logged_in_at: new Date().toISOString()
+    };
 
-    document
-      .getElementById("login-screen")
-      .style.display = "none";
-
-
-    document
-      .getElementById("app")
-      .classList.add("show");
-
-
-    document
-      .getElementById(
-        "admin-email-display"
-      )
-      .textContent =
-      ADMIN.email || "-";
-
-
-    await loadAdminData();
-
-
-  }catch(error){
-
-    console.error(error);
-
-    localStorage.removeItem(
-      "kilat_admin_token"
+    localStorage.setItem(
+      'kilat_admin_session',
+      JSON.stringify(ADMIN)
     );
 
-    TOKEN = null;
-
-    document
-      .getElementById("login-screen")
-      .style.display = "flex";
-
-    showLoginMessage(
-      error.message ||
-      "Sesi admin tidak valid.",
-      "error"
+    localStorage.setItem(
+      'kilat_admin_token',
+      'TEMP_ADMIN_LOGIN'
     );
 
+    enterAdmin();
   }
 
-}
+
+  function enterAdmin() {
+
+    $('loginScreen').style.display = 'none';
+    $('adminApp').style.display = 'block';
+
+    $('adminUserLabel').textContent = 'admin';
+    $('settingUsername').value = 'admin';
+
+    showPage('dashboard');
+    loadDashboard();
+  }
 
 
-/* =========================================================
-   LOGOUT
-========================================================= */
+  function logout() {
 
-function adminLogout(){
+    localStorage.removeItem('kilat_admin_session');
+    localStorage.removeItem('kilat_admin_token');
 
-  localStorage.removeItem(
-    "kilat_admin_token"
-  );
+    ADMIN = null;
 
-  TOKEN = null;
-  ADMIN = null;
-
-  document
-    .getElementById("app")
-    .classList.remove("show");
-
-  document
-    .getElementById("login-screen")
-    .style.display = "flex";
-
-}
+    location.reload();
+  }
 
 
-/* =========================================================
-   TABS
-========================================================= */
+  /* ==========================================================
+     PAGE NAVIGATION
+     ========================================================== */
 
-function switchTab(tab){
+  const PAGE_NAMES = {
+    dashboard: 'Dashboard',
+    users: 'Pengguna',
+    plans: 'Paket Langganan',
+    transactions: 'Transaksi',
+    settings: 'Pengaturan'
+  };
 
-  document
-    .querySelectorAll(
-      ".sidebar-nav button"
-    )
-    .forEach(button => {
 
-      button.classList.toggle(
-        "active",
-        button.dataset.tab === tab
+  function showPage(page) {
+
+    Object.keys(PAGE_NAMES).forEach(name => {
+
+      const section = $('page-' + name);
+
+      if (section) {
+        section.style.display =
+          name === page ? 'block' : 'none';
+      }
+    });
+
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+
+      btn.classList.toggle(
+        'active',
+        btn.dataset.page === page
       );
 
     });
 
 
-  [
-    "dashboard",
-    "users",
-    "plans",
-    "transactions"
-  ].forEach(name => {
+    $('topTitle').textContent =
+      PAGE_NAMES[page] || 'Dashboard';
 
-    const section =
-      document.getElementById(
-        "tab-" + name
-      );
+    closeSidebar();
 
-    if(section){
 
-      section.classList.toggle(
-        "hidden",
-        name !== tab
-      );
-
+    if (page === 'dashboard') {
+      loadDashboard();
     }
 
-  });
+    if (page === 'users') {
+      loadUsers();
+    }
 
-
-  if(tab === "dashboard"){
-    loadAdminData();
+    if (page === 'transactions') {
+      loadTransactions();
+    }
   }
 
-  if(tab === "users"){
-    loadUsers();
-  }
 
-  if(tab === "plans"){
-    loadPlans();
-  }
+  /* ==========================================================
+     API HELPER
+     ========================================================== */
 
-  if(tab === "transactions"){
-    loadTransactions();
-  }
+  async function api(path, options = {}) {
 
-}
+    const token =
+      localStorage.getItem('kilat_admin_token');
 
+    const headers = {
+      ...(options.headers || {})
+    };
 
-/* =========================================================
-   ADMIN DATA
-========================================================= */
+    if (!headers['Content-Type'] && options.body) {
+      headers['Content-Type'] = 'application/json';
+    }
 
-async function loadAdminData(){
+    if (token) {
+      headers.Authorization = 'Bearer ' + token;
+    }
 
-  try{
-
-    /*
-      Endpoint admin yang akan kita sambungkan
-      ke backend pada tahap berikutnya.
-    */
-
-    const data =
-      await api(
-        "/api/admin/stats"
-      );
-
-
-    document
-      .getElementById("stat-users")
-      .textContent =
-      number(
-        data.total_users ||
-        data.users ||
-        0
-      );
-
-
-    document
-      .getElementById("stat-active")
-      .textContent =
-      number(
-        data.active_subscriptions ||
-        data.active ||
-        0
-      );
-
-
-    document
-      .getElementById("stat-revenue")
-      .textContent =
-      rupiah(
-        data.revenue ||
-        0
-      );
-
-
-    document
-      .getElementById("stat-chats")
-      .textContent =
-      number(
-        data.total_chats ||
-        data.chats ||
-        0
-      );
-
-
-    renderRecent(
-      data.recent ||
-      data.users ||
-      []
+    const response = await fetch(
+      API_BASE + path,
+      {
+        ...options,
+        headers
+      }
     );
 
+    let data = null;
 
-  }catch(error){
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
 
-    console.error(
-      "loadAdminData:",
-      error
-    );
+    if (!response.ok) {
+      throw new Error(
+        data.message ||
+        'Request gagal (' + response.status + ')'
+      );
+    }
+
+    return data;
+  }
 
 
-    document
-      .getElementById("recent-table")
-      .innerHTML = `
+  /* ==========================================================
+     DASHBOARD
+     ========================================================== */
+
+  async function loadDashboard() {
+
+    try {
+
+      const data = await api('/api/admin/stats');
+
+      const stats =
+        data.stats ||
+        data.data ||
+        data ||
+        {};
+
+      $('statUsers').textContent =
+        number(stats.users ?? stats.total_users ?? 0);
+
+      $('statActive').textContent =
+        number(stats.active_users ?? stats.active ?? 0);
+
+      $('statTransactions').textContent =
+        number(stats.transactions ?? stats.total_transactions ?? 0);
+
+      $('statRevenue').textContent =
+        rupiah(
+          stats.revenue ??
+          stats.total_revenue ??
+          0
+        );
+
+    } catch (error) {
+
+      /*
+       * Endpoint admin mungkin belum tersedia.
+       * Panel tetap bisa dibuka untuk testing.
+       */
+
+      console.log(
+        'Stats belum tersedia:',
+        error.message
+      );
+
+      /*
+       * Coba ambil data merchant dari endpoint admin/users.
+       */
+
+      try {
+
+        const data = await api('/api/admin/users');
+
+        const users =
+          data.users ||
+          data.merchants ||
+          data.data ||
+          [];
+
+        USERS = Array.isArray(users)
+          ? users
+          : [];
+
+        renderStatsFromUsers();
+
+        renderRecentUsers();
+
+      } catch {
+
+        $('statUsers').textContent = '0';
+        $('statActive').textContent = '0';
+        $('statTransactions').textContent = '0';
+        $('statRevenue').textContent = 'Rp 0';
+
+        $('recentUsers').innerHTML = `
+          <tr>
+            <td colspan="5" class="empty">
+              Belum ada data aktivitas.
+            </td>
+          </tr>
+        `;
+      }
+    }
+  }
+
+
+  function renderStatsFromUsers() {
+
+    const active = USERS.filter(user => {
+
+      const status =
+        user.subscription?.status ||
+        user.status;
+
+      return status === 'active';
+
+    }).length;
+
+    $('statUsers').textContent =
+      USERS.length;
+
+    $('statActive').textContent =
+      active;
+
+    $('statTransactions').textContent =
+      '0';
+
+    $('statRevenue').textContent =
+      'Rp 0';
+
+    renderRecentUsers();
+  }
+
+
+  function renderRecentUsers() {
+
+    const list =
+      USERS
+        .slice()
+        .sort(
+          (a,b) =>
+            new Date(b.created_at || 0) -
+            new Date(a.created_at || 0)
+        )
+        .slice(0, 8);
+
+    if (!list.length) {
+
+      $('recentUsers').innerHTML = `
         <tr>
-          <td colspan="4">
-            <div class="empty">
-              Data dashboard belum tersedia dari backend.
-            </div>
-          </td>
-        </tr>
-      `;
-
-  }
-
-}
-
-
-/* =========================================================
-   USERS
-========================================================= */
-
-async function loadUsers(){
-
-  const tbody =
-    document.getElementById(
-      "users-table"
-    );
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/admin/users"
-      );
-
-
-    USERS =
-      Array.isArray(data.users)
-        ? data.users
-        : [];
-
-
-    renderUsers(USERS);
-
-
-  }catch(error){
-
-    console.error(error);
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5">
-          <div class="empty">
-            ${escapeHtml(error.message)}
-          </div>
-        </td>
-      </tr>
-    `;
-
-  }
-
-}
-
-
-function renderUsers(users){
-
-  const tbody =
-    document.getElementById(
-      "users-table"
-    );
-
-
-  if(!users.length){
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="5">
-          <div class="empty">
+          <td colspan="5" class="empty">
             Belum ada pengguna.
-          </div>
-        </td>
-      </tr>
-    `;
-
-    return;
-
-  }
-
-
-  tbody.innerHTML =
-    users.map((user,index) => {
-
-      const plan =
-        user.subscription?.plan ||
-        user.plan ||
-        "free";
-
-
-      const used =
-        Number(
-          user.usage?.messages_used ||
-          user.messages_used ||
-          0
-        );
-
-
-      const quota =
-        Number(
-          user.quota ||
-          0
-        );
-
-
-      return `
-
-        <tr>
-
-          <td>
-
-            <div class="user-name">
-              ${escapeHtml(
-                user.business_name ||
-                user.name ||
-                "Tanpa nama"
-              )}
-            </div>
-
-            <div class="user-email">
-              ${escapeHtml(
-                user.email || "-"
-              )}
-            </div>
-
-          </td>
-
-
-          <td>
-            <span class="badge ${planBadge(plan)}">
-              ${escapeHtml(
-                capitalize(plan)
-              )}
-            </span>
-          </td>
-
-
-          <td>
-            ${used}${quota ? " / " + quota : ""}
-          </td>
-
-
-          <td>
-            <span class="badge badge-active">
-              ${escapeHtml(
-                user.status ||
-                "active"
-              )}
-            </span>
-          </td>
-
-
-          <td>
-
-            <div class="action">
-
-              <button
-                class="more-btn"
-                onclick="toggleMenu(event,'user-menu-${index}')"
-              >
-                ⋮
-              </button>
-
-
-              <div
-                class="menu"
-                id="user-menu-${index}"
-              >
-
-                <button
-                  onclick="viewUser('${escapeJs(user.id || user._id || index)}')"
-                >
-                  👤 Lihat detail
-                </button>
-
-                <button
-                  onclick="editUser('${escapeJs(user.id || user._id || index)}')"
-                >
-                  ✏️ Edit pengguna
-                </button>
-
-                <button
-                  onclick="changeUserPlan('${escapeJs(user.id || user._id || index)}')"
-                >
-                  💳 Ubah paket
-                </button>
-
-                <button
-                  class="danger"
-                  onclick="deleteUser('${escapeJs(user.id || user._id || index)}')"
-                >
-                  🗑️ Hapus pengguna
-                </button>
-
-              </div>
-
-            </div>
-
-          </td>
-
-        </tr>
-
-      `;
-
-    }).join("");
-
-}
-
-
-function filterUsers(){
-
-  const query =
-    document
-      .getElementById("user-search")
-      .value
-      .toLowerCase()
-      .trim();
-
-
-  if(!query){
-
-    renderUsers(USERS);
-    return;
-
-  }
-
-
-  renderUsers(
-    USERS.filter(user => {
-
-      const text =
-        [
-          user.business_name,
-          user.name,
-          user.email,
-          user.subscription?.plan,
-          user.plan
-        ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-
-      return text.includes(query);
-
-    })
-  );
-
-}
-
-
-/* =========================================================
-   USER ACTIONS
-========================================================= */
-
-function findUser(id){
-
-  return USERS.find(
-    user =>
-      String(
-        user.id ||
-        user._id
-      ) === String(id)
-  );
-
-}
-
-
-function viewUser(id){
-
-  const user =
-    findUser(id);
-
-
-  if(!user){
-
-    alert(
-      "Data pengguna tidak ditemukan."
-    );
-
-    return;
-
-  }
-
-
-  document
-    .getElementById(
-      "user-modal-content"
-    )
-    .innerHTML = `
-
-      <div class="field">
-        <label>Nama Bisnis</label>
-        <input
-          value="${escapeHtml(
-            user.business_name ||
-            user.name ||
-            ""
-          )}"
-          disabled
-        >
-      </div>
-
-      <div class="field">
-        <label>Email</label>
-        <input
-          value="${escapeHtml(
-            user.email || ""
-          )}"
-          disabled
-        >
-      </div>
-
-      <div class="field">
-        <label>Paket</label>
-        <input
-          value="${escapeHtml(
-            capitalize(
-              user.subscription?.plan ||
-              user.plan ||
-              "free"
-            )
-          )}"
-          disabled
-        >
-      </div>
-
-    `;
-
-
-  openModal("user-modal");
-
-}
-
-
-function editUser(id){
-
-  alert(
-    "Form edit pengguna akan kita sambungkan ke endpoint admin backend."
-  );
-
-}
-
-
-function changeUserPlan(id){
-
-  const user =
-    findUser(id);
-
-
-  if(!user){
-
-    alert(
-      "Pengguna tidak ditemukan."
-    );
-
-    return;
-
-  }
-
-
-  const current =
-    user.subscription?.plan ||
-    user.plan ||
-    "free";
-
-
-  const plan =
-    prompt(
-      "Masukkan paket baru: free / pro / bisnis",
-      current
-    );
-
-
-  if(!plan){
-    return;
-  }
-
-
-  api(
-    "/api/admin/users/" +
-    encodeURIComponent(id) +
-    "/plan",
-    {
-      method:"PUT",
-      body:{
-        plan:
-          plan.toLowerCase()
-      }
-    }
-  )
-  .then(() => {
-
-    alert(
-      "Paket pengguna berhasil diubah."
-    );
-
-    loadUsers();
-
-  })
-  .catch(error => {
-
-    alert(
-      error.message
-    );
-
-  });
-
-}
-
-
-async function deleteUser(id){
-
-  if(
-    !confirm(
-      "Yakin ingin menghapus pengguna ini?"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    await api(
-      "/api/admin/users/" +
-      encodeURIComponent(id),
-      {
-        method:"DELETE"
-      }
-    );
-
-
-    alert(
-      "Pengguna berhasil dihapus."
-    );
-
-
-    loadUsers();
-
-
-  }catch(error){
-
-    alert(
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   PLANS
-========================================================= */
-
-async function loadPlans(){
-
-  const container =
-    document.getElementById(
-      "plans-container"
-    );
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/admin/plans"
-      );
-
-
-    PLANS =
-      Array.isArray(data.plans)
-        ? data.plans
-        : [];
-
-
-    /*
-      Fallback supaya UI tetap terlihat
-      jika endpoint belum dibuat.
-    */
-
-    if(!PLANS.length){
-
-      PLANS = [
-
-        {
-          id:"free",
-          name:"Free",
-          price:0,
-          quota:50,
-          description:"50 chat/bulan"
-        },
-
-        {
-          id:"pro",
-          name:"Pro",
-          price:49000,
-          quota:1000,
-          description:"1.000 chat/bulan"
-        },
-
-        {
-          id:"bisnis",
-          name:"Bisnis",
-          price:149000,
-          quota:5000,
-          description:"5.000 chat/bulan + prioritas"
-        }
-
-      ];
-
-    }
-
-
-    renderPlans();
-
-
-  }catch(error){
-
-    console.error(error);
-
-
-    /*
-      Fallback lokal untuk tampilan.
-    */
-
-    PLANS = [
-
-      {
-        id:"free",
-        name:"Free",
-        price:0,
-        quota:50,
-        description:"50 chat/bulan"
-      },
-
-      {
-        id:"pro",
-        name:"Pro",
-        price:49000,
-        quota:1000,
-        description:"1.000 chat/bulan"
-      },
-
-      {
-        id:"bisnis",
-        name:"Bisnis",
-        price:149000,
-        quota:5000,
-        description:"5.000 chat/bulan + prioritas"
-      }
-
-    ];
-
-
-    renderPlans();
-
-  }
-
-}
-
-
-function renderPlans(){
-
-  const container =
-    document.getElementById(
-      "plans-container"
-    );
-
-
-  container.innerHTML =
-    PLANS.map(plan => `
-
-      <div class="plan">
-
-        <div class="plan-name">
-          ${escapeHtml(
-            plan.name ||
-            capitalize(plan.id)
-          )}
-        </div>
-
-
-        <div class="plan-price">
-
-          ${rupiah(
-            plan.price || 0
-          )}
-
-          <span>
-            /bulan
-          </span>
-
-        </div>
-
-
-        <div class="plan-quota">
-
-          ${number(
-            plan.quota || 0
-          )}
-          chat/bulan
-
-          <br>
-
-          ${escapeHtml(
-            plan.description || ""
-          )}
-
-        </div>
-
-
-        <div class="plan-actions">
-
-          <button
-            class="btn btn-outline"
-            onclick="openPlanModal('${escapeJs(plan.id)}')"
-          >
-            ✏️ Edit
-          </button>
-
-
-          <div class="action">
-
-            <button
-              class="more-btn"
-              onclick="toggleMenu(event,'plan-menu-${escapeJs(plan.id)}')"
-            >
-              ⋮
-            </button>
-
-
-            <div
-              class="menu"
-              id="plan-menu-${escapeJs(plan.id)}"
-            >
-
-              <button
-                onclick="openPlanModal('${escapeJs(plan.id)}')"
-              >
-                ✏️ Edit paket
-              </button>
-
-              <button
-                class="danger"
-                onclick="deletePlan('${escapeJs(plan.id)}')"
-              >
-                🗑️ Hapus paket
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    `).join("");
-
-}
-
-
-function openPlanModal(id = ""){
-
-  document
-    .getElementById(
-      "plan-message"
-    )
-    .innerHTML = "";
-
-
-  const plan =
-    PLANS.find(
-      p =>
-        String(p.id) ===
-        String(id)
-    );
-
-
-  document
-    .getElementById(
-      "plan-original"
-    )
-    .value =
-    id || "";
-
-
-  document
-    .getElementById(
-      "plan-name"
-    )
-    .value =
-    plan?.name ||
-    "";
-
-
-  document
-    .getElementById(
-      "plan-price"
-    )
-    .value =
-    plan?.price ??
-    0;
-
-
-  document
-    .getElementById(
-      "plan-quota"
-    )
-    .value =
-    plan?.quota ??
-    0;
-
-
-  document
-    .getElementById(
-      "plan-description"
-    )
-    .value =
-    plan?.description ||
-    "";
-
-
-  document
-    .getElementById(
-      "plan-modal-title"
-    )
-    .textContent =
-    plan
-      ? "Edit Paket"
-      : "Tambah Paket";
-
-
-  openModal(
-    "plan-modal"
-  );
-
-}
-
-
-async function savePlan(){
-
-  const original =
-    document
-      .getElementById(
-        "plan-original"
-      )
-      .value
-      .trim();
-
-
-  const name =
-    document
-      .getElementById(
-        "plan-name"
-      )
-      .value
-      .trim();
-
-
-  const price =
-    Number(
-      document
-        .getElementById(
-          "plan-price"
-        )
-        .value
-    );
-
-
-  const quota =
-    Number(
-      document
-        .getElementById(
-          "plan-quota"
-        )
-        .value
-    );
-
-
-  const description =
-    document
-      .getElementById(
-        "plan-description"
-      )
-      .value
-      .trim();
-
-
-  if(!name){
-
-    showPlanMessage(
-      "Nama paket wajib diisi."
-    );
-
-    return;
-
-  }
-
-
-  if(price < 0){
-
-    showPlanMessage(
-      "Harga tidak valid."
-    );
-
-    return;
-
-  }
-
-
-  if(quota < 0){
-
-    showPlanMessage(
-      "Kuota tidak valid."
-    );
-
-    return;
-
-  }
-
-
-  const id =
-    original ||
-    name
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g,"-");
-
-
-  try{
-
-    await api(
-      "/api/admin/plans/" +
-      encodeURIComponent(id),
-      {
-        method:"PUT",
-        body:{
-          id,
-          name,
-          price,
-          quota,
-          description
-        }
-      }
-    );
-
-
-    closeModal(
-      "plan-modal"
-    );
-
-
-    await loadPlans();
-
-
-    alert(
-      "Paket berhasil disimpan."
-    );
-
-
-  }catch(error){
-
-    showPlanMessage(
-      error.message
-    );
-
-  }
-
-}
-
-
-async function deletePlan(id){
-
-  if(
-    id === "free"
-  ){
-
-    alert(
-      "Paket Free tidak boleh dihapus."
-    );
-
-    return;
-
-  }
-
-
-  if(
-    !confirm(
-      "Yakin ingin menghapus paket ini?"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    await api(
-      "/api/admin/plans/" +
-      encodeURIComponent(id),
-      {
-        method:"DELETE"
-      }
-    );
-
-
-    await loadPlans();
-
-
-    alert(
-      "Paket berhasil dihapus."
-    );
-
-
-  }catch(error){
-
-    alert(
-      error.message
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   TRANSACTIONS
-========================================================= */
-
-async function loadTransactions(){
-
-  const tbody =
-    document.getElementById(
-      "transactions-table"
-    );
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/admin/transactions"
-      );
-
-
-    const transactions =
-      Array.isArray(
-        data.transactions
-      )
-        ? data.transactions
-        : [];
-
-
-    if(!transactions.length){
-
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="6">
-            <div class="empty">
-              Belum ada transaksi.
-            </div>
           </td>
         </tr>
       `;
 
       return;
-
     }
 
+    $('recentUsers').innerHTML =
+      list.map(user => {
 
-    tbody.innerHTML =
-      transactions.map(
-        (tx,index) => `
+        const subscription =
+          user.subscription || {};
 
+        const plan =
+          subscription.plan ||
+          user.plan ||
+          'trial';
+
+        const status =
+          subscription.status ||
+          user.status ||
+          'active';
+
+        return `
+          <tr>
+            <td>
+              <strong>
+                ${escapeHTML(
+                  user.business_name ||
+                  user.businessName ||
+                  '-'
+                )}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHTML(user.email || '-')}
+            </td>
+
+            <td>
+              <span class="badge blue">
+                ${escapeHTML(plan)}
+              </span>
+            </td>
+
+            <td>
+              ${statusBadge(status)}
+            </td>
+
+            <td>
+              ${formatDate(user.created_at)}
+            </td>
+          </tr>
+        `;
+
+      }).join('');
+  }
+
+
+  /* ==========================================================
+     USERS
+     ========================================================== */
+
+  async function loadUsers() {
+
+    $('usersTable').innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          Memuat pengguna...
+        </td>
+      </tr>
+    `;
+
+    try {
+
+      const data =
+        await api('/api/admin/users');
+
+      USERS =
+        data.users ||
+        data.merchants ||
+        data.data ||
+        [];
+
+      if (!Array.isArray(USERS)) {
+        USERS = [];
+      }
+
+      renderUsers(USERS);
+
+    } catch (error) {
+
+      console.log(error);
+
+      $('usersTable').innerHTML = `
         <tr>
-
-          <td>
-            ${tx.created_at
-              ? new Date(
-                  tx.created_at
-                ).toLocaleString(
-                  "id-ID"
-                )
-              : "-"
-            }
+          <td colspan="6" class="empty">
+            Endpoint pengguna belum tersedia di backend.
           </td>
+        </tr>
+      `;
+    }
+  }
 
 
-          <td>
+  function renderUsers(users) {
 
-            <div class="user-name">
-              ${escapeHtml(
-                tx.business_name ||
-                tx.email ||
-                "-"
-              )}
-            </div>
+    if (!users.length) {
 
-            <div class="user-email">
-              ${escapeHtml(
-                tx.email || ""
-              )}
-            </div>
-
+      $('usersTable').innerHTML = `
+        <tr>
+          <td colspan="6" class="empty">
+            Belum ada pengguna.
           </td>
+        </tr>
+      `;
 
+      return;
+    }
 
-          <td>
-            ${escapeHtml(
-              capitalize(
-                tx.plan || "-"
-              )
-            )}
-          </td>
+    $('usersTable').innerHTML =
+      users.map(user => {
 
+        const subscription =
+          user.subscription || {};
 
-          <td>
-            ${rupiah(
-              tx.amount || 0
-            )}
-          </td>
+        const plan =
+          subscription.plan ||
+          user.plan ||
+          'trial';
 
+        const status =
+          subscription.status ||
+          user.status ||
+          'active';
 
-          <td>
+        const id =
+          user.id || '';
 
-            <span class="badge ${
-              tx.status === "paid"
-                ? "badge-active"
-                : "badge-free"
-            }">
+        return `
+          <tr>
 
-              ${escapeHtml(
-                tx.status || "-"
-              )}
+            <td>
+              <strong>
+                ${escapeHTML(
+                  user.business_name ||
+                  user.businessName ||
+                  '-'
+                )}
+              </strong>
+            </td>
 
-            </span>
+            <td>
+              ${escapeHTML(user.email || '-')}
+            </td>
 
-          </td>
+            <td>
+              <span class="badge blue">
+                ${escapeHTML(plan)}
+              </span>
+            </td>
 
+            <td>
+              ${statusBadge(status)}
+            </td>
 
-          <td>
+            <td>
+              ${formatDate(user.created_at)}
+            </td>
 
-            <div class="action">
-
-              <button
-                class="more-btn"
-                onclick="toggleMenu(event,'tx-menu-${index}')"
-              >
-                ⋮
-              </button>
-
-
-              <div
-                class="menu"
-                id="tx-menu-${index}"
-              >
+            <td>
+              <div class="actions">
 
                 <button
-                  onclick="viewTransaction('${escapeJs(tx.id || tx._id || index)}')"
+                  class="btn btn-light"
+                  onclick="viewUser('${escapeJS(id)}')"
                 >
-                  👁️ Lihat detail
+                  Detail
+                </button>
+
+                <button
+                  class="btn btn-danger"
+                  onclick="deleteUser('${escapeJS(id)}')"
+                >
+                  Hapus
                 </button>
 
               </div>
+            </td>
 
-            </div>
+          </tr>
+        `;
 
-          </td>
-
-        </tr>
-
-      `
-      ).join("");
-
-
-  }catch(error){
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="6">
-          <div class="empty">
-            Data transaksi belum tersedia dari backend.
-          </div>
-        </td>
-      </tr>
-    `;
-
-  }
-
-}
-
-
-function viewTransaction(id){
-
-  alert(
-    "Detail transaksi: " + id
-  );
-
-}
-
-
-/* =========================================================
-   RECENT
-========================================================= */
-
-function renderRecent(items){
-
-  const tbody =
-    document.getElementById(
-      "recent-table"
-    );
-
-
-  if(!Array.isArray(items) || !items.length){
-
-    tbody.innerHTML = `
-      <tr>
-        <td colspan="4">
-          <div class="empty">
-            Belum ada aktivitas.
-          </div>
-        </td>
-      </tr>
-    `;
-
-    return;
-
+      }).join('');
   }
 
 
-  tbody.innerHTML =
-    items.slice(0,8)
-    .map(item => {
+  function filterUsers() {
 
-      const plan =
-        item.subscription?.plan ||
-        item.plan ||
-        "free";
+    const keyword =
+      $('userSearch').value
+        .trim()
+        .toLowerCase();
 
+    const filtered =
+      USERS.filter(user => {
 
-      return `
+        const text = [
+          user.business_name,
+          user.businessName,
+          user.email,
+          user.id
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
 
-        <tr>
-
-          <td>
-
-            <div class="user-name">
-              ${escapeHtml(
-                item.business_name ||
-                item.name ||
-                "-"
-              )}
-            </div>
-
-            <div class="user-email">
-              ${escapeHtml(
-                item.email ||
-                ""
-              )}
-            </div>
-
-          </td>
-
-
-          <td>
-            <span class="badge ${planBadge(plan)}">
-              ${escapeHtml(
-                capitalize(plan)
-              )}
-            </span>
-          </td>
-
-
-          <td>
-            <span class="badge badge-active">
-              ${escapeHtml(
-                item.status ||
-                "active"
-              )}
-            </span>
-          </td>
-
-
-          <td>
-            ${item.created_at
-              ? new Date(
-                  item.created_at
-                ).toLocaleDateString(
-                  "id-ID"
-                )
-              : "-"
-            }
-          </td>
-
-        </tr>
-
-      `;
-
-    }).join("");
-
-}
-
-
-/* =========================================================
-   MENU
-========================================================= */
-
-function toggleMenu(event,id){
-
-  event.stopPropagation();
-
-
-  document
-    .querySelectorAll(".menu.show")
-    .forEach(menu => {
-
-      if(menu.id !== id){
-
-        menu.classList.remove(
-          "show"
-        );
-
-      }
-
-    });
-
-
-  const menu =
-    document.getElementById(id);
-
-
-  if(menu){
-
-    menu.classList.toggle(
-      "show"
-    );
-
-  }
-
-}
-
-
-document.addEventListener(
-  "click",
-  () => {
-
-    document
-      .querySelectorAll(
-        ".menu.show"
-      )
-      .forEach(menu => {
-
-        menu.classList.remove(
-          "show"
-        );
-
+        return text.includes(keyword);
       });
 
+    renderUsers(filtered);
   }
-);
 
 
-/* =========================================================
-   MODAL
-========================================================= */
+  async function viewUser(id) {
 
-function openModal(id){
+    const user =
+      USERS.find(u => String(u.id) === String(id));
 
-  document
-    .getElementById(id)
-    .classList.add("show");
+    if (!user) {
+      showToast('Data pengguna tidak ditemukan.');
+      return;
+    }
 
-}
+    const name =
+      user.business_name ||
+      user.businessName ||
+      '-';
 
+    const plan =
+      user.subscription?.plan ||
+      user.plan ||
+      'trial';
 
-function closeModal(id){
-
-  document
-    .getElementById(id)
-    .classList.remove("show");
-
-}
-
-
-/* =========================================================
-   MESSAGE
-========================================================= */
-
-function showLoginMessage(
-  text,
-  type = "error"
-){
-
-  document
-    .getElementById(
-      "login-message"
-    )
-    .innerHTML = `
-      <div class="message ${type}">
-        ${escapeHtml(text)}
-      </div>
-    `;
-
-}
+    alert(
+      'DETAIL PENGGUNA\\n\\n' +
+      'Bisnis: ' + name + '\\n' +
+      'Email: ' + (user.email || '-') + '\\n' +
+      'Paket: ' + plan + '\\n' +
+      'Status: ' +
+      (
+        user.subscription?.status ||
+        user.status ||
+        'active'
+      )
+    );
+  }
 
 
-function showPlanMessage(
-  text
-){
+  async function deleteUser(id) {
 
-  document
-    .getElementById(
-      "plan-message"
-    )
-    .innerHTML = `
-      <div class="message error">
-        ${escapeHtml(text)}
-      </div>
-    `;
+    if (!id) return;
 
-}
-
-
-/* =========================================================
-   UTILITIES
-========================================================= */
-
-function rupiah(value){
-
-  return "Rp" +
-    Number(value || 0)
-      .toLocaleString(
-        "id-ID"
+    const ok =
+      confirm(
+        'Yakin ingin menghapus pengguna ini?'
       );
 
-}
+    if (!ok) return;
 
+    try {
 
-function number(value){
+      await api(
+        '/api/admin/users/' +
+        encodeURIComponent(id),
+        {
+          method: 'DELETE'
+        }
+      );
 
-  return Number(
-    value || 0
-  ).toLocaleString(
-    "id-ID"
-  );
+      showToast('Pengguna berhasil dihapus.');
 
-}
+      loadUsers();
 
+    } catch (error) {
 
-function capitalize(value){
-
-  const str =
-    String(value || "");
-
-  return str
-    ? str.charAt(0).toUpperCase() +
-      str.slice(1)
-    : "";
-
-}
-
-
-function planBadge(plan){
-
-  plan =
-    String(plan)
-      .toLowerCase();
-
-
-  if(plan === "pro"){
-    return "badge-pro";
+      showToast(
+        'Gagal menghapus: ' +
+        error.message
+      );
+    }
   }
 
-  if(
-    plan === "bisnis" ||
-    plan === "business"
-  ){
 
-    return "badge-bisnis";
+  /* ==========================================================
+     TRANSACTIONS
+     ========================================================== */
 
+  async function loadTransactions() {
+
+    $('transactionsTable').innerHTML = `
+      <tr>
+        <td colspan="6" class="empty">
+          Memuat transaksi...
+        </td>
+      </tr>
+    `;
+
+    try {
+
+      const data =
+        await api('/api/admin/transactions');
+
+      TRANSACTIONS =
+        data.transactions ||
+        data.data ||
+        [];
+
+      if (!Array.isArray(TRANSACTIONS)) {
+        TRANSACTIONS = [];
+      }
+
+      renderTransactions();
+
+    } catch (error) {
+
+      console.log(error);
+
+      $('transactionsTable').innerHTML = `
+        <tr>
+          <td colspan="6" class="empty">
+            Endpoint transaksi belum tersedia di backend.
+          </td>
+        </tr>
+      `;
+    }
   }
 
-  return "badge-free";
 
-}
+  function renderTransactions() {
+
+    if (!TRANSACTIONS.length) {
+
+      $('transactionsTable').innerHTML = `
+        <tr>
+          <td colspan="6" class="empty">
+            Belum ada transaksi.
+          </td>
+        </tr>
+      `;
+
+      return;
+    }
+
+    $('transactionsTable').innerHTML =
+      TRANSACTIONS.map(transaction => {
+
+        const status =
+          transaction.status ||
+          'pending';
+
+        return `
+          <tr>
+
+            <td>
+              <strong>
+                ${escapeHTML(
+                  transaction.id ||
+                  transaction.reference ||
+                  '-'
+                )}
+              </strong>
+            </td>
+
+            <td>
+              ${escapeHTML(
+                transaction.email ||
+                transaction.business_name ||
+                '-'
+              )}
+            </td>
+
+            <td>
+              ${escapeHTML(
+                transaction.plan ||
+                '-'
+              )}
+            </td>
+
+            <td>
+              ${rupiah(
+                transaction.amount ||
+                transaction.total ||
+                0
+              )}
+            </td>
+
+            <td>
+              ${statusBadge(status)}
+            </td>
+
+            <td>
+              ${formatDate(
+                transaction.created_at ||
+                transaction.createdAt
+              )}
+            </td>
+
+          </tr>
+        `;
+
+      }).join('');
+  }
 
 
-function escapeHtml(value){
+  /* ==========================================================
+     MOBILE SIDEBAR
+     ========================================================== */
 
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /[&<>"']/g,
-    char => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[char])
+  function toggleSidebar() {
+
+    $('sidebar')
+      .classList
+      .toggle('open');
+
+    $('overlay')
+      .classList
+      .toggle('show');
+  }
+
+
+  function closeSidebar() {
+
+    $('sidebar')
+      .classList
+      .remove('open');
+
+    $('overlay')
+      .classList
+      .remove('show');
+  }
+
+
+  /* ==========================================================
+     HELPERS
+     ========================================================== */
+
+  function number(value) {
+
+    const n =
+      Number(value || 0);
+
+    return n.toLocaleString('id-ID');
+  }
+
+
+  function rupiah(value) {
+
+    const n =
+      Number(value || 0);
+
+    return 'Rp ' +
+      n.toLocaleString(
+        'id-ID'
+      );
+  }
+
+
+  function formatDate(date) {
+
+    if (!date) return '-';
+
+    const d =
+      new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+      return '-';
+    }
+
+    return d.toLocaleDateString(
+      'id-ID',
+      {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+      }
+    );
+  }
+
+
+  function statusBadge(status) {
+
+    const s =
+      String(status || '')
+        .toLowerCase();
+
+    let cls = 'orange';
+
+    if (
+      s === 'active' ||
+      s === 'paid' ||
+      s === 'success' ||
+      s === 'completed'
+    ) {
+      cls = 'green';
+    }
+
+    if (
+      s === 'expired' ||
+      s === 'cancelled' ||
+      s === 'failed'
+    ) {
+      cls = 'red';
+    }
+
+    return `
+      <span class="badge ${cls}">
+        ${escapeHTML(status || '-')}
+      </span>
+    `;
+  }
+
+
+  function escapeHTML(value) {
+
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+  function escapeJS(value) {
+
+    return String(value ?? '')
+      .replace(/\\/g, '\\\\')
+      .replace(/'/g, "\\'");
+  }
+
+
+  function showToast(message) {
+
+    const toast =
+      $('toast');
+
+    toast.textContent =
+      message;
+
+    toast.classList.add('show');
+
+    clearTimeout(
+      window.__toastTimer
+    );
+
+    window.__toastTimer =
+      setTimeout(() => {
+
+        toast.classList.remove('show');
+
+      }, 2800);
+  }
+
+
+  /* ==========================================================
+     ENTER KEY LOGIN
+     ========================================================== */
+
+  $('admin-email')
+    .addEventListener(
+      'keydown',
+      function(event) {
+
+        if (event.key === 'Enter') {
+          $('admin-password').focus();
+        }
+
+      }
+    );
+
+
+  $('admin-password')
+    .addEventListener(
+      'keydown',
+      function(event) {
+
+        if (event.key === 'Enter') {
+          adminLogin();
+        }
+
+      }
+    );
+
+
+  /* ==========================================================
+     INITIALIZE
+     ========================================================== */
+
+  document.addEventListener(
+    'DOMContentLoaded',
+    function() {
+
+      const saved =
+        localStorage.getItem(
+          'kilat_admin_session'
+        );
+
+      if (!saved) return;
+
+      try {
+
+        ADMIN =
+          JSON.parse(saved);
+
+        if (
+          ADMIN &&
+          ADMIN.role === 'admin'
+        ) {
+          enterAdmin();
+        }
+
+      } catch {
+
+        localStorage.removeItem(
+          'kilat_admin_session'
+        );
+
+        localStorage.removeItem(
+          'kilat_admin_token'
+        );
+      }
+
+    }
   );
-
-}
-
-
-function escapeJs(value){
-
-  return String(
-    value ?? ""
-  )
-  .replace(
-    /\\/g,
-    "\\\\"
-  )
-  .replace(
-    /'/g,
-    "\\'"
-  );
-
-}
-
-
-/* =========================================================
-   INIT
-========================================================= */
-
-if(TOKEN){
-
-  enterAdmin();
-
-}
-
 </script>
 
 </body>
