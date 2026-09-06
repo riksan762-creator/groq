@@ -1,56 +1,88 @@
 const fetch = require('node-fetch');
+const crypto = require('crypto');
 const config = require('./config');
 
 /**
- * CATATAN PENTING:
- * Kamu sudah punya autogopay.js yang JALAN di project telegram-shop-bot kamu.
- * Supaya konsisten & pasti benar, PALING AMAN adalah copy isi function
- * generateQRIS + verifyWebhook dari file itu ke sini, ganti dua function di
- * bawah ini. Kerangka di bawah mengikuti kontrak umum AutoGoPay
- * (POST /qris/generate -> { transaction_id, qr_url, checkout_url }) sebagai
- * fallback kalau kamu mulai project ini dari nol.
+ * Wrapper untuk AutoGoPay (https://autogopay.site/docs), fitur GoPay QRIS.
+ * Base URL resmi: https://v1-gateway.autogopay.site
+ * Semua request pakai header: Authorization: Bearer <API_KEY>
  */
 
-async function generateQRIS({ amount, note }) {
+async function generateQRIS({ amount }) {
   const res = await fetch(`${config.autogopay.baseUrl}/qris/generate`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${config.autogopay.apiKey}`,
     },
-    body: JSON.stringify({ amount, note }),
+    body: JSON.stringify({ amount }),
   });
 
-  if (!res.ok) {
-    const errText = await res.text();
-    throw new Error(`AutoGoPay error ${res.status}: ${errText}`);
+  const data = await res.json();
+  if (!res.ok || !data.success) {
+    throw new Error(data.message || `AutoGoPay error ${res.status}`);
   }
 
-  const data = await res.json();
   return {
-    trxId: data.transaction_id || data.data?.transaction_id,
-    qrUrl: data.qr_url || data.data?.qr_url,
-    checkoutUrl: data.checkout_url || data.data?.checkout_url,
-    raw: data,
+    trxId: data.data.transaction_id,
+    orderId: data.data.order_id,
+    qrUrl: data.data.qr_url,
+    checkoutUrl: data.data.checkout_url,
+    expiryTime: data.data.expiry_time,
+    raw: data.data,
   };
 }
 
-async function checkStatus(trxId) {
-  const res = await fetch(`${config.autogopay.baseUrl}/qris/status/${trxId}`, {
-    headers: { Authorization: `Bearer ${config.autogopay.apiKey}` },
+async function checkStatus(transactionId) {
+  const res = await fetch(`${config.autogopay.baseUrl}/qris/status`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.autogopay.apiKey}`,
+    },
+    body: JSON.stringify({ transaction_id: transactionId }),
   });
-  if (!res.ok) throw new Error(`AutoGoPay status check gagal: ${res.status}`);
+  return res.json(); // { success, data: { status: 'pending'|'settlement'|'expire'|'cancel', ... } }
+}
+
+async function cancelQRIS(transactionId) {
+  const res = await fetch(`${config.autogopay.baseUrl}/qris/cancel`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${config.autogopay.apiKey}`,
+    },
+    body: JSON.stringify({ transaction_id: transactionId }),
+  });
   return res.json();
 }
 
 /**
- * Verifikasi payload webhook. Sesuaikan dengan skema signature AutoGoPay yang
- * sebenarnya kamu pakai (header X-Signature / HMAC / dsb) — ambil dari
- * webhookServer.js di project telegram-shop-bot kamu.
+ * Wajib menurut docs: verifikasi header X-Signature (HMAC-SHA256, API key
+ * sebagai secret) atas RAW BODY webhook — jangan verifikasi hasil JSON.parse,
+ * karena re-serialize bisa mengubah urutan/format string dan bikin signature
+ * mismatch.
  */
-function isPaidPayload(body) {
-  const status = body.status || body.data?.status;
-  return status === 'paid' || status === 'success' || status === 'settlement';
+function verifySignature(rawBody, signatureHeader) {
+  if (!signatureHeader) return false;
+  const expected = crypto
+    .createHmac('sha256', config.autogopay.apiKey)
+    .update(rawBody)
+    .digest('hex');
+  try {
+    return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signatureHeader));
+  } catch {
+    return false; // panjang buffer beda -> jelas tidak match
+  }
 }
 
-module.exports = { generateQRIS, checkStatus, isPaidPayload };
+// Payload webhook: { event: 'transaction.received', transaction: { transaction_id, status: 'PAID', payment_method, ... } }
+function isPaidPayload(body) {
+  return body?.event === 'transaction.received' && body?.transaction?.status === 'PAID';
+}
+
+function getTransactionId(body) {
+  return body?.transaction?.transaction_id;
+}
+
+module.exports = { generateQRIS, checkStatus, cancelQRIS, verifySignature, isPaidPayload, getTransactionId };
