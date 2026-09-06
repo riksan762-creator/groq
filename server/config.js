@@ -14,8 +14,8 @@ module.exports = {
 
   autogopay: {
     apiKey: process.env.AUTOGOPAY_API_KEY,
-    baseUrl: process.env.AUTOGOPAY_BASE_URL || 'https://autogopay.site/api',
-    webhookSecret: process.env.AUTOGOPAY_WEBHOOK_SECRET || '',
+    // Base URL resmi per autogopay.site/docs — BUKAN autogopay.site/api
+    baseUrl: process.env.AUTOGOPAY_BASE_URL || 'https://v1-gateway.autogopay.site',
   },
 
   // Paket top-up kredit — ubah sesuka hati lewat admin panel > Pengaturan
