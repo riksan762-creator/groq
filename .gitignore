@@ -1,0 +1,16 @@
+# env & secrets
+.env
+
+# data (JSON db dibuat otomatis saat runtime, jangan ikut commit)
+data/*.json
+
+# dependencies
+node_modules/
+
+# logs
+*.log
+npm-debug.log*
+
+# OS/editor junk
+.DS_Store
+.vscode/
