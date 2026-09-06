@@ -11,7 +11,10 @@ const groq = require('./groq');
 const autogopay = require('./autogopay');
 
 const app = express();
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({
+  limit: '10mb',
+  verify: (req, res, buf) => { req.rawBody = buf; },
+}));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
@@ -152,10 +155,7 @@ app.post('/api/topup', auth, async (req, res) => {
     const pkg = packages().find((p) => p.credits === credits);
     if (!pkg) return res.status(400).json({ error: 'Paket tidak ditemukan' });
 
-    const { trxId, qrUrl, checkoutUrl } = await autogopay.generateQRIS({
-      amount: pkg.priceRp,
-      note: `KontenKilat ${pkg.credits} kredit - ${req.user.name}`,
-    });
+    const { trxId, qrUrl, checkoutUrl } = await autogopay.generateQRIS({ amount: pkg.priceRp });
 
     const id = nanoid(10);
     db.data.transactions[id] = {
@@ -179,8 +179,14 @@ app.post('/api/topup', auth, async (req, res) => {
 
 // Webhook publik dari AutoGoPay saat pembayaran masuk
 app.post('/api/webhook/autogopay', (req, res) => {
+  const signature = req.headers['x-signature'];
+  if (!autogopay.verifySignature(req.rawBody, signature)) {
+    return res.status(401).json({ ok: false, error: 'Invalid signature' });
+  }
+
   const body = req.body;
-  const trx = Object.values(db.data.transactions).find((t) => t.trxId === (body.transaction_id || body.data?.transaction_id));
+  const trxId = autogopay.getTransactionId(body);
+  const trx = Object.values(db.data.transactions).find((t) => t.trxId === trxId);
   if (!trx) return res.status(404).json({ ok: false });
 
   if (autogopay.isPaidPayload(body) && trx.status !== 'paid') {
@@ -190,6 +196,7 @@ app.post('/api/webhook/autogopay', (req, res) => {
     if (user) user.credits += trx.packageCredits;
     db.save();
   }
+  // Wajib return 200 dalam 10 detik per docs, walau transaksi sudah diproses sebelumnya
   res.json({ ok: true });
 });
 
