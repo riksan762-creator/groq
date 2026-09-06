@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>KontenKilat — Caption & Konten Jualan Instan buat UMKM</title>
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand"><span class="bolt">⚡</span> KontenKilat</div>
+    <div class="nav-actions">
+      <button class="btn-ghost" id="btnLogin">Masuk</button>
+      <button class="btn-primary" id="btnRegister">Daftar Gratis</button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div>
+      <h1>Foto produk, nama, harga. Konten jualan langsung jadi.</h1>
+      <p class="lede">KontenKilat pakai AI Groq buat nulis caption Instagram, TikTok, hashtag, sampai deskripsi Shopee/Tokopedia dalam hitungan detik — bukan menit.</p>
+      <div class="stats">
+        <div><b>&lt;2 detik</b><span>waktu generate</span></div>
+        <div><b>Rp500</b><span>per generate</span></div>
+        <div><b>4 output</b><span>sekali klik</span></div>
+      </div>
+    </div>
+
+    <div class="preview-card">
+      <span class="preview-tag">⚡ Contoh hasil</span>
+      <div class="preview-caption" id="demoCaption"></div>
+      <div class="preview-tags" id="demoTags"></div>
+    </div>
+  </section>
+
+  <!-- ===== GENERATOR ===== -->
+  <section class="panel" id="generatorPanel">
+    <h2>Bikin konten jualan</h2>
+    <p class="sub">Isi info produk kamu, biar AI yang nulisin captionnya.</p>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;">
+      <span class="credit-pill">Kredit: <b id="creditCount">0</b></span>
+      <button class="btn-ghost" id="btnTopup">Isi Kredit</button>
+    </div>
+
+    <form id="genForm">
+      <div class="grid-2">
+        <div class="field">
+          <label>Nama produk</label>
+          <input type="text" name="productName" placeholder="Kopi Susu Gula Aren 250ml" required />
+        </div>
+        <div class="field">
+          <label>Harga</label>
+          <input type="text" name="price" placeholder="Rp18.000" required />
+        </div>
+      </div>
+      <div class="field">
+        <label>Kategori</label>
+        <input type="text" name="category" placeholder="Minuman / F&B" />
+      </div>
+      <div class="field">
+        <label>Keunggulan / detail tambahan</label>
+        <textarea name="features" placeholder="Gula aren asli, tanpa pengawet, cocok buat yang suka manis pas"></textarea>
+      </div>
+      <div class="field">
+        <label>Foto produk (opsional — bantu AI kasih deskripsi lebih akurat)</label>
+        <div class="upload-row">
+          <input type="file" name="photo" accept="image/*" id="photoInput" />
+        </div>
+      </div>
+      <button type="submit" class="btn-primary" id="btnGenerate" style="width:100%;">Generate Konten (1 kredit)</button>
+    </form>
+
+    <div id="resultArea"></div>
+  </section>
+
+  <!-- ===== TRIAL CHAT ===== -->
+  <section class="panel">
+    <h2>Coba AI-nya dulu</h2>
+    <p class="sub">Tanya apa saja ke AI-nya langsung, gratis 3x per hari — biar kamu lihat sendiri kecepatannya.</p>
+    <div class="trial-widget">
+      <div class="trial-log" id="trialLog"></div>
+      <div class="trial-input-row">
+        <input type="text" id="trialInput" placeholder="Contoh: bantu bikin ide promo lebaran dong" />
+        <button class="btn-primary" id="btnTrialSend">Kirim</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PACKAGES (topup modal content lives here for simplicity) ===== -->
+  <section class="panel" id="packagesPanel" style="display:none;">
+    <h2>Isi Kredit</h2>
+    <p class="sub">Bayar via QRIS, kredit masuk otomatis begitu pembayaran terkonfirmasi.</p>
+    <div class="packages" id="packagesGrid"></div>
+    <div id="qrisArea" style="margin-top:20px;"></div>
+  </section>
+
+  <footer>KontenKilat — dibuat buat UMKM Indonesia jualan lebih cepat.</footer>
+</div>
+
+<!-- ===== AUTH MODAL ===== -->
+<div class="modal-backdrop" id="authModal">
+  <div class="modal">
+    <div class="tabs">
+      <button id="tabLogin" class="active">Masuk</button>
+      <button id="tabRegister">Daftar</button>
+    </div>
+    <form id="loginForm">
+      <div class="field"><label>Nomor WhatsApp</label><input type="text" name="wa" required /></div>
+      <div class="field"><label>Password</label><input type="password" name="password" required /></div>
+      <div class="field" id="nameField" style="display:none;"><label>Nama</label><input type="text" name="name" /></div>
+      <button type="submit" class="btn-primary" style="width:100%;">Lanjut</button>
+    </form>
+    <p id="authError" style="color:var(--coral); font-size:0.85rem; margin-top:10px;"></p>
+  </div>
+</div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

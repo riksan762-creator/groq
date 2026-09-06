@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Admin — KontenKilat</title>
+<link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+  <h2>Masuk Admin</h2>
+  <input type="password" id="adminPasswordInput" placeholder="Password admin" />
+  <button class="btn-primary" style="width:100%;" id="btnAdminLogin">Masuk</button>
+  <p id="loginError" style="color:var(--coral); font-size:0.85rem; margin-top:10px;"></p>
+</div>
+
+<div id="app" style="display:none; width:100%; display:none;">
+  <div class="sidebar">
+    <div class="brand"><span class="bolt">⚡</span> KontenKilat</div>
+    <div class="nav-item active" data-section="dashboard">Dashboard</div>
+    <div class="nav-item" data-section="users">Pengguna</div>
+    <div class="nav-item" data-section="transactions">Transaksi</div>
+    <div class="nav-item" data-section="settings">Pengaturan</div>
+  </div>
+
+  <div class="main">
+    <!-- DASHBOARD -->
+    <section class="section active" id="section-dashboard">
+      <div class="page-head">
+        <div><h1>Dashboard</h1><p>Ringkasan performa KontenKilat</p></div>
+      </div>
+      <div class="stat-row" id="statRow"></div>
+    </section>
+
+    <!-- USERS -->
+    <section class="section" id="section-users">
+      <div class="page-head">
+        <div><h1>Pengguna</h1><p>Kelola akun dan kredit user</p></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Nama</th><th>WhatsApp</th><th>Kredit</th><th>Status</th><th></th></tr></thead>
+          <tbody id="usersBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TRANSACTIONS -->
+    <section class="section" id="section-transactions">
+      <div class="page-head">
+        <div><h1>Transaksi</h1><p>Riwayat top up kredit via QRIS</p></div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>User</th><th>Kredit</th><th>Nominal</th><th>Status</th><th>Waktu</th><th></th></tr></thead>
+          <tbody id="trxBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="section" id="section-settings">
+      <div class="page-head">
+        <div><h1>Pengaturan</h1><p>Paket kredit dan prompt AI</p></div>
+      </div>
+      <div class="card" style="padding:24px;">
+        <form class="settings-form" id="settingsForm">
+          <div class="field">
+            <label>Paket kredit (format: kredit:harga, satu baris per paket)</label>
+            <textarea id="packagesInput" rows="4"></textarea>
+          </div>
+          <div class="field">
+            <label>Template prompt AI (kosongkan untuk pakai default bawaan)</label>
+            <textarea id="promptInput" rows="8"></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Simpan Pengaturan</button>
+        </form>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>
